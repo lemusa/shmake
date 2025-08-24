@@ -1,119 +1,124 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <meta name="description" content="Your name — brief description of what you do and your brands.">
-  <link rel="icon" href="images/favicon.ico">
-  <title>Your Name | Landing Page</title>
-  <style>
-    html, body {
-      margin: 0;
-      padding: 0;
-      height: 100%;
-    }
-
-    body {
-      font-family: Arial, sans-serif;
-      overflow: hidden; /* No scroll on desktop */
-    }
-
-    .page-wrapper {
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      height: 100vh; /* Lock to viewport height */
-      text-align: center;
-    }
-
-    header {
-      background: #333;
-      color: #fff;
-      padding: 40px 20px;
-    }
-
-    section {
-      flex: 1;
-      padding: 20px;
-    }
-
-	.brands {
-	  display: flex;
-	  flex-wrap: wrap;
-	}
-
-	.brands a {
-	  flex: 1 0 25%; 
-	  box-sizing: border-box;
-	  padding: 10px;
-	}
-
-	.brands img {
-	  width: 100%;    /* fills container */
-	  height: auto;   /* keeps aspect ratio */
-	  object-fit: contain;
-	}
-
-    footer {
-      background: #f4f4f4;
-      padding: 20px;
-    }
-
-    a {
-      color: #333;
-      text-decoration: none;
-      margin: 0 10px;
-    }
-
-    /* Allow scrolling on mobile */
-    @media (max-width: 768px) {
-      body {
-        overflow: auto;
-      }
-
-      .page-wrapper {
-        height: auto;
-      }
-    }
-  </style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>SH:MAKE</title>
+  <!-- Fonts & Icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-1ycn6IcaQQ40/J6MdW8u2VbW/J6CkqbZ8q3Gm5Q5M5Fh+2a5w3bC4Jm7m1pS0v7G8Q5t7m3pS2q7Kz6T+9C1xA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <!-- Your external stylesheet -->
+  <link rel="stylesheet" href="assets/main.css">
+  <link rel="stylesheet" href="assets/radial-menu.css">
 </head>
 <body>
-  <div class="page-wrapper">
-    <header>
-      <h1>Your Name</h1>
-      <p>Short tagline about what you do</p>
-    </header>
+  <header>
+    <!-- Radial menu -->
+<div class="radial-module">
+  <button class="radial-launch" aria-expanded="false"><span></span></button>
 
-    <section>
-      <h2>About Me</h2>
-      <p>A short paragraph about you — your work, passions, what ties your brands together.</p>
+  <div class="radial-backdrop" hidden></div>
+
+  <div class="wrap">
+	  <a href="https://mymeca.shmake.nz" target="_blank" aria-label="MyMECA Pay Calculator"><div class="rm-bg-1"></div></a>
+	  <a href="https://budget.shmake.nz" target="_blank" aria-label="MyBudget Personal Budget"><div class="rm-bg-2"></div></a>
+	  <a href="https://moto.shmake.nz" target="_blank" aria-label="LEMUSA MOTO"><div class="rm-bg-3"></div></a>
+	  <a href="https://flexifixit.shmake.nz" target="_blank" aria-label="FlexiFixIT"><div class="rm-bg-4"></div></a>
+	  <a href="https://home.shmake.nz" aria-label="SH:MAKE"><div class="rm-bg-5"></div></a>
+	</div>
+	</div>
+  </header>
+
+  <main class="container">
+    <section class="hero">
+	<img src="images/shmake logo.png" alt="SH:MAKE" style="width:50%; height:auto;">
+  <!--    <h1>Clean, simple landing page</h1>
+      <p>Drop in your content here. This template keeps your animated navigation, adds a tidy hero area, feature cards, and a quick contact form so you can get live right away.</p>
+      <a class="cta-btn" href="#contact">Get in touch</a>
     </section>
 
-<section>
-  <h2>My Brands</h2>
-  <div class="brands">
-    <a href="https://your-shmake-link.com" target="_blank">
-      <img src="images/shmake.png" alt="SHMAKE">
-    </a>
-    <a href="https://your-lemusa-link.com" target="_blank">
-      <img src="images/lemusamoto.png" alt="Lemusa Moto">
-    </a>
-    <a href="https://your-mymeca-link.com" target="_blank">
-      <img src="images/mymeca.png" alt="myMECA">
-    </a>
-    <a href="https://your-flexifixit-link.com" target="_blank">
-      <img src="images/flexifixit.png" alt="Flex iFixIT">
-    </a>
-  </div>
-</section>
+    <section class="section">
+      <div class="features">
+        <article class="card">
+          <h3>What you do</h3>
+          <p>Short description about your core service or product. Replace with real copy.</p>
+        </article>
+        <article class="card">
+          <h3>Why it helps</h3>
+          <p>Explain the value in a sentence or two. Keep it concrete and concise.</p>
+        </article>
+        <article class="card">
+          <h3>Who it’s for</h3>
+          <p>Call out your audience so visitors quickly know they’re in the right place.</p>
+        </article>
+      </div>
+    </section>
 
-    <footer>
-      <p>Connect with me: 
-        <a href="mailto:you@example.com">Email</a> | 
-        <a href="https://linkedin.com/in/yourprofile">LinkedIn</a> | 
-        <a href="https://youtube.com/@yourchannel">YouTube</a>
-      </p>
-    </footer>
-  </div>
+    <section id="contact" class="section">
+      <div class="contact">
+        <h2 style="margin:0 0 12px; font-size: 22px;">Contact</h2>
+
+        <form action="mailto:hello@example.com" method="post" enctype="text/plain">
+          <div class="form-row">
+            <div>
+              <label for="name">Name</label>
+              <input id="name" name="name" type="text" placeholder="Jane Doe" required>
+            </div>
+            <div>
+              <label for="email">Email</label>
+              <input id="email" name="email" type="email" placeholder="jane@example.com" required>
+            </div>
+          </div>
+          <div>
+            <label for="message">Message</label>
+            <textarea id="message" name="message" placeholder="How can we help?" required></textarea>
+          </div>
+          <div class="submit-row">
+            <button class="cta-btn" type="submit">Send</button>
+            <small>No spam. Ever.</small>
+          </div>
+        </form>
+      </div> -->
+    </section>
+  </main>
+
+  <footer class="container">
+    <p>© <span id="year"></span> SH:MAKE</p>
+  </footer>
+
+  <script>
+    // keep the year current
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+<script>
+  (function () {
+    const mod = document.querySelector('.radial-module');
+    if (!mod) return;
+    const btn = mod.querySelector('.radial-launch');
+    const wrap = mod.querySelector('.wrap');
+    const backdrop = mod.querySelector('.radial-backdrop');
+
+    function setOpen(open) {
+      mod.classList.toggle('is-open', open);
+      document.body.classList.toggle('radial-open', open);
+      btn.setAttribute('aria-expanded', String(open));
+      // show/hide backdrop
+      if (open) backdrop.removeAttribute('hidden');
+      else backdrop.setAttribute('hidden', '');
+    }
+
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      setOpen(!mod.classList.contains('is-open'));
+    });
+
+    backdrop.addEventListener('click', () => setOpen(false));
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') setOpen(false);
+    });
+  })();
+</script>
+
 </body>
 </html>
+
