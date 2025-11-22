@@ -1,124 +1,1325 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>SH:MAKE</title>
-  <!-- Fonts & Icons -->
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-1ycn6IcaQQ40/J6MdW8u2VbW/J6CkqbZ8q3Gm5Q5M5Fh+2a5w3bC4Jm7m1pS0v7G8Q5t7m3pS2q7Kz6T+9C1xA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-  <!-- Your external stylesheet -->
-  <link rel="stylesheet" href="assets/main.css">
-  <link rel="stylesheet" href="assets/radial-menu.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Primary Meta Tags -->
+    <title>SHMAKE - Sam Haughey | Operations Manager, Developer & Problem Solver</title>
+    <meta name="title" content="SHMAKE - Sam Haughey | Operations Manager, Developer & Problem Solver">
+    <meta name="description" content="Operations manager, web developer, and maker based in Christchurch, NZ. Building myMECA, TeaBreak, and solving interesting problems across digital and physical domains.">
+    <meta name="keywords" content="operations management, web development, React developer, Christchurch NZ, problem solving, manufacturing, app development, myMECA, portfolio">
+    <meta name="author" content="Sam Haughey">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://shmake.nz/">
+    <meta property="og:title" content="SHMAKE - Sam Haughey | Operations Manager, Developer & Problem Solver">
+    <meta property="og:description" content="Operations manager, web developer, and maker based in Christchurch, NZ. Building myMECA, TeaBreak, and solving interesting problems across digital and physical domains.">
+    <meta property="og:image" content="https://shmake.nz/assets/og-image.jpg">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://shmake.nz/">
+    <meta property="twitter:title" content="SHMAKE - Sam Haughey | Operations Manager, Developer & Problem Solver">
+    <meta property="twitter:description" content="Operations manager, web developer, and maker based in Christchurch, NZ. Building myMECA, TeaBreak, and solving interesting problems across digital and physical domains.">
+    <meta property="twitter:image" content="https://shmake.nz/assets/og-image.jpg">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png">
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://shmake.nz/">
+    
+    <!-- reCAPTCHA -->
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg: #ffffff;
+            --text: #1a1a1a;
+            --text-secondary: #666666;
+            --accent: #2563eb;
+            --card-bg: #f8f9fa;
+            --border: #e5e7eb;
+        }
+
+        [data-theme="dark"] {
+            --bg: #0a0a0a;
+            --text: #ffffff;
+            --text-secondary: #a0a0a0;
+            --accent: #3b82f6;
+            --card-bg: #1a1a1a;
+            --border: #2a2a2a;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            transition: background 0.3s ease, color 0.3s ease;
+            overflow: hidden;
+        }
+
+        .scroll-container {
+            height: 100vh;
+            overflow-y: scroll;
+            scroll-snap-type: y mandatory;
+            scroll-behavior: smooth;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        @media (max-width: 1024px) {
+            .scroll-container {
+                scroll-snap-type: none;
+            }
+        }
+
+        .scroll-section {
+            scroll-snap-align: start;
+            scroll-snap-stop: always;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        /* Header */
+        header {
+            position: fixed;
+            top: 2rem;
+            left: 2rem;
+            right: 2rem;
+            z-index: 100;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-left {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        @media (max-width: 768px) {
+            header {
+                top: 1rem;
+                left: 1rem;
+                right: 1rem;
+                gap: 0.75rem;
+            }
+        }
+
+        .logo {
+            height: 35px;
+            display: block;
+            position: relative;
+        }
+
+        .logo img {
+            height: 100%;
+            width: auto;
+            transition: opacity 0.3s ease;
+        }
+
+        .logo-light {
+            display: none;
+        }
+
+        .logo-dark {
+            display: block;
+        }
+
+        [data-theme="dark"] .logo-light {
+            display: block;
+        }
+
+        [data-theme="dark"] .logo-dark {
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .logo {
+                display: none;
+            }
+            
+            header {
+                gap: 0.75rem;
+            }
+        }
+
+        .menu-toggle {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            padding: 0.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            backdrop-filter: blur(10px);
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            width: 40px;
+            height: 40px;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .menu-toggle:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        [data-theme="dark"] .menu-toggle {
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+        }
+
+        [data-theme="dark"] .menu-toggle:hover {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+        }
+
+        .menu-toggle span {
+            display: block;
+            width: 20px;
+            height: 2px;
+            background: var(--text);
+            border-radius: 2px;
+            transition: all 0.3s ease;
+        }
+
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 300px;
+            height: 100vh;
+            background: var(--bg);
+            border-right: 1px solid var(--border);
+            padding: 6rem 2rem 2rem;
+            transform: translateX(-100%);
+            transition: transform 0.3s ease;
+            z-index: 99;
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .nav.active {
+            transform: translateX(0);
+        }
+
+        .nav a {
+            color: var(--text);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 1.2rem;
+            transition: color 0.2s ease;
+            padding: 0.5rem 0;
+        }
+
+        .nav a:hover {
+            color: var(--accent);
+        }
+
+        .nav-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            z-index: 98;
+        }
+
+        .nav-overlay.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        @media (max-width: 768px) {
+            .menu-toggle {
+                width: 36px;
+                height: 36px;
+            }
+
+            .menu-toggle span {
+                width: 18px;
+            }
+
+            .nav {
+                width: 250px;
+            }
+        }
+
+        .theme-toggle {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            padding: 0.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            color: var(--text);
+            font-size: 1.2rem;
+            transition: all 0.2s ease;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .theme-toggle:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        [data-theme="dark"] .theme-toggle {
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+        }
+
+        [data-theme="dark"] .theme-toggle:hover {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+        }
+
+        @media (max-width: 768px) {
+            .theme-toggle {
+                width: 36px;
+                height: 36px;
+                font-size: 1.1rem;
+            }
+        }
+
+        /* Hero Cards Section */
+        .hero-cards {
+            height: 100vh;
+            width: 100%;
+            display: flex;
+            overflow: hidden;
+            min-height: 100vh;
+        }
+
+        .card-container {
+            display: flex;
+            width: 100%;
+            height: 100%;
+        }
+
+        .project-card {
+            flex: 1;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+            transition: flex 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .project-card:hover {
+            flex: 3;
+        }
+
+        .card-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-size: cover;
+            background-position: center;
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .project-card:hover .card-background {
+            transform: scale(1.05);
+        }
+
+        .card-content {
+            position: relative;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+            color: white;
+            text-align: center;
+        }
+
+        .project-title {
+            font-size: clamp(1.5rem, 3vw, 3rem);
+            font-weight: 700;
+            margin: 0;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            transition: font-size 0.6s ease;
+            writing-mode: horizontal-tb;
+        }
+
+        .project-card:not(:hover) .project-title {
+            writing-mode: vertical-rl;
+            text-orientation: mixed;
+            font-size: clamp(1.2rem, 2vw, 2rem);
+        }
+
+        .project-logo {
+            opacity: 0;
+            max-height: 0;
+            overflow: hidden;
+            transition: opacity 0.4s ease, max-height 0.4s ease;
+            margin-bottom: 1rem;
+        }
+
+        .project-logo img {
+            width: 100%;
+            max-height: 100px;
+            max-width: 300px;
+            display: block;
+            margin: 0 auto;
+        }
+
+        .project-card:hover .project-logo {
+            opacity: 1;
+            max-height: 100px;
+        }
+
+        .project-card:hover .project-title {
+            display: none;
+        }
+
+        .project-details {
+            opacity: 0;
+            max-height: 0;
+            overflow: hidden;
+            transition: opacity 0.4s ease, max-height 0.4s ease;
+            margin-top: 1.5rem;
+            max-width: 500px;
+        }
+
+        .project-card:hover .project-details {
+            opacity: 1;
+            max-height: 600px;
+        }
+
+        .project-details p {
+            font-size: 1rem;
+            line-height: 1.5;
+            margin-bottom: 0.75rem;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.7);
+        }
+
+        .project-screenshot {
+            width: 100%;
+            max-width: 400px;
+            margin: 0 auto 1rem;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+            border: 2px solid rgba(255,255,255,0.2);
+            opacity: 0;
+            max-height: 0;
+            transition: opacity 0.4s ease, max-height 0.4s ease;
+        }
+
+        .project-card:hover .project-screenshot {
+            opacity: 1;
+            max-height: 250px;
+        }
+
+        .project-screenshot img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .project-link {
+            display: inline-block;
+            padding: 0.75rem 2rem;
+            background: rgba(255, 255, 255, 0.9);
+            color: #1a1a1a;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            margin-top: 0.5rem;
+        }
+
+        .project-link:hover {
+            background: white;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+        }
+
+        /* Intro Section (name and tagline after cards) */
+        .intro {
+            min-height: 100vh;
+            padding: 4rem 2rem;
+            text-align: center;
+            background: var(--bg);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .intro h1 {
+            font-size: clamp(2.5rem, 6vw, 4rem);
+            font-weight: 700;
+            margin-bottom: 1rem;
+            letter-spacing: -0.02em;
+        }
+
+        .intro .subtitle {
+            font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+            color: var(--text-secondary);
+            margin-bottom: 0.75rem;
+            font-weight: 400;
+        }
+
+        .intro .tagline {
+            font-size: clamp(0.95rem, 2vw, 1.1rem);
+            color: var(--text-secondary);
+            font-style: italic;
+        }
+
+        .intro-visuals {
+            margin-top: 4rem;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            max-width: 1000px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        @media (max-width: 768px) {
+            .intro {
+                padding: 2rem 1rem;
+                min-height: auto;
+            }
+            
+            .intro-visuals {
+                margin-top: 2rem;
+                gap: 1rem;
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .visual-item {
+            position: relative;
+            aspect-ratio: 4/3;
+            border-radius: 12px;
+            overflow: hidden;
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+        }
+
+        .visual-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Mobile: Stack vertically with touch swipe */
+        @media (max-width: 1024px) {
+            .hero-cards {
+                height: auto;
+                min-height: 100vh;
+            }
+
+            .card-container {
+                flex-direction: column;
+            }
+
+            .project-card {
+                min-height: 100vh;
+                flex: none;
+            }
+
+            .project-card:hover {
+                flex: none;
+            }
+
+            .project-card:not(:hover) .project-title {
+                writing-mode: horizontal-tb;
+                font-size: clamp(2rem, 5vw, 3rem);
+            }
+
+            .project-logo {
+                opacity: 1;
+                max-height: none;
+            }
+
+            .project-card .project-title {
+                display: none;
+            }
+
+            .project-details {
+                opacity: 1;
+                max-height: none;
+                margin-top: 2rem;
+            }
+
+            .project-screenshot {
+                opacity: 1;
+                max-height: none;
+            }
+
+            .intro {
+                padding: 4rem 2rem;
+            }
+        }
+
+        /* Story Section */
+        .story {
+            max-width: 1000px;
+            margin: 4rem auto;
+            padding: 2rem;
+        }
+
+        @media (max-width: 768px) {
+            .story {
+                margin: 2rem auto;
+                padding: 1rem;
+            }
+        }
+
+        .story h2 {
+            font-size: clamp(1.8rem, 4vw, 2.5rem);
+            margin-bottom: 2rem;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .story p {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+        }
+
+        /* Skills Section */
+        .skills {
+            max-width: 1000px;
+            margin: 3rem auto;
+            padding: 2rem;
+        }
+
+        @media (max-width: 768px) {
+            .skills {
+                margin: 2rem auto;
+                padding: 1rem;
+            }
+        }
+
+        .skills h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
+            color: var(--text);
+        }
+
+        .skills p {
+            font-size: 1.05rem;
+            line-height: 1.8;
+            color: var(--text-secondary);
+            text-align: center;
+        }
+
+        .skill-categories {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .skill-category {
+            text-align: left;
+        }
+
+        .skill-category h4 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+            color: var(--accent);
+        }
+
+        .skill-category ul {
+            list-style: none;
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        .skill-category li {
+            margin-bottom: 0.5rem;
+            padding-left: 1rem;
+            position: relative;
+        }
+
+        .skill-category li::before {
+            content: '•';
+            position: absolute;
+            left: 0;
+            color: var(--accent);
+        }
+
+        /* Contact Section */
+        .contact {
+            text-align: center;
+            padding: 4rem 2rem;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .contact h2 {
+            font-size: clamp(1.8rem, 4vw, 2.5rem);
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        .contact p {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+        }
+
+        .contact-form {
+            max-width: 500px;
+            margin: 0 auto 3rem;
+            text-align: left;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--text);
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            background: var(--card-bg);
+            color: var(--text);
+            font-family: inherit;
+            font-size: 1rem;
+            transition: border-color 0.2s ease;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .form-submit {
+            width: 100%;
+            padding: 1rem;
+            background: var(--accent);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .form-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(37, 99, 235, 0.3);
+        }
+
+        .form-status {
+            margin-top: 1rem;
+            padding: 1rem;
+            border-radius: 8px;
+            text-align: center;
+            display: none;
+            font-weight: 500;
+        }
+
+        .form-status.success {
+            display: block;
+            background: #dcfce7;
+            color: #166534;
+            border: 1px solid #bbf7d0;
+        }
+
+        .form-status.error {
+            display: block;
+            background: #fee2e2;
+            color: #991b1b;
+            border: 1px solid #fecaca;
+        }
+
+        [data-theme="dark"] .form-status.success {
+            background: #14532d;
+            color: #bbf7d0;
+            border-color: #166534;
+        }
+
+        [data-theme="dark"] .form-status.error {
+            background: #7f1d1d;
+            color: #fecaca;
+            border-color: #991b1b;
+        }
+
+        /* reCAPTCHA styling */
+        .g-recaptcha {
+            display: flex;
+            justify-content: center;
+        }
+
+        [data-theme="dark"] .g-recaptcha > div {
+            filter: invert(1) hue-rotate(180deg);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            align-items: center;
+            margin-top: 2rem;
+        }
+
+        .social-icon {
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 50%;
+            color: var(--text);
+            text-decoration: none;
+            font-size: 1.5rem;
+            transition: all 0.2s ease;
+        }
+
+        .social-icon:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+            border-color: var(--accent);
+        }
+
+        [data-theme="dark"] .social-icon:hover {
+            box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+        }
+
+        .divider {
+            margin: 2rem auto;
+            width: 100px;
+            height: 1px;
+            background: var(--border);
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 1rem 2rem;
+            background: var(--accent);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 500;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(37, 99, 235, 0.3);
+        }
+
+        .btn-secondary {
+            background: var(--card-bg);
+            color: var(--text);
+            border: 1px solid var(--border);
+        }
+
+        .btn-secondary:hover {
+            background: var(--border);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+        }
+
+		.project-links {
+			display: flex;
+			gap: 12px;
+			flex-wrap: wrap;
+		}
+
+		.project-links .project-link {
+			flex: 1;
+			min-width: 150px;
+			text-align: center;
+			justify-content: center;
+		}
+		
+		.youtube-link {
+			display: inline-flex;
+			align-items: center;
+			gap: 8px;
+			background: #FF0000;
+			color: white !important;
+			padding: 10px 20px;
+			border-radius: 8px;
+			text-decoration: none;
+			font-weight: 500;
+			transition: background 0.3s ease;
+		}
+
+		.youtube-link:hover {
+			background: #CC0000;
+		}
+
+		.youtube-link svg {
+			flex-shrink: 0;
+		}
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 3rem 2rem;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            border-top: 1px solid var(--border);
+        }
+
+        /* Animations */
+        .fade-in {
+            animation: fadeInUp 0.6s ease forwards;
+            opacity: 0;
+        }
+
+        .fade-in:nth-child(1) { animation-delay: 0.1s; }
+        .fade-in:nth-child(2) { animation-delay: 0.2s; }
+        .fade-in:nth-child(3) { animation-delay: 0.3s; }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .skill-categories {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+            
+            .contact {
+                padding: 2rem 1rem;
+            }
+        }
+
+        @media (min-width: 769px) and (max-width: 1024px) {
+            .skill-categories {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
 </head>
 <body>
-  <header>
-    <!-- Radial menu -->
-<div class="radial-module">
-  <button class="radial-launch" aria-expanded="false"><span></span></button>
+    <header id="header">
+        <div class="header-left">
+            <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <a href="#" class="logo">
+                <img src="assets/shmake-logo-light.png" alt="SHMAKE - Sam Haughey" class="logo-light">
+                <img src="assets/shmake-logo-dark.png" alt="SHMAKE - Sam Haughey" class="logo-dark">
+            </a>
+        </div>
+        <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+            <span id="themeIcon">🌙</span>
+        </button>
+    </header>
 
-  <div class="radial-backdrop" hidden></div>
+    <div class="nav-overlay" id="navOverlay"></div>
+    <nav>
+        <ul class="nav" id="nav">
+            <li><a href="#projects">Projects</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </nav>
 
-  <div class="wrap">
-	  <a href="https://mymeca.shmake.nz" target="_blank" aria-label="MyMECA Pay Calculator"><div class="rm-bg-1"></div></a>
-	  <a href="https://budget.shmake.nz" target="_blank" aria-label="MyBudget Personal Budget"><div class="rm-bg-2"></div></a>
-	  <a href="https://moto.shmake.nz" target="_blank" aria-label="LEMUSA MOTO"><div class="rm-bg-3"></div></a>
-	  <a href="https://flexifixit.shmake.nz" target="_blank" aria-label="FlexiFixIT"><div class="rm-bg-4"></div></a>
-	  <a href="https://home.shmake.nz" aria-label="SH:MAKE"><div class="rm-bg-5"></div></a>
-	</div>
-	</div>
-  </header>
+    <div class="scroll-container">
+        <main>
+            <!-- Hero Section with Expanding Cards -->
+            <section class="hero-cards scroll-section" id="projects">
+            <div class="card-container">
+                <div class="project-card" data-project="mymeca">
+                    <div class="card-background" style="background-image: linear-gradient(rgba(36, 172, 221, 0.85), rgba(36, 172, 221, 0.75)), url('https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=800&q=80');"></div>
+                    <div class="card-content">
+                        <h2 class="project-title">myMECA</h2>
+                        <div class="project-logo">
+                            <img src="assets/logo-mymeca.png" alt="myMECA logo">
+                        </div>
+                        <div class="project-details">
+                            <div class="project-screenshot">
+                                <img src="assets/splash-mymeca.png" alt="myMECA app screenshot">
+                            </div>
+                            <p>Got curious about healthcare payroll. Built an app. 250+ nurses use it daily to calculate their pay under the NZNO-HNZ collective agreement.</p>
+                            <a href="https://mymeca.nz" class="project-link" target="_blank" rel="noopener">Visit myMECA →</a>
+                        </div>
+                    </div>
+                </div>
 
-  <main class="container">
-    <section class="hero">
-	<img src="images/shmake logo.png" alt="SH:MAKE" style="width:50%; height:auto;">
-  <!--    <h1>Clean, simple landing page</h1>
-      <p>Drop in your content here. This template keeps your animated navigation, adds a tidy hero area, feature cards, and a quick contact form so you can get live right away.</p>
-      <a class="cta-btn" href="#contact">Get in touch</a>
-    </section>
+                <div class="project-card" data-project="teabreak">
+                    <div class="card-background" style="background-image: linear-gradient(rgba(300, 300, 300, 0.85), rgba(100, 100, 100, 0.75)), url('https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=800&q=80');"></div>
+                    <div class="card-content">
+                        <h2 class="project-title">TeaBreak</h2>
+                        <div class="project-logo">
+                            <img src="assets/logo-teabreak.png" alt="TeaBreak logo">
+                        </div>
+                        <div class="project-details">
+                            <div class="project-screenshot">
+                                <img src="assets/splash-teabreak.png" alt="TeaBreak app screenshot">
+                            </div>
+                            <p>Business operations app in development. A simple solution for the pesky admin tasks that small business owners don't have time to think about.</p>
+                            <a href="#" class="project-link">Coming Soon</a>
+                        </div>
+                    </div>
+                </div>
 
-    <section class="section">
-      <div class="features">
-        <article class="card">
-          <h3>What you do</h3>
-          <p>Short description about your core service or product. Replace with real copy.</p>
-        </article>
-        <article class="card">
-          <h3>Why it helps</h3>
-          <p>Explain the value in a sentence or two. Keep it concrete and concise.</p>
-        </article>
-        <article class="card">
-          <h3>Who it’s for</h3>
-          <p>Call out your audience so visitors quickly know they’re in the right place.</p>
-        </article>
-      </div>
-    </section>
+				<div class="project-card" data-project="lemusamoto">
+					<div class="card-background" style="background-image: linear-gradient(rgba(203, 193, 158, 0.85), rgba(203, 193, 158, 0.75)), url('assets/bg-moto.jpg');"></div>
+					<div class="card-content">
+						<h2 class="project-title">LEMUSA MOTO</h2>
+						<div class="project-logo">
+							<img src="assets/logo-moto.png" alt="LEMUSAMOTO logo">
+						</div>
+						<div class="project-details">
+							<div class="project-screenshot">
+								<img src="assets/splash-moto.png" alt="LEMUSAMOTO video screenshot">
+							</div>
+							<p>Ride motorcycles through NZ backcountry. Film the adventures. Share the journey. Not professionally, just because it's fun.</p>
+							<div class="project-links">
+								<a href="https://moto.shmake.nz" class="project-link" target="_blank" rel="noopener">
+									Visit Site →
+								</a>
+								<a href="https://www.youtube.com/@LEMUSAMOTO" class="project-link youtube-link" target="_blank" rel="noopener">
+									<svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+										<path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+									</svg>
+									Watch on YouTube
+								</a>
+							</div>
+						</div>
+					</div>
+				</div>
 
-    <section id="contact" class="section">
-      <div class="contact">
-        <h2 style="margin:0 0 12px; font-size: 22px;">Contact</h2>
-
-        <form action="mailto:hello@example.com" method="post" enctype="text/plain">
-          <div class="form-row">
-            <div>
-              <label for="name">Name</label>
-              <input id="name" name="name" type="text" placeholder="Jane Doe" required>
+                <div class="project-card" data-project="shmake">
+                    <div class="card-background" style="background-image: linear-gradient(rgba(253, 135, 1, 0.85), rgba(253, 135, 1, 0.75)), url('https://images.unsplash.com/photo-1581291518857-4e27b48ff24e?w=800&q=80');"></div>
+                    <div class="card-content">
+                        <h2 class="project-title">SHMAKE</h2>
+                        <div class="project-logo">
+                            <img src="assets/shmake-logo-dark.png" alt="SHMAKE logo">
+                        </div>
+                        <div class="project-details">
+                            <div class="project-screenshot">
+                                <img src="https://images.unsplash.com/photo-1530124566582-a618bc2615dc?w=500&h=400&fit=crop&q=80" alt="SHMAKE projects screenshot">
+                            </div>
+                            <p>Apps. Automation. Adobe tools. SketchUp models. Home servers. Decks. 3D prints. Excel nightmares. Whatever seems interesting.</p>
+                            <a href="#" class="project-link">Explore Projects →</a>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div>
-              <label for="email">Email</label>
-              <input id="email" name="email" type="email" placeholder="jane@example.com" required>
+        </section>
+
+        <!-- Name and Tagline -->
+        <section class="intro scroll-section" id="about">
+            <div class="container">
+                <h1>Sam Haughey</h1>
+                <p class="subtitle">I get curious, build things, then move on to the next problem.</p>
+                <p class="tagline">Expert at becoming almost an expert</p>
+                
+                <div class="intro-visuals">
+                    <div class="visual-item">
+                        <img src="assets/about-arcade.png" alt="Arcade">
+                    </div>
+                    <div class="visual-item">
+                        <img src="assets/about-family.png" alt="Family">
+                    </div>
+                    <div class="visual-item">
+                        <img src="assets/about-deck.png" alt="Deck">
+                    </div>
+                    <div class="visual-item">
+                        <img src="assets/about-cad.png" alt="CAD">
+                    </div>
+                    <div class="visual-item">
+                        <img src="assets/about-server.png" alt="Sever">
+                    </div>
+                    <div class="visual-item">
+                        <img src="assets/about-factory.png" alt="Factory">
+                    </div>
+                </div>
             </div>
-          </div>
-          <div>
-            <label for="message">Message</label>
-            <textarea id="message" name="message" placeholder="How can we help?" required></textarea>
-          </div>
-          <div class="submit-row">
-            <button class="cta-btn" type="submit">Send</button>
-            <small>No spam. Ever.</small>
-          </div>
-        </form>
-      </div> -->
-    </section>
-  </main>
+        </section>
 
-  <footer class="container">
-    <p>© <span id="year"></span> SH:MAKE</p>
-  </footer>
+        <section class="story scroll-section">
+            <div class="container">
+                <h2>The Story</h2>
+				<p>Based in Christchurch with my wife and three daughters, I’ve spent the last 18 years working everywhere from the factory floor to construction sites, then into production scheduling and now operations management — looking after the day-to-day of a manufacturing company that ships product around the world. Along the way I’ve dabbled in freelance graphic, web, and CAD design. A normal week for me can go from DIY on the tools to coding to spreadsheets to adventure filming — sometimes all in one day.</p> 
+				<p>I get obsessed with problems, binge-learn whatever I need to fix them, then wander off to the next curiosity. The upside is the knowledge sticks. I’m as comfortable with code as I am with power tools, Illustrator as I am with Excel, SketchUp as I am with home automation. I write specs, I build things, and I project-manage everything from costing to completion.</p> 
+				<p>For the last 13 years I’ve been the person who solves the operational and technical headaches at Ecoglo International while building side projects that keep my brain busy. I get energised by new, odd, or tricky problems — the ones where the solution isn’t obvious yet. If that’s what you’re working on, let’s chat.</p>
+            </div>
+        </section>
 
-  <script>
-    // keep the year current
-    document.getElementById('year').textContent = new Date().getFullYear();
-  </script>
-<script>
-  (function () {
-    const mod = document.querySelector('.radial-module');
-    if (!mod) return;
-    const btn = mod.querySelector('.radial-launch');
-    const wrap = mod.querySelector('.wrap');
-    const backdrop = mod.querySelector('.radial-backdrop');
+        <section class="skills scroll-section">
+            <div class="container">
+				 <h3>Things I've gotten curious about over the years</h3>
+				<div class="skill-categories">
+					<div class="skill-category">
+						<h4>Digital</h4>
+						<ul>
+							<li>Web development</li>
+							<li>React & Supabase</li>
+							<li>Adobe Creative Suite</li>
+							<li>Home automation</li>
+							<li>Server & network management</li>
+						</ul>
+					</div>
+					<div class="skill-category">
+						<h4>Physical</h4>
+						<ul>
+							<li>SketchUp & CAD</li>
+							<li>3D printing & CNC</li>
+							<li>Welding & light fabrication</li>
+							<li>Construction & DIY</li>
+							<li>Digital printing & signage workflows</li>
+						</ul>
+					</div>
+					<div class="skill-category">
+						<h4>Business</h4>
+						<ul>
+							<li>Operations management</li>
+							<li>Process optimisation</li>
+							<li>Costing, pricing & forecasting</li>
+							<li>Procurement & logistics</li>
+							<li>Quality systems (ISO 9001 etc.)</li>
+						</ul>
+					</div>
+					<div class="skill-category">
+						<h4>Creative</h4>
+						<ul>
+							<li>Video editing</li>
+							<li>Custom workshop builds & tinkering</li>
+							<li>Product mock-ups & visual prototyping</li>
+							<li>Branding & layout design</li>
+						</ul>
+					</div>
+                </div>
+            </div>
+        </section>
 
-    function setOpen(open) {
-      mod.classList.toggle('is-open', open);
-      document.body.classList.toggle('radial-open', open);
-      btn.setAttribute('aria-expanded', String(open));
-      // show/hide backdrop
-      if (open) backdrop.removeAttribute('hidden');
-      else backdrop.setAttribute('hidden', '');
-    }
+        <section class="contact scroll-section" id="contact">
+            <div class="container">
+                <h2>Building something interesting?</h2>
+                <p>Always keen to hear about novel problems and interesting challenges.</p>
+                
+                <form class="contact-form" id="contactForm" action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
+                    <div class="form-group">
+                        <label for="name">Name</label>
+                        <input type="text" id="name" name="name" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="phone">Phone (optional)</label>
+                        <input type="tel" id="phone" name="phone">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="message">Message</label>
+                        <textarea id="message" name="message" required></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <div class="g-recaptcha" data-sitekey="YOUR_RECAPTCHA_SITE_KEY" data-theme="light"></div>
+                    </div>
+                    
+                    <button type="submit" class="form-submit">Send Message</button>
+                    <div id="formStatus" class="form-status"></div>
+                </form>
 
-    btn.addEventListener('click', (e) => {
-      e.preventDefault();
-      setOpen(!mod.classList.contains('is-open'));
-    });
+                <div class="divider"></div>
 
-    backdrop.addEventListener('click', () => setOpen(false));
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') setOpen(false);
-    });
-  })();
-</script>
+                <div class="social-links">
+                    <a href="https://www.linkedin.com/in/samhaughey/" class="social-icon" target="_blank" rel="noopener" aria-label="LinkedIn" title="LinkedIn">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+                        </svg>
+                    </a>
+                    <a href="https://wa.me/64274766268" class="social-icon" target="_blank" rel="noopener" aria-label="WhatsApp" title="WhatsApp">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </section>
 
+        <footer>
+            <div class="container">
+                <p>© 2025 Sam Haughey. All rights reserved.</p>
+            </div>
+        </footer>
+    </main>
+    </div>
+
+    <script>
+        // Theme toggle
+        const themeToggle = document.getElementById('themeToggle');
+        const themeIcon = document.getElementById('themeIcon');
+        const html = document.documentElement;
+
+        // Check for saved theme preference or default to light
+        const currentTheme = localStorage.getItem('theme') || 'light';
+        html.setAttribute('data-theme', currentTheme);
+        themeIcon.textContent = currentTheme === 'dark' ? '☀️' : '🌙';
+
+        themeToggle.addEventListener('click', () => {
+            const theme = html.getAttribute('data-theme');
+            const newTheme = theme === 'light' ? 'dark' : 'light';
+            
+            html.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            themeIcon.textContent = newTheme === 'dark' ? '☀️' : '🌙';
+            
+            // Update reCAPTCHA theme
+            const recaptcha = document.querySelector('.g-recaptcha');
+            if (recaptcha) {
+                recaptcha.setAttribute('data-theme', newTheme === 'dark' ? 'dark' : 'light');
+            }
+        });
+
+        // Menu toggle
+        const menuToggle = document.getElementById('menuToggle');
+        const nav = document.getElementById('nav');
+        const navOverlay = document.getElementById('navOverlay');
+
+        menuToggle.addEventListener('click', () => {
+            nav.classList.toggle('active');
+            navOverlay.classList.toggle('active');
+        });
+
+        navOverlay.addEventListener('click', () => {
+            nav.classList.remove('active');
+            navOverlay.classList.remove('active');
+        });
+
+        // Close menu when clicking nav links
+        document.querySelectorAll('.nav a').forEach(link => {
+            link.addEventListener('click', () => {
+                nav.classList.remove('active');
+                navOverlay.classList.remove('active');
+            });
+        });
+
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+
+        // Intersection Observer for scroll animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Observe story and skills sections
+        document.querySelectorAll('.story, .skills, .contact').forEach(section => {
+            section.style.opacity = '0';
+            section.style.transform = 'translateY(30px)';
+            section.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(section);
+        });
+
+        // Contact form submission
+        const contactForm = document.getElementById('contactForm');
+        const formStatus = document.getElementById('formStatus');
+
+        if (contactForm) {
+            contactForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                
+                // Check reCAPTCHA
+                const recaptchaResponse = grecaptcha.getResponse();
+                if (!recaptchaResponse) {
+                    formStatus.textContent = 'Please complete the reCAPTCHA verification.';
+                    formStatus.className = 'form-status error';
+                    return;
+                }
+                
+                // Get form data
+                const formData = new FormData(contactForm);
+                
+                try {
+                    const response = await fetch(contactForm.action, {
+                        method: 'POST',
+                        body: formData,
+                        headers: {
+                            'Accept': 'application/json'
+                        }
+                    });
+                    
+                    if (response.ok) {
+                        formStatus.textContent = 'Thanks for your message! I\'ll get back to you soon.';
+                        formStatus.className = 'form-status success';
+                        contactForm.reset();
+                        grecaptcha.reset();
+                    } else {
+                        throw new Error('Form submission failed');
+                    }
+                } catch (error) {
+                    formStatus.textContent = 'Oops! There was a problem sending your message. Please try again.';
+                    formStatus.className = 'form-status error';
+                }
+            });
+        }
+    </script>
 </body>
 </html>
-
