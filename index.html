@@ -1279,48 +1279,51 @@
             observer.observe(section);
         });
 
-        // Contact form submission
-        const contactForm = document.getElementById('contactForm');
-        const formStatus = document.getElementById('formStatus');
+// Contact form submission
+const contactForm = document.getElementById('contactForm');
+const formStatus = document.getElementById('formStatus');
 
-        if (contactForm) {
-            contactForm.addEventListener('submit', async (e) => {
-                e.preventDefault();
-                
-                // Check reCAPTCHA
-                const recaptchaResponse = grecaptcha.getResponse();
-                if (!recaptchaResponse) {
-                    formStatus.textContent = 'Please complete the reCAPTCHA verification.';
-                    formStatus.className = 'form-status error';
-                    return;
-                }
-                
-                // Get form data
-                const formData = new FormData(contactForm);
-                
-                try {
-                    const response = await fetch(contactForm.action, {
-                        method: 'POST',
-                        body: formData,
-                        headers: {
-                            'Accept': 'application/json'
-                        }
-                    });
-                    
-                    if (response.ok) {
-                        formStatus.textContent = 'Thanks for your message! I\'ll get back to you soon.';
-                        formStatus.className = 'form-status success';
-                        contactForm.reset();
-                        grecaptcha.reset();
-                    } else {
-                        throw new Error('Form submission failed');
-                    }
-                } catch (error) {
-                    formStatus.textContent = 'Oops! There was a problem sending your message. Please try again.';
-                    formStatus.className = 'form-status error';
+if (contactForm) {
+    contactForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        // Check reCAPTCHA
+        const recaptchaResponse = grecaptcha.getResponse();
+        if (!recaptchaResponse) {
+            formStatus.textContent = 'Please complete the reCAPTCHA verification.';
+            formStatus.className = 'form-status error';
+            return;
+        }
+        
+        // Get form data
+        const formData = new FormData(contactForm);
+        formData.append('g-recaptcha-response', recaptchaResponse);
+        
+        try {
+            const response = await fetch(contactForm.action, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'Accept': 'application/json'
                 }
             });
+            
+            if (response.ok) {
+                formStatus.textContent = 'Thanks for your message! I\'ll get back to you soon.';
+                formStatus.className = 'form-status success';
+                contactForm.reset();
+                grecaptcha.reset();
+            } else {
+                const data = await response.json();
+                throw new Error(data.error || 'Form submission failed');
+            }
+        } catch (error) {
+            console.error('Form error:', error);
+            formStatus.textContent = 'Oops! There was a problem sending your message. Please try again.';
+            formStatus.className = 'form-status error';
         }
+    });
+}
     </script>
 </body>
 </html>
