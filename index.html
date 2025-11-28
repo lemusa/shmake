@@ -789,6 +789,227 @@
             border-color: #991b1b;
         }
 
+        /* Projects Gallery Overlay */
+        .projects-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 1000;
+            display: none;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .projects-overlay.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        .projects-modal {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            padding: 2rem;
+            overflow: hidden;
+        }
+
+        .projects-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .projects-header h2 {
+            color: white;
+            font-size: 2rem;
+            margin: 0;
+        }
+
+        .close-overlay {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 1.5rem;
+            transition: all 0.2s ease;
+        }
+
+        .close-overlay:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: scale(1.1);
+        }
+
+        .projects-gallery {
+            flex: 1;
+            overflow-y: auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            padding: 1rem;
+            align-content: start;
+        }
+
+        @media (max-width: 768px) {
+            .projects-gallery {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+                gap: 1rem;
+            }
+        }
+
+        .gallery-item {
+            position: relative;
+            aspect-ratio: 4/3;
+            border-radius: 12px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .gallery-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.05);
+        }
+
+        .gallery-item-caption {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+            color: white;
+            padding: 1rem;
+            font-size: 0.9rem;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .gallery-item:hover .gallery-item-caption {
+            opacity: 1;
+        }
+
+        /* Image Lightbox */
+        .lightbox {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 1001;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        .lightbox.active {
+            display: flex;
+        }
+
+        .lightbox-content {
+            max-width: 90vw;
+            max-height: 90vh;
+            position: relative;
+        }
+
+        .lightbox-content img {
+            max-width: 100%;
+            max-height: 90vh;
+            object-fit: contain;
+            border-radius: 8px;
+        }
+
+        .lightbox-close {
+            position: absolute;
+            top: -50px;
+            right: 0;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 1.5rem;
+            transition: all 0.2s ease;
+        }
+
+        .lightbox-close:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .lightbox-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 1.5rem;
+            transition: all 0.2s ease;
+        }
+
+        .lightbox-nav:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .lightbox-prev {
+            left: -70px;
+        }
+
+        .lightbox-next {
+            right: -70px;
+        }
+
+        @media (max-width: 768px) {
+            .lightbox-nav {
+                width: 40px;
+                height: 40px;
+            }
+            
+            .lightbox-prev {
+                left: 10px;
+            }
+            
+            .lightbox-next {
+                right: 10px;
+            }
+        }
+
         /* reCAPTCHA styling */
         .g-recaptcha {
             display: flex;
@@ -938,6 +1159,14 @@
         }
     </style>
 </head>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-SQ07S188GB"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-SQ07S188GB');
+</script>
 <body>
     <header id="header">
         <div class="header-left">
@@ -982,7 +1211,7 @@
                                 <img src="https://images.unsplash.com/photo-1530124566582-a618bc2615dc?w=500&h=400&fit=crop&q=80" alt="SHMAKE projects screenshot">
                             </div>
                             <p>Apps. Automation. Adobe tools. SketchUp models. Home servers. Decks. 3D prints. Excel nightmares. Whatever seems interesting.</p>
-                            <a href="#" class="project-link">Explore Projects →</a>
+                            <a href="#" class="project-link" id="exploreProjectsBtn">Explore Projects →</a>
                         </div>
                     </div>
                 </div>   
@@ -1196,6 +1425,29 @@
     </main>
     </div>
 
+    <!-- Projects Gallery Overlay -->
+    <div class="projects-overlay" id="projectsOverlay">
+        <div class="projects-modal">
+            <div class="projects-header">
+                <h2>SHMAKE Projects</h2>
+                <button class="close-overlay" id="closeProjectsOverlay" aria-label="Close gallery">×</button>
+            </div>
+            <div class="projects-gallery" id="projectsGallery">
+                <!-- Images will be loaded dynamically from the projects folder -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Lightbox for full-size images -->
+    <div class="lightbox" id="lightbox">
+        <div class="lightbox-content">
+            <button class="lightbox-close" id="closeLightbox" aria-label="Close">×</button>
+            <button class="lightbox-nav lightbox-prev" id="lightboxPrev" aria-label="Previous">‹</button>
+            <img src="" alt="" id="lightboxImage">
+            <button class="lightbox-nav lightbox-next" id="lightboxNext" aria-label="Next">›</button>
+        </div>
+    </div>
+
     <script>
         // Theme toggle
         const themeToggle = document.getElementById('themeToggle');
@@ -1324,6 +1576,172 @@ if (contactForm) {
         }
     });
 }
+
+// Projects Gallery Overlay
+const exploreProjectsBtn = document.getElementById('exploreProjectsBtn');
+const projectsOverlay = document.getElementById('projectsOverlay');
+const closeProjectsOverlay = document.getElementById('closeProjectsOverlay');
+const projectsGallery = document.getElementById('projectsGallery');
+
+// Lightbox
+const lightbox = document.getElementById('lightbox');
+const lightboxImage = document.getElementById('lightboxImage');
+const closeLightbox = document.getElementById('closeLightbox');
+const lightboxPrev = document.getElementById('lightboxPrev');
+const lightboxNext = document.getElementById('lightboxNext');
+
+let currentImageIndex = 0;
+let galleryImages = [];
+
+// List of images in the projects folder (you'll need to update this array with your actual image filenames)
+// Or we can load them dynamically if you have a way to list directory contents
+const projectImages = [
+    'projects/2.1 Set Promo.jpg',
+    'projects/41.jpg',
+    'projects/20140607_093851.jpg',
+    'projects/20170427_092858.jpg',
+    'projects/20170528_164834.jpg',
+    'projects/20170812_160859.jpg',
+    'projects/20170826_221505.jpg',
+    'projects/20170930_122040.jpg',
+    'projects/20180106_214832.jpg',
+    'projects/20180330_120835.jpg',
+    'projects/20181101_170219.jpg',
+    'projects/20190406_225433.jpg',
+    'projects/20190507_194904.jpg',
+    'projects/20190517_223621.jpg',
+    'projects/20191109_173044.jpg',
+    'projects/20191125_220511.jpg',
+    'projects/20201224_113604.jpg',
+    'projects/20090329185310.jpg',
+    'projects/20091126171018.jpg',
+    'projects/demo1.jpg',
+    'projects/demo2.jpg',
+    'projects/demo3.jpg',
+    'projects/demo4.jpg',
+    'projects/IMAG0133.jpg',
+    'projects/IMAG0394.jpg',
+    'projects/IMAG0609.jpg',
+    'projects/IMAG0647.jpg',
+    'projects/RF Race 02.jpg',
+    'projects/P7100013.jpg',
+];
+
+// Function to load gallery images
+function loadGallery() {
+    projectsGallery.innerHTML = '';
+    galleryImages = [];
+    
+    projectImages.forEach((imagePath, index) => {
+        // Try to load the image
+        const img = new Image();
+        img.src = imagePath;
+        
+        img.onload = function() {
+            // Image exists, add to gallery
+            galleryImages.push(imagePath);
+            
+            const galleryItem = document.createElement('div');
+            galleryItem.className = 'gallery-item';
+            galleryItem.innerHTML = `
+                <img src="${imagePath}" alt="Project ${index + 1}">
+                <div class="gallery-item-caption">Project ${index + 1}</div>
+            `;
+            
+            galleryItem.addEventListener('click', () => {
+                openLightbox(galleryImages.indexOf(imagePath));
+            });
+            
+            projectsGallery.appendChild(galleryItem);
+        };
+        
+        img.onerror = function() {
+            // Image doesn't exist, skip it
+            console.log(`Image not found: ${imagePath}`);
+        };
+    });
+}
+
+// Open projects overlay
+if (exploreProjectsBtn) {
+    exploreProjectsBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        projectsOverlay.classList.add('active');
+        document.body.style.overflow = 'hidden';
+        loadGallery();
+    });
+}
+
+// Close projects overlay
+if (closeProjectsOverlay) {
+    closeProjectsOverlay.addEventListener('click', () => {
+        projectsOverlay.classList.remove('active');
+        document.body.style.overflow = '';
+    });
+}
+
+// Close overlay when clicking outside
+projectsOverlay.addEventListener('click', (e) => {
+    if (e.target === projectsOverlay) {
+        projectsOverlay.classList.remove('active');
+        document.body.style.overflow = '';
+    }
+});
+
+// Lightbox functions
+function openLightbox(index) {
+    currentImageIndex = index;
+    updateLightboxImage();
+    lightbox.classList.add('active');
+}
+
+function updateLightboxImage() {
+    lightboxImage.src = galleryImages[currentImageIndex];
+    lightboxImage.alt = `Project ${currentImageIndex + 1}`;
+}
+
+function closeLightboxFunc() {
+    lightbox.classList.remove('active');
+}
+
+function nextImage() {
+    currentImageIndex = (currentImageIndex + 1) % galleryImages.length;
+    updateLightboxImage();
+}
+
+function prevImage() {
+    currentImageIndex = (currentImageIndex - 1 + galleryImages.length) % galleryImages.length;
+    updateLightboxImage();
+}
+
+// Lightbox event listeners
+closeLightbox.addEventListener('click', closeLightboxFunc);
+lightboxNext.addEventListener('click', nextImage);
+lightboxPrev.addEventListener('click', prevImage);
+
+// Close lightbox when clicking outside image
+lightbox.addEventListener('click', (e) => {
+    if (e.target === lightbox) {
+        closeLightboxFunc();
+    }
+});
+
+// Keyboard navigation for lightbox
+document.addEventListener('keydown', (e) => {
+    if (lightbox.classList.contains('active')) {
+        if (e.key === 'Escape') closeLightboxFunc();
+        if (e.key === 'ArrowRight') nextImage();
+        if (e.key === 'ArrowLeft') prevImage();
+    }
+});
+
+// ESC key to close projects overlay
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && projectsOverlay.classList.contains('active')) {
+        projectsOverlay.classList.remove('active');
+        document.body.style.overflow = '';
+    }
+});
     </script>
 </body>
 </html>
