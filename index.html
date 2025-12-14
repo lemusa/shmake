@@ -337,7 +337,8 @@
             transition: flex 0.6s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        .project-card:hover {
+        .project-card:hover,
+        .project-card.initially-expanded {
             flex: 3;
         }
 
@@ -352,7 +353,8 @@
             transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        .project-card:hover .card-background {
+        .project-card:hover .card-background,
+        .project-card.initially-expanded .card-background {
             transform: scale(1.05);
         }
 
@@ -399,12 +401,14 @@
             margin: 0 auto;
         }
 
-        .project-card:hover .project-logo {
+        .project-card:hover .project-logo,
+        .project-card.initially-expanded .project-logo {
             opacity: 1;
             max-height: 100px;
         }
 
-        .project-card:hover .project-title {
+        .project-card:hover .project-title,
+        .project-card.initially-expanded .project-title {
             display: none;
         }
 
@@ -417,7 +421,8 @@
             max-width: 500px;
         }
 
-        .project-card:hover .project-details {
+        .project-card:hover .project-details,
+        .project-card.initially-expanded .project-details {
             opacity: 1;
             max-height: 600px;
         }
@@ -442,7 +447,8 @@
             transition: opacity 0.4s ease, max-height 0.4s ease;
         }
 
-        .project-card:hover .project-screenshot {
+        .project-card:hover .project-screenshot,
+        .project-card.initially-expanded .project-screenshot {
             opacity: 1;
             max-height: 250px;
         }
@@ -1967,7 +1973,7 @@
             <!-- Hero Section with Expanding Cards -->
             <section class="hero-cards scroll-section" id="projects">
 			<div class="card-container">
-				<div class="project-card" data-project="shmake">
+				<div class="project-card initially-expanded" data-project="shmake">
                     <div class="card-background" style="background-image: linear-gradient(rgba(253, 135, 1, 0.85), rgba(253, 135, 1, 0.75)), url('https://images.unsplash.com/photo-1581291518857-4e27b48ff24e?w=800&q=80');"></div>
                     <div class="card-content">
                         <h2 class="project-title">Sam Haughey</h2>
@@ -2206,6 +2212,13 @@
     </div>
 
     <script>
+        // Remove initially-expanded class when user hovers any hero card
+        document.querySelectorAll('.hero-cards .project-card').forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                document.querySelector('.project-card.initially-expanded')?.classList.remove('initially-expanded');
+            });
+        });
+
         // Theme toggle
         const themeToggle = document.getElementById('themeToggle');
         const themeIcon = document.getElementById('themeIcon');
