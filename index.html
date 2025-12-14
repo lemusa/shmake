@@ -54,7 +54,7 @@
             --bg: #ffffff;
             --text: #1a1a1a;
             --text-secondary: #666666;
-            --accent: #2563eb;
+            --accent: #179ecd;
             --card-bg: #f8f9fa;
             --border: #e5e7eb;
         }
@@ -63,7 +63,7 @@
             --bg: #0a0a0a;
             --text: #ffffff;
             --text-secondary: #a0a0a0;
-            --accent: #3b82f6;
+            --accent: #179ecd;
             --card-bg: #1a1a1a;
             --border: #2a2a2a;
         }
@@ -471,75 +471,6 @@
             box-shadow: 0 8px 16px rgba(0,0,0,0.3);
         }
 
-        /* Intro Section (name and tagline after cards) */
-        .intro {
-            min-height: 100vh;
-            padding: 4rem 2rem;
-            text-align: center;
-            background: var(--bg);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-
-        .intro h1 {
-            font-size: clamp(2.5rem, 6vw, 4rem);
-            font-weight: 700;
-            margin-bottom: 1rem;
-            letter-spacing: -0.02em;
-        }
-
-        .intro .subtitle {
-            font-size: clamp(1.1rem, 2.5vw, 1.5rem);
-            color: var(--text-secondary);
-            margin-bottom: 0.75rem;
-            font-weight: 400;
-        }
-
-        .intro .tagline {
-            font-size: clamp(0.95rem, 2vw, 1.1rem);
-            color: var(--text-secondary);
-            font-style: italic;
-        }
-
-        .intro-visuals {
-            margin-top: 4rem;
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 2rem;
-            max-width: 1000px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        @media (max-width: 768px) {
-            .intro {
-                padding: 2rem 1rem;
-                min-height: auto;
-            }
-            
-            .intro-visuals {
-                margin-top: 2rem;
-                gap: 1rem;
-                grid-template-columns: 1fr;
-            }
-        }
-
-        .visual-item {
-            position: relative;
-            aspect-ratio: 4/3;
-            border-radius: 12px;
-            overflow: hidden;
-            background: var(--card-bg);
-            border: 1px solid var(--border);
-        }
-
-        .visual-item img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
         /* Mobile: Stack vertically with touch swipe */
         @media (max-width: 1024px) {
             .hero-cards {
@@ -584,73 +515,151 @@
                 opacity: 1;
                 max-height: none;
             }
-
-            .intro {
-                padding: 4rem 2rem;
-            }
         }
 
-        /* Story Section */
-        .story {
-            max-width: 1000px;
-            margin: 4rem auto;
-            padding: 2rem;
+        /* About Combined Section */
+        .about-combined {
+            min-height: 100vh;
+            padding: 4rem 2rem;
+            background: var(--bg);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
         }
 
-        @media (max-width: 768px) {
-            .story {
-                margin: 2rem auto;
-                padding: 1rem;
-            }
-        }
-
-        .story h2 {
-            font-size: clamp(1.8rem, 4vw, 2.5rem);
+        .about-combined h1 {
+            font-size: clamp(2rem, 5vw, 3rem);
+            font-weight: 700;
             margin-bottom: 2rem;
+            letter-spacing: -0.02em;
             text-align: center;
-            font-weight: 600;
         }
 
-        .story p {
-            font-size: 1.1rem;
-            line-height: 1.8;
-            color: var(--text-secondary);
-            margin-bottom: 1.5rem;
+        .about-layout {
+            display: grid;
+            grid-template-columns: 1fr 280px;
+            gap: 2.5rem;
+            max-width: 1100px;
+            margin: 0 auto;
+            align-items: start;
         }
 
-        /* Skills Section */
-        .skills {
-            max-width: 1000px;
-            margin: 3rem auto;
-            padding: 2rem;
+        .about-main {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
         }
 
-        @media (max-width: 768px) {
-            .skills {
-                margin: 2rem auto;
-                padding: 1rem;
-            }
-        }
-
-        .skills h3 {
-            font-size: 1.5rem;
-            margin-bottom: 1.5rem;
-            text-align: center;
-            color: var(--text);
-        }
-
-        .skills p {
+        .about-story p {
             font-size: 1.05rem;
-            line-height: 1.8;
+            line-height: 1.75;
             color: var(--text-secondary);
+            margin-bottom: 1.25rem;
+        }
+
+        .about-story p:last-of-type {
+            margin-bottom: 1.25rem;
+        }
+
+        .explore-projects-link {
+            display: inline-block;
+            color: var(--accent);
+            font-weight: 600;
+            text-decoration: none;
+            font-size: 1rem;
+            transition: all 0.2s ease;
+        }
+
+        .explore-projects-link:hover {
+            text-decoration: underline;
+        }
+
+        .about-sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            position: sticky;
+            top: 5rem;
+        }
+
+        .about-photo {
+            aspect-ratio: 1;
+            border-radius: 16px;
+            overflow: hidden;
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+        }
+
+        .about-photo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .about-story {
+            border-left: 3px solid var(--accent);
+            padding-left: 1.5rem;
+        }
+
+        .about-tagline-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-left: 3px solid var(--accent);
+            border-radius: 12px;
+            padding: 1.5rem;
+            position: relative;
+        }
+
+        .about-tagline-card::before {
+            content: '"';
+            position: absolute;
+            top: 0.25rem;
+            left: 1rem;
+            font-size: 3.5rem;
+            font-family: Georgia, serif;
+            color: var(--accent);
+            opacity: 0.3;
+            line-height: 1;
+        }
+
+        .about-tagline-card .tagline-main {
+            font-size: 1.05rem;
+            font-weight: 600;
+            color: var(--text);
+            line-height: 1.5;
+            margin-bottom: 0.5rem;
+            position: relative;
+        }
+
+        .about-tagline-card .tagline-sub {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            font-style: italic;
+            margin: 0;
+        }
+
+        /* Skills full width row */
+        .about-skills {
+            margin-top: 2.5rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border);
+            max-width: 1100px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .about-skills h3 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 1.25rem;
+            color: var(--text);
             text-align: center;
         }
 
-        .skill-categories {
+        .about-skills .skill-categories {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
             gap: 2rem;
-            margin-top: 2rem;
         }
 
         .skill-category {
@@ -658,20 +667,20 @@
         }
 
         .skill-category h4 {
-            font-size: 1rem;
+            font-size: 0.9rem;
             font-weight: 600;
-            margin-bottom: 0.75rem;
+            margin-bottom: 0.5rem;
             color: var(--accent);
         }
 
         .skill-category ul {
             list-style: none;
             color: var(--text-secondary);
-            font-size: 0.95rem;
+            font-size: 0.875rem;
         }
 
         .skill-category li {
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.4rem;
             padding-left: 1rem;
             position: relative;
         }
@@ -681,6 +690,69 @@
             position: absolute;
             left: 0;
             color: var(--accent);
+        }
+
+        @media (max-width: 900px) {
+            .about-combined {
+                padding: 3rem 1.5rem;
+                min-height: auto;
+            }
+
+            .about-combined h1 {
+                margin-bottom: 1.5rem;
+            }
+
+            .about-layout {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .about-sidebar {
+                position: static;
+                flex-direction: row;
+                order: -1;
+                gap: 1rem;
+            }
+
+            .about-photo {
+                width: 120px;
+                height: 120px;
+                flex-shrink: 0;
+                aspect-ratio: 1;
+            }
+
+            .about-tagline-card {
+                flex: 1;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+            }
+
+            .about-skills {
+                margin-top: 2rem;
+                padding-top: 1.5rem;
+            }
+
+            .about-skills .skill-categories {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 1.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .about-sidebar {
+                flex-direction: column;
+            }
+
+            .about-photo {
+                width: 100%;
+                height: auto;
+                aspect-ratio: 16/9;
+            }
+
+            .about-skills .skill-categories {
+                grid-template-columns: repeat(2, 1fr);
+            }
         }
 
         /* Contact Section */
@@ -797,18 +869,20 @@
             border-color: #991b1b;
         }
 
-        /* Projects Gallery Overlay */
+        /* Projects Portfolio Popup */
         .projects-overlay {
             position: fixed;
             top: 0;
             left: 0;
             right: 0;
             bottom: 0;
-            background: rgba(0, 0, 0, 0.95);
+            background: #09090b;
             z-index: 1000;
             display: none;
             opacity: 0;
             transition: opacity 0.3s ease;
+            flex-direction: column;
+            overflow: hidden;
         }
 
         .projects-overlay.active {
@@ -816,206 +890,900 @@
             opacity: 1;
         }
 
-        .projects-modal {
-            width: 100%;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            padding: 2rem;
-            overflow: hidden;
+        .projects-header {
+            flex-shrink: 0;
+            background: rgba(9, 9, 11, 0.95);
+            backdrop-filter: blur(8px);
+            border-bottom: 1px solid #27272a;
+            padding: 1rem 1.5rem;
         }
 
-        .projects-header {
+        .projects-header-top {
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            margin-bottom: 2rem;
-            padding-bottom: 1rem;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            justify-content: space-between;
+            margin-bottom: 1rem;
+            max-width: 1280px;
+            margin-left: auto;
+            margin-right: auto;
         }
 
         .projects-header h2 {
             color: white;
-            font-size: 2rem;
+            font-size: 1.25rem;
+            font-weight: 700;
             margin: 0;
+            letter-spacing: 0.05em;
+        }
+
+        @media (min-width: 640px) {
+            .projects-header {
+                padding: 1rem 1.5rem;
+            }
+            .projects-header h2 {
+                font-size: 1.5rem;
+            }
         }
 
         .close-overlay {
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            color: white;
-            width: 40px;
-            height: 40px;
+            background: #27272a;
+            border: none;
+            color: #a1a1aa;
+            width: 36px;
+            height: 36px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            font-size: 1.5rem;
+            font-size: 1.125rem;
             transition: all 0.2s ease;
         }
 
-        .close-overlay:hover {
-            background: rgba(255, 255, 255, 0.2);
-            transform: scale(1.1);
+        @media (min-width: 640px) {
+            .close-overlay {
+                width: 40px;
+                height: 40px;
+            }
         }
 
-        .projects-gallery {
+        .close-overlay:hover {
+            background: #3f3f46;
+            color: white;
+        }
+
+        /* Category Filter */
+        .category-filter {
+            display: flex;
+            gap: 0.5rem;
+            overflow-x: auto;
+            padding-bottom: 0.5rem;
+            margin: 0 -1.5rem;
+            padding-left: 1.5rem;
+            padding-right: 1.5rem;
+            max-width: calc(1280px + 3rem);
+            margin-left: auto;
+            margin-right: auto;
+            justify-content: center;
+        }
+
+        @media (min-width: 640px) {
+            .category-filter {
+                margin: 0;
+                padding-left: 0;
+                padding-right: 0;
+                max-width: 1280px;
+            }
+        }
+
+        .category-filter::-webkit-scrollbar {
+            display: none;
+        }
+
+        .category-btn {
+            padding: 0.375rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            white-space: nowrap;
+            transition: all 0.2s ease;
+            border: none;
+            cursor: pointer;
+            background: #27272a;
+            color: #a1a1aa;
+        }
+
+        @media (min-width: 640px) {
+            .category-btn {
+                padding: 0.375rem 1rem;
+                font-size: 0.875rem;
+            }
+        }
+
+        .category-btn:hover {
+            background: #3f3f46;
+            color: #e4e4e7;
+        }
+
+        .category-btn.active {
+            background: #f97316;
+            color: white;
+        }
+
+        /* Projects Grid */
+        .projects-grid-container {
             flex: 1;
             overflow-y: auto;
+            padding: 1.5rem 1rem;
+        }
+
+        @media (min-width: 640px) {
+            .projects-grid-container {
+                padding: 1.5rem;
+            }
+        }
+
+        /* Category Blurb */
+        .category-blurb {
+            max-width: 1280px;
+            margin: 0 auto 1.5rem auto;
+            padding: 1rem 1.25rem;
+            background: rgba(249, 115, 22, 0.1);
+            border: 1px solid rgba(249, 115, 22, 0.2);
+            border-radius: 0.75rem;
+            display: none;
+        }
+
+        .category-blurb.active {
+            display: block;
+        }
+
+        .category-blurb p {
+            color: #d4d4d8;
+            font-size: 0.9rem;
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        .projects-grid {
+            max-width: 1280px;
+            margin: 0 auto;
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 1.5rem;
+            grid-template-columns: 1fr;
+            gap: 1rem;
+        }
+
+        @media (min-width: 640px) {
+            .projects-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 1.5rem;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .projects-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        /* Project Card */
+        .project-card-item {
+            cursor: pointer;
+        }
+
+        .project-card-item.featured {
+            grid-column: span 1;
+            grid-row: span 1;
+        }
+
+        @media (min-width: 640px) {
+            .project-card-item.featured {
+                grid-column: span 2;
+                grid-row: span 2;
+            }
+        }
+
+        /* Skills Card - expanded layout for hero */
+        .skills-card {
+            cursor: default;
+        }
+        .skills-card .project-card-inner {
+            padding: 0;
+            background: linear-gradient(135deg, #1a1a1d 0%, #18181b 100%);
+            overflow: hidden;
+        }
+        .skills-card .project-card-inner:hover {
+            transform: none;
+        }
+
+        .skills-card-layout {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .skills-card-header {
+            display: flex;
+            gap: 1.25rem;
+            align-items: center;
+            padding: 1.5rem;
+            background: rgba(24, 24, 27, 0.9);
+            border-bottom: 1px solid #3f3f46;
+        }
+
+        .skills-card-photo {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            overflow: hidden;
+            flex-shrink: 0;
+            border: 3px solid #f97316;
+            box-shadow: 0 0 20px rgba(249, 115, 22, 0.3);
+        }
+
+        .skills-card-photo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .skills-card-intro {
+            flex: 1;
+        }
+
+        .skills-card-intro h3 {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: #fafafa;
+            margin-bottom: 0.25rem;
+        }
+
+        .skills-tagline {
+            color: #f97316;
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+        /* Skills Cards - Modern layout */
+        .skills-list-container {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 0.75rem;
             padding: 1rem;
             align-content: start;
         }
 
-        @media (max-width: 768px) {
-            .projects-gallery {
-                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-                gap: 1rem;
+        @media (min-width: 640px) {
+            .skills-list-container {
+                grid-template-columns: repeat(2, 1fr);
             }
         }
 
-        .gallery-item {
-            position: relative;
-            aspect-ratio: 4/3;
-            border-radius: 12px;
+        .skill-card {
+            background: rgba(24, 24, 27, 0.6);
+            border-radius: 0.75rem;
+            border: 1px solid rgba(255, 255, 255, 0.08);
             overflow: hidden;
+            transition: all 0.2s ease;
+        }
+
+        .skill-card:hover {
+            border-color: var(--skill-color);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .skill-card-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1rem;
+            background: linear-gradient(135deg, rgba(var(--skill-color-rgb), 0.15), transparent);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .skill-card-icon {
+            font-size: 1.25rem;
+            line-height: 1;
+        }
+
+        .skill-card-title {
+            color: var(--skill-color);
+            font-size: 0.9rem;
+            font-weight: 700;
+            letter-spacing: 0.01em;
+        }
+
+        .skill-card-body {
+            padding: 0.75rem 1rem;
+        }
+
+        .skill-card-blurb {
+            color: #d4d4d8;
+            font-size: 0.85rem;
+            line-height: 1.55;
+            margin: 0;
+        }
+
+        .skill-card-details {
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            margin-top: 0.75rem;
+        }
+
+        .skill-card-toggle {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            padding: 0.5rem 0;
+            background: none;
+            border: none;
             cursor: pointer;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            color: #71717a;
+            font-size: 0.75rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            transition: color 0.2s ease;
         }
 
-        .gallery-item:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        .skill-card-toggle:hover {
+            color: var(--skill-color);
         }
 
-        .gallery-item img {
+        .skill-card-toggle-icon {
+            font-size: 0.9rem;
+            transition: transform 0.2s ease;
+        }
+
+        .skill-card[data-expanded="true"] .skill-card-toggle-icon {
+            transform: rotate(180deg);
+        }
+
+        .skill-card-items {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: none;
+            padding-bottom: 0.5rem;
+        }
+
+        .skill-card[data-expanded="true"] .skill-card-items {
+            display: block;
+        }
+
+        .skill-card-items li {
+            color: #a1a1aa;
+            font-size: 0.8rem;
+            line-height: 1.5;
+            padding: 0.25rem 0 0.25rem 1rem;
+            position: relative;
+        }
+
+        .skill-card-items li::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 0.65rem;
+            width: 4px;
+            height: 4px;
+            border-radius: 50%;
+            background: var(--skill-color);
+        }
+
+        .project-card-inner {
+            background: #18181b;
+            border-radius: 0.75rem;
+            overflow: hidden;
+            border: 1px solid #27272a;
+            transition: all 0.2s ease;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .project-card-inner:hover {
+            border-color: rgba(249, 115, 22, 0.5);
+            transform: scale(1.02);
+        }
+
+        .project-card-image {
+            position: relative;
+            overflow: hidden;
+            aspect-ratio: 16/9;
+        }
+
+        .project-card-item.featured .project-card-image {
+            aspect-ratio: 16/10;
+        }
+
+        .project-card-gradient {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .project-card-gradient svg {
+            width: 3rem;
+            height: 3rem;
+            color: rgba(255, 255, 255, 0.3);
+        }
+
+        .project-card-image img {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            transition: transform 0.3s ease;
-        }
-
-        .gallery-item:hover img {
-            transform: scale(1.05);
-        }
-
-        .gallery-item-caption {
             position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
-            color: white;
-            padding: 1rem;
-            font-size: 0.9rem;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        .gallery-item:hover .gallery-item-caption {
-            opacity: 1;
-        }
-
-        /* Image Lightbox */
-        .lightbox {
-            position: fixed;
             top: 0;
             left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.95);
-            z-index: 1001;
+        }
+
+        /* Gradient colors for cards */
+        .gradient-violet { background: linear-gradient(to bottom right, #7c3aed, #581c87); }
+        .gradient-blue { background: linear-gradient(to bottom right, #2563eb, #312e81); }
+        .gradient-emerald { background: linear-gradient(to bottom right, #059669, #134e4a); }
+        .gradient-red { background: linear-gradient(to bottom right, #dc2626, #881337); }
+        .gradient-amber { background: linear-gradient(to bottom right, #d97706, #7c2d12); }
+        .gradient-cyan { background: linear-gradient(to bottom right, #0891b2, #0c4a6e); }
+        .gradient-pink { background: linear-gradient(to bottom right, #db2777, #86198f); }
+        .gradient-lime { background: linear-gradient(to bottom right, #65a30d, #166534); }
+        .gradient-yellow { background: linear-gradient(to bottom right, #ca8a04, #78350f); }
+        .gradient-slate { background: linear-gradient(to bottom right, #64748b, #27272a); }
+
+        .project-badge {
+            position: absolute;
+            top: 0.75rem;
+            padding: 0.25rem 0.625rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            backdrop-filter: blur(4px);
+        }
+
+        .project-badge-category {
+            left: 0.75rem;
+            background: rgba(24, 24, 27, 0.8);
+            color: #d4d4d8;
+            border: 1px solid #3f3f46;
+        }
+
+        .project-badge-year {
+            right: 0.75rem;
+            background: rgba(249, 115, 22, 0.9);
+            color: white;
+        }
+
+        .project-card-content {
+            padding: 1rem;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .project-card-content h3 {
+            font-weight: 600;
+            color: white;
+            margin: 0 0 0.5rem 0;
+            font-size: 1rem;
+            transition: color 0.2s ease;
+        }
+
+        .project-card-item.featured .project-card-content h3 {
+            font-size: 1.125rem;
+        }
+
+        @media (min-width: 640px) {
+            .project-card-item.featured .project-card-content h3 {
+                font-size: 1.25rem;
+            }
+        }
+
+        .project-card-inner:hover .project-card-content h3 {
+            color: #fb923c;
+        }
+
+        .project-card-content p {
+            color: #a1a1aa;
+            font-size: 0.75rem;
+            line-height: 1.6;
+            flex: 1;
+            margin: 0;
+        }
+
+        @media (min-width: 640px) {
+            .project-card-content p {
+                font-size: 0.875rem;
+            }
+        }
+
+        .project-card-footer {
+            margin-top: 0.75rem;
+            padding-top: 0.75rem;
+            border-top: 1px solid #27272a;
+        }
+
+        .project-card-footer span {
+            font-size: 0.75rem;
+            color: #f97316;
+            font-weight: 500;
+            transition: color 0.2s ease;
+        }
+
+        .project-card-inner:hover .project-card-footer span {
+            color: #fb923c;
+        }
+
+        /* Project Detail Modal */
+        .project-detail-modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(4px);
+            z-index: 1100;
             display: none;
             align-items: center;
             justify-content: center;
-            padding: 2rem;
+            padding: 1rem;
         }
 
-        .lightbox.active {
+        .project-detail-modal.active {
             display: flex;
         }
 
-        .lightbox-content {
-            max-width: 90vw;
-            max-height: 90vh;
+        .project-detail-content {
+            background: #18181b;
+            border-radius: 1rem;
+            max-width: 42rem;
+            width: 100%;
+            max-height: 85vh;
+            overflow: hidden;
+            border: 1px solid #3f3f46;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .project-detail-image {
             position: relative;
         }
 
-        .lightbox-content img {
-            max-width: 100%;
-            max-height: 90vh;
-            object-fit: contain;
-            border-radius: 8px;
+        .project-detail-image .project-card-gradient {
+            aspect-ratio: 16/9;
         }
 
-        .lightbox-close {
+        .project-detail-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
             position: absolute;
-            top: -50px;
-            right: 0;
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            color: white;
-            width: 40px;
-            height: 40px;
+            top: 0;
+            left: 0;
+        }
+
+        .project-detail-close {
+            position: absolute;
+            top: 0.75rem;
+            right: 0.75rem;
+            width: 2rem;
+            height: 2rem;
             border-radius: 50%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+            border: none;
+            color: white;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            font-size: 1.5rem;
-            transition: all 0.2s ease;
+            transition: background 0.2s ease;
         }
 
-        .lightbox-close:hover {
-            background: rgba(255, 255, 255, 0.2);
+        .project-detail-close:hover {
+            background: rgba(0, 0, 0, 0.7);
         }
 
-        .lightbox-nav {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            color: white;
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
+        .project-detail-body {
+            padding: 1.25rem 1.5rem;
+            overflow-y: auto;
+        }
+
+        .project-detail-header {
             display: flex;
-            align-items: center;
-            justify-content: center;
+            flex-wrap: wrap;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 0.5rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .project-detail-header span {
+            color: #f97316;
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        .project-detail-header h2 {
+            color: white;
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin: 0;
+        }
+
+        @media (min-width: 640px) {
+            .project-detail-header h2 {
+                font-size: 1.5rem;
+            }
+        }
+
+        .project-detail-year {
+            padding: 0.25rem 0.75rem;
+            background: #27272a;
+            border-radius: 9999px;
+            font-size: 0.875rem;
+            color: #a1a1aa;
+        }
+
+        .project-detail-body > p {
+            color: #d4d4d8;
+            line-height: 1.6;
+            font-size: 0.875rem;
+            margin: 0;
+        }
+
+        @media (min-width: 640px) {
+            .project-detail-body > p {
+                font-size: 1rem;
+            }
+        }
+
+        .project-detail-long {
+            color: #a1a1aa;
+            font-size: 0.875rem;
+            line-height: 1.7;
+            margin-top: 1rem;
+        }
+
+        .project-detail-specs {
+            margin-top: 1.25rem;
+            padding: 1rem;
+            background: rgba(39, 39, 42, 0.5);
+            border-radius: 0.5rem;
+            border: 1px solid #3f3f46;
+        }
+
+        .project-detail-specs h4 {
+            color: #f97316;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin: 0 0 0.75rem 0;
+        }
+
+        .project-detail-specs ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.5rem;
+        }
+
+        .project-detail-specs li {
+            color: #d4d4d8;
+            font-size: 0.8rem;
+            padding-left: 1rem;
+            position: relative;
+        }
+
+        .project-detail-specs li::before {
+            content: '•';
+            position: absolute;
+            left: 0;
+            color: #f97316;
+        }
+
+        .project-detail-gallery {
+            margin-top: 1.25rem;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.75rem;
+        }
+
+        .project-detail-gallery img {
+            width: 100%;
+            border-radius: 0.5rem;
             cursor: pointer;
-            font-size: 1.5rem;
-            transition: all 0.2s ease;
+            transition: transform 0.2s ease;
         }
 
-        .lightbox-nav:hover {
-            background: rgba(255, 255, 255, 0.2);
+        .project-detail-gallery img:hover {
+            transform: scale(1.02);
         }
 
-        .lightbox-prev {
-            left: -70px;
+        .project-detail-link {
+            display: inline-block;
+            margin-top: 1.25rem;
+            padding: 0.75rem 1.5rem;
+            background: #f97316;
+            color: white;
+            text-decoration: none;
+            border-radius: 0.5rem;
+            font-weight: 500;
+            font-size: 0.875rem;
+            transition: background 0.2s ease;
         }
 
-        .lightbox-next {
-            right: -70px;
+        .project-detail-link:hover {
+            background: #ea580c;
         }
 
-        @media (max-width: 768px) {
-            .lightbox-nav {
-                width: 40px;
-                height: 40px;
-            }
-            
-            .lightbox-prev {
-                left: 10px;
-            }
-            
-            .lightbox-next {
-                right: 10px;
-            }
+        /* Portfolio overlay - Light mode (default) */
+        :root:not([data-theme="dark"]) .projects-overlay {
+            background: #f4f4f5;
+        }
+
+        :root:not([data-theme="dark"]) .category-blurb {
+            background: rgba(249, 115, 22, 0.08);
+            border-color: rgba(249, 115, 22, 0.2);
+        }
+
+        :root:not([data-theme="dark"]) .category-blurb p {
+            color: #3f3f46;
+        }
+
+        :root:not([data-theme="dark"]) .projects-header {
+            background: rgba(244, 244, 245, 0.95);
+            border-bottom-color: #e4e4e7;
+        }
+
+        :root:not([data-theme="dark"]) .projects-header h2 {
+            color: #18181b;
+        }
+
+        :root:not([data-theme="dark"]) .close-overlay {
+            background: #e4e4e7;
+            color: #52525b;
+        }
+
+        :root:not([data-theme="dark"]) .close-overlay:hover {
+            background: #d4d4d8;
+            color: #18181b;
+        }
+
+        :root:not([data-theme="dark"]) .category-btn {
+            background: #e4e4e7;
+            color: #52525b;
+        }
+
+        :root:not([data-theme="dark"]) .category-btn:hover {
+            background: #d4d4d8;
+            color: #18181b;
+        }
+
+        :root:not([data-theme="dark"]) .project-card-inner {
+            background: #ffffff;
+            border-color: #e4e4e7;
+        }
+
+        :root:not([data-theme="dark"]) .project-card-inner:hover {
+            border-color: rgba(249, 115, 22, 0.5);
+        }
+
+        :root:not([data-theme="dark"]) .project-card-content h3 {
+            color: #18181b;
+        }
+
+        :root:not([data-theme="dark"]) .project-card-inner:hover .project-card-content h3 {
+            color: #ea580c;
+        }
+
+        :root:not([data-theme="dark"]) .project-card-content p {
+            color: #52525b;
+        }
+
+        :root:not([data-theme="dark"]) .project-card-footer {
+            border-top-color: #e4e4e7;
+            color: #52525b;
+        }
+
+        :root:not([data-theme="dark"]) .project-card-footer span {
+            color: #ea580c;
+        }
+
+        :root:not([data-theme="dark"]) .project-badge-category {
+            background: rgba(24, 24, 27, 0.8);
+        }
+
+        :root:not([data-theme="dark"]) .project-badge-year {
+            background: rgba(249, 115, 22, 0.9);
+        }
+
+        /* Skills card light mode */
+        :root:not([data-theme="dark"]) .skills-card-header {
+            background: rgba(24, 24, 27, 0.9);
+            border-bottom-color: #3f3f46;
+        }
+
+        :root:not([data-theme="dark"]) .skills-card-intro h3 {
+            color: #ffffff;
+        }
+
+        :root:not([data-theme="dark"]) .skills-tagline {
+            color: #d4d4d8;
+        }
+
+        :root:not([data-theme="dark"]) .skill-card {
+            background: #ffffff;
+            border-color: #e4e4e7;
+        }
+
+        :root:not([data-theme="dark"]) .skill-card:hover {
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        :root:not([data-theme="dark"]) .skill-card-header {
+            border-bottom-color: #f4f4f5;
+        }
+
+        :root:not([data-theme="dark"]) .skill-card-blurb {
+            color: #3f3f46;
+        }
+
+        :root:not([data-theme="dark"]) .skill-card-details {
+            border-top-color: #f4f4f5;
+        }
+
+        :root:not([data-theme="dark"]) .skill-card-toggle {
+            color: #71717a;
+        }
+
+        :root:not([data-theme="dark"]) .skill-card-items li {
+            color: #52525b;
+        }
+
+        /* Project detail modal light mode */
+        :root:not([data-theme="dark"]) .project-detail-modal {
+            background: rgba(0, 0, 0, 0.5);
+        }
+
+        :root:not([data-theme="dark"]) .project-detail-content {
+            background: #ffffff;
+            border-color: #e4e4e7;
+        }
+
+        :root:not([data-theme="dark"]) .project-detail-header h2 {
+            color: #18181b;
+        }
+
+        :root:not([data-theme="dark"]) .project-detail-year {
+            background: #e4e4e7;
+            color: #52525b;
+        }
+
+        :root:not([data-theme="dark"]) .project-detail-body > p {
+            color: #3f3f46;
+        }
+
+        :root:not([data-theme="dark"]) .project-detail-long {
+            color: #52525b;
+        }
+
+        :root:not([data-theme="dark"]) .project-detail-specs {
+            background: rgba(228, 228, 231, 0.5);
+            border-color: #e4e4e7;
+        }
+
+        :root:not([data-theme="dark"]) .project-detail-specs li {
+            color: #3f3f46;
+        }
+
+        :root:not([data-theme="dark"]) .project-detail-close {
+            background: rgba(0, 0, 0, 0.3);
+        }
+
+        :root:not([data-theme="dark"]) .project-detail-close:hover {
+            background: rgba(0, 0, 0, 0.5);
         }
 
         /* reCAPTCHA styling */
@@ -1188,7 +1956,7 @@
     <div class="nav-overlay" id="navOverlay"></div>
     <nav>
         <ul class="nav" id="nav">
-            <li><a href="#projects">Projects</a></li>
+            <li><a href="#portfolio" id="navProjectsLink">Portfolio</a></li>
             <li><a href="#about">About</a></li>
             <li><a href="#contact">Contact</a></li>
         </ul>
@@ -1202,16 +1970,16 @@
 				<div class="project-card" data-project="shmake">
                     <div class="card-background" style="background-image: linear-gradient(rgba(253, 135, 1, 0.85), rgba(253, 135, 1, 0.75)), url('https://images.unsplash.com/photo-1581291518857-4e27b48ff24e?w=800&q=80');"></div>
                     <div class="card-content">
-                        <h2 class="project-title">SHMAKE</h2>
+                        <h2 class="project-title">Sam Haughey</h2>
                         <div class="project-logo">
                             <img src="assets/shmake-logo-dark.png" alt="SHMAKE logo">
                         </div>
                         <div class="project-details">
                             <div class="project-screenshot">
-                                <img src="https://images.unsplash.com/photo-1530124566582-a618bc2615dc?w=500&h=400&fit=crop&q=80" alt="SHMAKE projects screenshot">
+                                <img src="assets/profile.png" alt="Sam Haughey">
                             </div>
-                            <p>Apps. Automation. Adobe tools. SketchUp models. Home servers. Decks. 3D prints. Excel nightmares. Whatever seems interesting.</p>
-                            <a href="#" class="project-link" id="exploreProjectsBtn">Explore Projects →</a>
+                            <p><strong>Operations Manager</strong> with 13+ years in manufacturing. I build systems that work — ERP, quality, compliance, costing — and apps that solve real problems.</p>
+                            <a href="#portfolio" class="project-link" id="exploreProjectsBtn">View Portfolio →</a>
                         </div>
                     </div>
                 </div>   
@@ -1280,88 +2048,72 @@
             </div>
         </section>
 
-        <!-- Name and Tagline -->
-        <section class="intro scroll-section" id="about">
+        <!-- About Section -->
+        <section class="about-combined scroll-section" id="about">
             <div class="container">
                 <h1>Sam Haughey</h1>
-                <p class="subtitle">I get curious, build things, then move on to the next problem.</p>
-                <p class="tagline">Expert at becoming almost an expert</p>
-                
-                <div class="intro-visuals">
-                    <div class="visual-item">
-                        <img src="assets/about-arcade.png" alt="Arcade">
+
+                <div class="about-layout">
+                    <div class="about-main">
+                        <div class="about-story">
+                            <p>Based in Christchurch with my wife and three daughters, I've spent the last 18 years working everywhere from the factory floor to construction sites, then into production scheduling and now operations management — looking after the day-to-day of a manufacturing company that ships product around the world. Along the way I've dabbled in freelance graphic, web, and CAD design.</p>
+                            <p>I get obsessed with problems, binge-learn whatever I need to fix them, then wander off to the next curiosity. The upside is the knowledge sticks. I'm as comfortable with code as I am with power tools, Illustrator as I am with Excel, SketchUp as I am with generating SOP's.</p>
+                            <p>For the last 13 years I've been the person who solves the operational headaches at Ecoglo International while building side projects that keep my brain busy. I get energised by new, odd, or tricky problems — the ones where the solution isn't obvious yet. If that's what you're working on, let's chat.</p>
+                            <a href="#portfolio" class="explore-projects-link" id="aboutProjectsLink">View my portfolio →</a>
+                        </div>
                     </div>
-                    <div class="visual-item">
-                        <img src="assets/about-family.png" alt="Family">
-                    </div>
-                    <div class="visual-item">
-                        <img src="assets/about-deck.png" alt="Deck">
-                    </div>
-                    <div class="visual-item">
-                        <img src="assets/about-cad.png" alt="CAD">
-                    </div>
-                    <div class="visual-item">
-                        <img src="assets/about-server.png" alt="Sever">
-                    </div>
-                    <div class="visual-item">
-                        <img src="assets/about-factory.png" alt="Factory">
+
+                    <div class="about-sidebar">
+                        <div class="about-photo">
+                            <img src="assets/profile.png" alt="Sam Haughey">
+                        </div>
+                        <div class="about-tagline-card">
+                            <p class="tagline-main">I get curious, build things, then move on to the next problem.</p>
+                            <p class="tagline-sub">Expert at becoming almost an expert</p>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </section>
 
-        <section class="story scroll-section">
-            <div class="container">
-                <h2>The Story</h2>
-				<p>Based in Christchurch with my wife and three daughters, I’ve spent the last 18 years working everywhere from the factory floor to construction sites, then into production scheduling and now operations management — looking after the day-to-day of a manufacturing company that ships product around the world. Along the way I’ve dabbled in freelance graphic, web, and CAD design. A normal week for me can go from DIY on the tools to coding to spreadsheets to adventure filming — sometimes all in one day.</p> 
-				<p>I get obsessed with problems, binge-learn whatever I need to fix them, then wander off to the next curiosity. The upside is the knowledge sticks. I’m as comfortable with code as I am with power tools, Illustrator as I am with Excel, SketchUp as I am with home automation. I write specs, I build things, and I project-manage everything from costing to completion.</p> 
-				<p>For the last 13 years I’ve been the person who solves the operational and technical headaches at Ecoglo International while building side projects that keep my brain busy. I get energised by new, odd, or tricky problems — the ones where the solution isn’t obvious yet. If that’s what you’re working on, let’s chat.</p>
-            </div>
-        </section>
-
-        <section class="skills scroll-section">
-            <div class="container">
-				 <h3>Things I've gotten curious about over the years</h3>
-				<div class="skill-categories">
-					<div class="skill-category">
-						<h4>Digital</h4>
-						<ul>
-							<li>Web development</li>
-							<li>React & Supabase</li>
-							<li>Adobe Creative Suite</li>
-							<li>Home automation</li>
-							<li>Server & network management</li>
-						</ul>
-					</div>
-					<div class="skill-category">
-						<h4>Physical</h4>
-						<ul>
-							<li>SketchUp & CAD</li>
-							<li>3D printing & CNC</li>
-							<li>Welding & light fabrication</li>
-							<li>Construction & DIY</li>
-							<li>Digital printing & signage workflows</li>
-						</ul>
-					</div>
-					<div class="skill-category">
-						<h4>Business</h4>
-						<ul>
-							<li>Operations management</li>
-							<li>Process optimisation</li>
-							<li>Costing, pricing & forecasting</li>
-							<li>Procurement & logistics</li>
-							<li>Quality systems (ISO 9001 etc.)</li>
-						</ul>
-					</div>
-					<div class="skill-category">
-						<h4>Creative</h4>
-						<ul>
-							<li>Video editing</li>
-							<li>Custom workshop builds & tinkering</li>
-							<li>Product mock-ups & visual prototyping</li>
-							<li>Branding & layout design</li>
-						</ul>
-					</div>
+                <div class="about-skills">
+                    <h3>Things I've gotten curious about</h3>
+                    <div class="skill-categories">
+                        <div class="skill-category">
+                            <h4>Digital</h4>
+                            <ul>
+                                <li>Web development</li>
+                                <li>React & Supabase</li>
+                                <li>Adobe Creative Suite</li>
+                                <li>Home automation</li>
+                            </ul>
+                        </div>
+                        <div class="skill-category">
+                            <h4>Physical</h4>
+                            <ul>
+                                <li>SketchUp & CAD</li>
+                                <li>3D printing & CNC</li>
+                                <li>Welding & fabrication</li>
+                                <li>Construction & DIY</li>
+                            </ul>
+                        </div>
+                        <div class="skill-category">
+                            <h4>Business</h4>
+                            <ul>
+                                <li>Operations management</li>
+                                <li>Process optimisation</li>
+                                <li>Costing & forecasting</li>
+                                <li>Quality systems</li>
+                            </ul>
+                        </div>
+                        <div class="skill-category">
+                            <h4>Creative</h4>
+                            <ul>
+                                <li>Video editing</li>
+                                <li>Branding & layout</li>
+                                <li>Product mock-ups</li>
+                                <li>Workshop builds</li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
@@ -1425,26 +2177,31 @@
     </main>
     </div>
 
-    <!-- Projects Gallery Overlay -->
+    <!-- Projects Portfolio Overlay -->
     <div class="projects-overlay" id="projectsOverlay">
-        <div class="projects-modal">
-            <div class="projects-header">
-                <h2>SHMAKE Projects</h2>
-                <button class="close-overlay" id="closeProjectsOverlay" aria-label="Close gallery">×</button>
+        <div class="projects-header">
+            <div class="projects-header-top">
+                <h2>Portfolio</h2>
+                <button class="close-overlay" id="closeProjectsOverlay" aria-label="Close">&#10005;</button>
             </div>
-            <div class="projects-gallery" id="projectsGallery">
-                <!-- Images will be loaded dynamically from the projects folder -->
+            <div class="category-filter" id="categoryFilter">
+                <!-- Categories will be populated by JS -->
+            </div>
+        </div>
+        <div class="projects-grid-container">
+            <div class="category-blurb" id="categoryBlurb">
+                <!-- Category description will be populated by JS -->
+            </div>
+            <div class="projects-grid" id="projectsGrid">
+                <!-- Project cards will be populated by JS -->
             </div>
         </div>
     </div>
 
-    <!-- Lightbox for full-size images -->
-    <div class="lightbox" id="lightbox">
-        <div class="lightbox-content">
-            <button class="lightbox-close" id="closeLightbox" aria-label="Close">×</button>
-            <button class="lightbox-nav lightbox-prev" id="lightboxPrev" aria-label="Previous">‹</button>
-            <img src="" alt="" id="lightboxImage">
-            <button class="lightbox-nav lightbox-next" id="lightboxNext" aria-label="Next">›</button>
+    <!-- Project Detail Modal -->
+    <div class="project-detail-modal" id="projectDetailModal">
+        <div class="project-detail-content" id="projectDetailContent">
+            <!-- Content will be populated by JS -->
         </div>
     </div>
 
@@ -1500,8 +2257,10 @@
         // Smooth scroll for anchor links
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
+                const href = this.getAttribute('href');
+                if (href === '#' || href.length <= 1) return; // Skip empty anchors
                 e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
+                const target = document.querySelector(href);
                 if (target) {
                     target.scrollIntoView({ behavior: 'smooth', block: 'start' });
                 }
@@ -1577,167 +2336,383 @@ if (contactForm) {
     });
 }
 
-// Projects Gallery Overlay
+// Projects Portfolio Data - loaded from projects.json (with fallback for local file:// access)
+let projects = [];
+let categories = ["All"];
+
+// Fallback data for when fetch fails (e.g., local file:// access)
+const fallbackData = {
+  "categories": ["All", "Web/App Dev", "Graphic Design", "CAD", "Business", "DIY", "Technology"],
+  "projects": [
+    { "id": 1, "title": "myMECA", "category": "Web/App Dev", "description": "Healthcare payroll calculator app used by 250+ nurses daily. Built with React and Supabase.", "gradient": "gradient-cyan", "year": "2023", "image": "assets/projects/mymeca.jpg" },
+    { "id": 2, "title": "TeaBreak", "category": "Web/App Dev", "description": "Business operations app in development. Simple solutions for small business admin tasks.", "gradient": "gradient-slate", "year": "2024" },
+    { "id": 3, "title": "SHMAKE Website", "category": "Web/App Dev", "description": "This portfolio site. Static HTML/CSS/JS with scroll-snap sections and dark mode.", "gradient": "gradient-amber", "year": "2024" },
+    { "id": 4, "title": "Brand Identity Work", "category": "Graphic Design", "description": "Logos, marketing materials, and visual identities for various projects and clients.", "gradient": "gradient-pink", "year": "Ongoing" },
+    { "id": 5, "title": "Product Mock-ups", "category": "Graphic Design", "description": "Visual prototyping and mock-ups for digital and physical products.", "gradient": "gradient-violet", "year": "Ongoing" },
+    { "id": 6, "title": "Entertainment Unit", "category": "CAD", "description": "Floating TV unit designed in SketchUp. Tasmanian oak veneer with integrated cable management.", "gradient": "gradient-amber", "year": "2021" },
+    { "id": 7, "title": "Custom Furniture Designs", "category": "CAD", "description": "Various furniture and workshop projects modelled in SketchUp before building.", "gradient": "gradient-lime", "year": "Ongoing" },
+    { "id": 8, "title": "Process Optimisation", "category": "Business", "description": "Streamlining manufacturing workflows and implementing quality systems at Ecoglo.", "gradient": "gradient-blue", "year": "2012-Present" },
+    { "id": 9, "title": "Costing & Forecasting", "category": "Business", "description": "Building pricing models, procurement systems, and demand forecasting tools.", "gradient": "gradient-emerald", "year": "Ongoing" },
+    { "id": 10, "title": "Deck Build", "category": "DIY", "description": "Full deck construction from design through to completion. Posts, framing, and decking.", "gradient": "gradient-yellow", "year": "2022" },
+    { "id": 11, "title": "EVA Subwoofer", "category": "DIY", "description": "Custom subwoofer enclosure with CNC-cut panels and integrated amplifier. Named after a certain anime mech.", "longDescription": "Designed in SketchUp, CNC cut from MDF, and finished with automotive primer and purple metallic paint. The enclosure uses a slot-loaded design for maximum output in a compact form factor.", "gradient": "gradient-violet", "year": "2019", "image": "assets/projects/eva-sub-main.jpg", "gallery": ["assets/projects/eva-sub-cnc.jpg", "assets/projects/eva-sub-assembly.jpg", "assets/projects/eva-sub-paint.jpg", "assets/projects/eva-sub-finished.jpg"], "specs": ["Dayton Audio 12\" driver", "500W plate amplifier", "Slot-loaded enclosure", "18mm MDF construction", "Automotive paint finish", "Custom crossover tuning"] },
+    { "id": 12, "title": "Arcade Controller", "category": "DIY", "description": "Fight stick style arcade controller with Sanwa parts and custom wiring harness.", "gradient": "gradient-emerald", "year": "2020" },
+    { "id": 13, "title": "Home Server", "category": "Technology", "description": "Self-hosted media server, network storage, and home automation hub.", "gradient": "gradient-cyan", "year": "2021" },
+    { "id": 14, "title": "PC Builds", "category": "Technology", "description": "Watercooled gaming rigs with hardline tubing. Lost count of how many I've built.", "gradient": "gradient-blue", "year": "Ongoing" },
+    { "id": 15, "title": "Home Automation", "category": "Technology", "description": "Smart home setup with lighting, climate control, and custom integrations.", "gradient": "gradient-red", "year": "Ongoing" }
+  ]
+};
+
+let categoryDescriptions = {};
+
+// Load projects data
+async function loadProjects() {
+    try {
+        const response = await fetch('projects.json');
+        const data = await response.json();
+        projects = data.projects;
+        categories = data.categories;
+        categoryDescriptions = data.categoryDescriptions || {};
+    } catch (error) {
+        console.warn('Could not fetch projects.json, using embedded data:', error.message);
+        projects = fallbackData.projects;
+        categories = fallbackData.categories;
+        categoryDescriptions = {};
+    }
+    // Check if URL has #portfolio hash and open overlay
+    if (window.location.hash === '#portfolio') {
+        setTimeout(() => {
+            document.getElementById('projectsOverlay').classList.add('active');
+            document.body.style.overflow = 'hidden';
+            renderCategories();
+            renderProjects();
+        }, 0);
+    }
+}
+
+// Load projects on page load
+loadProjects();
+
+// Portfolio elements
 const exploreProjectsBtn = document.getElementById('exploreProjectsBtn');
 const projectsOverlay = document.getElementById('projectsOverlay');
-const closeProjectsOverlay = document.getElementById('closeProjectsOverlay');
-const projectsGallery = document.getElementById('projectsGallery');
+const closeProjectsOverlayBtn = document.getElementById('closeProjectsOverlay');
+const categoryFilter = document.getElementById('categoryFilter');
+const projectsGrid = document.getElementById('projectsGrid');
+const projectDetailModal = document.getElementById('projectDetailModal');
+const projectDetailContent = document.getElementById('projectDetailContent');
 
-// Lightbox
-const lightbox = document.getElementById('lightbox');
-const lightboxImage = document.getElementById('lightboxImage');
-const closeLightbox = document.getElementById('closeLightbox');
-const lightboxPrev = document.getElementById('lightboxPrev');
-const lightboxNext = document.getElementById('lightboxNext');
+let activeCategory = "All";
 
-let currentImageIndex = 0;
-let galleryImages = [];
+// Image icon SVG
+const imageIconSvg = `<svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+</svg>`;
 
-// List of images in the projects folder (you'll need to update this array with your actual image filenames)
-// Or we can load them dynamically if you have a way to list directory contents
-const projectImages = [
-    'projects/2.1 Set Promo.jpg',
-    'projects/41.jpg',
-    'projects/20140607_093851.jpg',
-    'projects/20170427_092858.jpg',
-    'projects/20170528_164834.jpg',
-    'projects/20170812_160859.jpg',
-    'projects/20170826_221505.jpg',
-    'projects/20170930_122040.jpg',
-    'projects/20180106_214832.jpg',
-    'projects/20180330_120835.jpg',
-    'projects/20181101_170219.jpg',
-    'projects/20190406_225433.jpg',
-    'projects/20190507_194904.jpg',
-    'projects/20190517_223621.jpg',
-    'projects/20191109_173044.jpg',
-    'projects/20191125_220511.jpg',
-    'projects/20201224_113604.jpg',
-    'projects/20090329185310.jpg',
-    'projects/20091126171018.jpg',
-    'projects/demo1.jpg',
-    'projects/demo2.jpg',
-    'projects/demo3.jpg',
-    'projects/demo4.jpg',
-    'projects/IMAG0133.jpg',
-    'projects/IMAG0394.jpg',
-    'projects/IMAG0609.jpg',
-    'projects/IMAG0647.jpg',
-    'projects/RF Race 02.jpg',
-    'projects/P7100013.jpg',
-];
+// Render category filter buttons
+function renderCategories() {
+    categoryFilter.innerHTML = categories.map(cat => `
+        <button class="category-btn ${activeCategory === cat ? 'active' : ''}" data-category="${cat}">
+            ${cat}
+        </button>
+    `).join('');
 
-// Function to load gallery images
-function loadGallery() {
-    projectsGallery.innerHTML = '';
-    galleryImages = [];
-    
-    projectImages.forEach((imagePath, index) => {
-        // Try to load the image
-        const img = new Image();
-        img.src = imagePath;
-        
-        img.onload = function() {
-            // Image exists, add to gallery
-            galleryImages.push(imagePath);
-            
-            const galleryItem = document.createElement('div');
-            galleryItem.className = 'gallery-item';
-            galleryItem.innerHTML = `
-                <img src="${imagePath}" alt="Project ${index + 1}">
-                <div class="gallery-item-caption">Project ${index + 1}</div>
-            `;
-            
-            galleryItem.addEventListener('click', () => {
-                openLightbox(galleryImages.indexOf(imagePath));
-            });
-            
-            projectsGallery.appendChild(galleryItem);
-        };
-        
-        img.onerror = function() {
-            // Image doesn't exist, skip it
-            console.log(`Image not found: ${imagePath}`);
-        };
+    // Add click handlers
+    categoryFilter.querySelectorAll('.category-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            activeCategory = btn.dataset.category;
+            renderCategories();
+            renderProjects();
+        });
     });
 }
 
-// Open projects overlay
-if (exploreProjectsBtn) {
-    exploreProjectsBtn.addEventListener('click', (e) => {
-        e.preventDefault();
-        projectsOverlay.classList.add('active');
-        document.body.style.overflow = 'hidden';
-        loadGallery();
+// Render project cards
+function renderProjects() {
+    // Update category blurb
+    const categoryBlurb = document.getElementById('categoryBlurb');
+    if (activeCategory !== "All" && categoryDescriptions[activeCategory]) {
+        categoryBlurb.innerHTML = `<p>${categoryDescriptions[activeCategory]}</p>`;
+        categoryBlurb.classList.add('active');
+    } else {
+        categoryBlurb.innerHTML = '';
+        categoryBlurb.classList.remove('active');
+    }
+
+    // Always include skills card (id=0) at the start, then filter the rest
+    const skillsCard = projects.find(p => p.id === 0);
+    const otherProjects = projects.filter(p => p.id !== 0);
+
+    const filteredOthers = activeCategory === "All"
+        ? otherProjects
+        : otherProjects.filter(p => Array.isArray(p.category) ? p.category.includes(activeCategory) : p.category === activeCategory);
+
+    // Skills card always first when viewing "All", otherwise just show filtered projects
+    const filteredProjects = activeCategory === "All" && skillsCard
+        ? [skillsCard, ...filteredOthers]
+        : filteredOthers;
+
+    projectsGrid.innerHTML = filteredProjects.map((project, index) => {
+        const isFeatured = index === 0 && activeCategory === 'All';
+        const isSkillsCard = project.id === 0;
+
+        // Skills card gets special expanded layout with interactive wheel
+        if (isFeatured && isSkillsCard) {
+            const skillColors = ['#10b981', '#3b82f6', '#8b5cf6', '#f97316', '#ec4899'];
+            const skillCount = project.skills?.length || 5;
+
+            return `
+                <div class="project-card-item featured skills-card" data-project-id="${project.id}">
+                    <div class="project-card-inner">
+                        <div class="skills-card-layout">
+                            <div class="skills-card-header">
+                                <div class="skills-card-photo">
+                                    ${project.image ? `<img src="${project.image}" alt="${project.title}">` : ''}
+                                </div>
+                                <div class="skills-card-intro">
+                                    <h3>${project.title}</h3>
+                                    <p class="skills-tagline">${project.description}</p>
+                                </div>
+                            </div>
+                            ${project.skills && project.skills.length > 0 ? `
+                                <div class="skills-list-container">
+                                    ${project.skills.map((skill, i) => {
+                                        const colorRgb = {
+                                            '#22c55e': '34, 197, 94',
+                                            '#3b82f6': '59, 130, 246',
+                                            '#a855f7': '168, 85, 247',
+                                            '#06b6d4': '6, 182, 212',
+                                            '#ec4899': '236, 72, 153'
+                                        }[skillColors[i]] || '249, 115, 22';
+                                        return `<div class="skill-card" style="--skill-color: ${skillColors[i]}; --skill-color-rgb: ${colorRgb};">
+                                            <div class="skill-card-header">
+                                                <span class="skill-card-icon">${['⚙️', '✓', '📊', '💻', '🔧'][i]}</span>
+                                                <span class="skill-card-title">${skill.title}</span>
+                                            </div>
+                                            <div class="skill-card-body">
+                                                <p class="skill-card-blurb">${skill.blurb || ''}</p>
+                                                <div class="skill-card-details">
+                                                    <button class="skill-card-toggle">
+                                                        <span>Key capabilities</span>
+                                                        <span class="skill-card-toggle-icon">▼</span>
+                                                    </button>
+                                                    <ul class="skill-card-items">
+                                                        ${skill.items.map(item => `<li>${item}</li>`).join('')}
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>`;
+                                    }).join('')}
+                                </div>
+                            ` : ''}
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Regular project cards
+        return `
+            <div class="project-card-item ${isFeatured ? 'featured' : ''}" data-project-id="${project.id}">
+                <div class="project-card-inner">
+                    <div class="project-card-image">
+                        <div class="project-card-gradient ${project.gradient}">
+                            ${imageIconSvg}
+                        </div>
+                        ${project.image ? `<img src="${project.image}" alt="${project.title}">` : ''}
+                        <span class="project-badge project-badge-category">${Array.isArray(project.category) ? project.category.join(' / ') : project.category}</span>
+                        <span class="project-badge project-badge-year">${project.year}</span>
+                    </div>
+                    <div class="project-card-content">
+                        <h3>${project.title}</h3>
+                        <p>${project.description}</p>
+                        <div class="project-card-footer">
+                            <span>View details &rarr;</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+    }).join('');
+
+    // Add click handlers for project cards (skip skills card which shows all info inline)
+    projectsGrid.querySelectorAll('.project-card-item').forEach(card => {
+        card.addEventListener('click', (e) => {
+            // Don't trigger if clicking inside skill card
+            if (e.target.closest('.skill-card')) return;
+            const projectId = parseInt(card.dataset.projectId);
+            if (projectId === 0) return; // Skills card - no detail modal needed
+            const project = projects.find(p => p.id === projectId);
+            if (project) openProjectDetail(project);
+        });
     });
+
+    // Add skill card toggle handlers - auto-collapse others when one opens
+    projectsGrid.querySelectorAll('.skill-card-toggle').forEach(toggle => {
+        toggle.addEventListener('click', (e) => {
+            const card = toggle.closest('.skill-card');
+            const container = toggle.closest('.skills-list-container');
+            const isCurrentlyExpanded = card.dataset.expanded === 'true';
+
+            // Close all cards first
+            container.querySelectorAll('.skill-card').forEach(c => {
+                c.dataset.expanded = 'false';
+            });
+
+            // If it wasn't expanded, expand it now
+            if (!isCurrentlyExpanded) {
+                card.dataset.expanded = 'true';
+            }
+        });
+    });
+}
+
+// Open project detail modal
+function openProjectDetail(project) {
+    // Build gallery HTML if extra images exist
+    let galleryHtml = '';
+    if (project.gallery && project.gallery.length > 0) {
+        galleryHtml = `
+            <div class="project-detail-gallery">
+                ${project.gallery.map(img => `<img src="${img}" alt="${project.title}">`).join('')}
+            </div>
+        `;
+    }
+
+    // Build specs HTML if specs exist
+    let specsHtml = '';
+    if (project.specs && project.specs.length > 0) {
+        specsHtml = `
+            <div class="project-detail-specs">
+                <h4>Specs</h4>
+                <ul>
+                    ${project.specs.map(spec => `<li>${spec}</li>`).join('')}
+                </ul>
+            </div>
+        `;
+    }
+
+    // Build link HTML if link exists
+    let linkHtml = '';
+    if (project.link) {
+        linkHtml = `<a href="${project.link}" target="_blank" rel="noopener" class="project-detail-link">Visit Project &rarr;</a>`;
+    }
+
+    // Build long description if exists
+    let longDescHtml = '';
+    if (project.longDescription) {
+        longDescHtml = `<p class="project-detail-long">${project.longDescription}</p>`;
+    }
+
+    projectDetailContent.innerHTML = `
+        <div class="project-detail-image">
+            <div class="project-card-gradient ${project.gradient}">
+                ${imageIconSvg}
+            </div>
+            ${project.image ? `<img src="${project.image}" alt="${project.title}">` : ''}
+            <button class="project-detail-close" aria-label="Close">&#10005;</button>
+        </div>
+        <div class="project-detail-body">
+            <div class="project-detail-header">
+                <div>
+                    <span>${Array.isArray(project.category) ? project.category.join(' / ') : project.category}</span>
+                    <h2>${project.title}</h2>
+                </div>
+                <span class="project-detail-year">${project.year}</span>
+            </div>
+            <p>${project.description}</p>
+            ${longDescHtml}
+            ${specsHtml}
+            ${galleryHtml}
+            ${linkHtml}
+        </div>
+    `;
+
+    projectDetailModal.classList.add('active');
+
+    // Close button handler
+    projectDetailContent.querySelector('.project-detail-close').addEventListener('click', closeProjectDetail);
+}
+
+// Close project detail modal
+function closeProjectDetail() {
+    projectDetailModal.classList.remove('active');
+}
+
+// Function to open projects overlay
+function openProjectsOverlay(e) {
+    if (e) e.preventDefault();
+    projectsOverlay.classList.add('active');
+    document.body.style.overflow = 'hidden';
+    activeCategory = "All";
+    renderCategories();
+    renderProjects();
+    // Update URL hash
+    history.pushState(null, '', '#portfolio');
+    // Close nav menu if open
+    nav.classList.remove('active');
+    navOverlay.classList.remove('active');
+}
+
+// Open projects overlay from Explore Projects button
+if (exploreProjectsBtn) {
+    exploreProjectsBtn.addEventListener('click', openProjectsOverlay);
+}
+
+// Open projects overlay from nav menu
+const navProjectsLink = document.getElementById('navProjectsLink');
+if (navProjectsLink) {
+    navProjectsLink.addEventListener('click', openProjectsOverlay);
+}
+
+// Open projects overlay from about section link
+const aboutProjectsLink = document.getElementById('aboutProjectsLink');
+if (aboutProjectsLink) {
+    aboutProjectsLink.addEventListener('click', openProjectsOverlay);
 }
 
 // Close projects overlay
-if (closeProjectsOverlay) {
-    closeProjectsOverlay.addEventListener('click', () => {
-        projectsOverlay.classList.remove('active');
-        document.body.style.overflow = '';
-    });
+function closeProjectsOverlay() {
+    projectsOverlay.classList.remove('active');
+    document.body.style.overflow = '';
+    // Remove hash from URL
+    history.pushState(null, '', window.location.pathname);
 }
 
-// Close overlay when clicking outside
-projectsOverlay.addEventListener('click', (e) => {
-    if (e.target === projectsOverlay) {
-        projectsOverlay.classList.remove('active');
-        document.body.style.overflow = '';
+if (closeProjectsOverlayBtn) {
+    closeProjectsOverlayBtn.addEventListener('click', closeProjectsOverlay);
+}
+
+// Close detail modal when clicking backdrop
+projectDetailModal.addEventListener('click', (e) => {
+    if (e.target === projectDetailModal) {
+        closeProjectDetail();
     }
 });
 
-// Lightbox functions
-function openLightbox(index) {
-    currentImageIndex = index;
-    updateLightboxImage();
-    lightbox.classList.add('active');
-}
-
-function updateLightboxImage() {
-    lightboxImage.src = galleryImages[currentImageIndex];
-    lightboxImage.alt = `Project ${currentImageIndex + 1}`;
-}
-
-function closeLightboxFunc() {
-    lightbox.classList.remove('active');
-}
-
-function nextImage() {
-    currentImageIndex = (currentImageIndex + 1) % galleryImages.length;
-    updateLightboxImage();
-}
-
-function prevImage() {
-    currentImageIndex = (currentImageIndex - 1 + galleryImages.length) % galleryImages.length;
-    updateLightboxImage();
-}
-
-// Lightbox event listeners
-closeLightbox.addEventListener('click', closeLightboxFunc);
-lightboxNext.addEventListener('click', nextImage);
-lightboxPrev.addEventListener('click', prevImage);
-
-// Close lightbox when clicking outside image
-lightbox.addEventListener('click', (e) => {
-    if (e.target === lightbox) {
-        closeLightboxFunc();
-    }
+// Stop propagation on detail content
+projectDetailContent.addEventListener('click', (e) => {
+    e.stopPropagation();
 });
 
-// Keyboard navigation for lightbox
+// Keyboard navigation
 document.addEventListener('keydown', (e) => {
-    if (lightbox.classList.contains('active')) {
-        if (e.key === 'Escape') closeLightboxFunc();
-        if (e.key === 'ArrowRight') nextImage();
-        if (e.key === 'ArrowLeft') prevImage();
+    if (e.key === 'Escape') {
+        if (projectDetailModal.classList.contains('active')) {
+            closeProjectDetail();
+        } else if (projectsOverlay.classList.contains('active')) {
+            closeProjectsOverlay();
+        }
     }
 });
 
-// ESC key to close projects overlay
-document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && projectsOverlay.classList.contains('active')) {
+// Handle browser back/forward buttons
+window.addEventListener('popstate', () => {
+    if (window.location.hash === '#portfolio') {
+        projectsOverlay.classList.add('active');
+        document.body.style.overflow = 'hidden';
+        renderCategories();
+        renderProjects();
+    } else {
         projectsOverlay.classList.remove('active');
         document.body.style.overflow = '';
     }

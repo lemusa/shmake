@@ -1,0 +1,725 @@
+{
+  "categories": ["All", "Business", "Web/App Dev", "CAD", "Technology", "DIY"],
+  "categoryDescriptions": {
+    "Business": "Operations, compliance, and process improvement work from 13+ years in manufacturing. These cards represent the systems and workflows I've learnt, built or improved to keep businesses running efficiently.",
+    "Web/App Dev": "Self-taught development skills applied to real problems. From internal tools to public-facing apps, I build software that solves specific operational challenges.",
+    "CAD": "Design work spanning product development, shop drawings, and custom fabrication projects. I use CAD to validate a concept before issues are found during production.",
+    "Technology": "Personal tech projects including home infrastructure, custom builds, and the kind of tinkering that keeps my problem-solving skills sharp.",
+    "DIY": "Hands-on projects. Building things with my hands gives me perspective that translates directly to understanding manufacturing processes. Plus it's fun!"
+  },
+  "projects": [
+    {
+      "id": 0,
+      "title": "Sam Haughey",
+      "description": "Operations Manager with 13+ years in manufacturing. I build systems that work and apps that solve real problems.",
+      "gradient": "gradient-amber",
+      "year": "13+ Years",
+      "image": "assets/profile.png",
+      "longDescription": "I've spent over a decade turning operational chaos into streamlined systems — from factory floors to ERP platforms to custom-built tools. I'm equally comfortable in a spreadsheet, a codebase, or a workshop.",
+      "skills": [
+        {
+          "title": "Operations & Manufacturing",
+          "blurb": "From raw materials to finished goods — I manage the entire production lifecycle. ERP systems, inventory, scheduling, and supplier relationships that keep factories running smoothly.",
+          "items": ["Unleashed ERP implementation & daily management", "BOM structuring for 500+ product variants", "Production scheduling & capacity planning", "Supplier management & procurement workflows"]
+        },
+        {
+          "title": "Quality & Compliance",
+          "blurb": "Building products that meet standards and pass audits. ISO 9001, industry certifications, health & safety systems, and traceability that protects both the business and customers.",
+          "items": ["ISO 9001 quality systems maintenance", "FMA certification support", "CodeMark compliance", "SiteWise/SiteSafe health & safety", "Batch traceability & recall procedures"]
+        },
+        {
+          "title": "Finance & Costing",
+          "blurb": "Making sure the numbers work. Product costing, margin analysis, demand forecasting, and financial reporting that drives profitable decision-making.",
+          "items": ["Xero for operational reporting & audit prep", "Product costing & margin analysis", "Demand forecasting models", "Procurement budgeting & cost reduction"]
+        },
+        {
+          "title": "Software & Automation",
+          "blurb": "When off-the-shelf doesn't cut it, I build it. React apps, database backends, workflow automation, and scripts that eliminate repetitive work.",
+          "items": ["myMECA: React app with 250+ daily users", "Adobe Illustrator batch scripting", "Supabase & PostgreSQL backends", "Workflow automation & integrations"]
+        },
+        {
+          "title": "Technical & Design",
+          "blurb": "Bridging the gap between concept and reality. CAD modelling, graphic design, prototyping, and the technical infrastructure that supports it all.",
+          "items": ["SketchUp CAD & shop drawings", "Photoshop/Illustrator for packaging", "Home server & network infrastructure", "3D printing & prototyping"]
+        }
+      ]
+    },
+    {
+      "id": 44,
+      "title": "myMECA",
+      "category": "Web/App Dev",
+      "description": "Healthcare payroll calculator used by 250+ nurses daily. Built with React and Supabase to decode the NZNO-HNZ collective agreement. This was my first public facing app with login, subscriptions, a complex bucketing system for rostered hours that respect the NZNO-HNZ agreement. Lots of learnings but positive community feedback has kept me motivated.",
+      "gradient": "gradient-cyan",
+      "year": "2025",
+      "image": "assets/projects/app/mymeca/mymeca.png",
+      "gallery": [
+        "assets/projects/app/mymeca/mymeca1.png",
+        "assets/projects/app/mymeca/mymeca2.png",
+        "assets/projects/app/mymeca/mymeca3.png",
+        "assets/projects/app/mymeca/mymeca4.png",
+        "assets/projects/app/mymeca/mymeca5.png"
+      ]
+    },
+    {
+      "id": 55,
+      "title": "ERP & Accounting Integration",
+      "category": "Business",
+      "description": "Day-to-day management of Unleashed ERP and Xero accounting. Inventory control, BOM management, purchase orders, and financial reporting for a Tier 1 IFRS entity.",
+      "gradient": "gradient-slate",
+      "year": "Ongoing",
+      "started": 2012,
+      "image": "assets/projects/business/xero.jpg"
+    },
+    {
+      "id": 16,
+      "title": "ISO 9001 Quality Management",
+      "category": "Business",
+      "description": "10+ years developing and maintaining quality management systems to achieve and retain ISO 9001 certification across multiple audit cycles.",
+      "gradient": "gradient-emerald",
+      "year": "Ongoing",
+      "started": 2012,
+      "image": "assets/projects/business/sai.jpg"
+    },
+    {
+      "id": 52,
+      "title": "Sign Pricing Calculator",
+      "category": ["Business", "Web/App Dev"],
+      "description": "Complex pricing tool handling material nesting calculations, tier-based pricing structures, and quote generation for photoluminescent signage products.",
+      "gradient": "gradient-emerald",
+      "year": "2025",
+      "started": 2025,
+      "image": "assets/projects/business/signcalc1.png",
+      "gallery": [
+        "assets/projects/business/signcalc1.png",
+        "assets/projects/business/signcalc2.png"
+      ]
+    },
+    {
+      "id": 17,
+      "title": "FMA Audit",
+      "category": "Business",
+      "description": "10+ years operating in a Tier 1 FMA reporting entity, playing a key role in preparing for and passing annual audits.",
+      "gradient": "gradient-emerald",
+      "year": "Ongoing",
+      "started": 2012,
+      "image": "assets/projects/business/fma.png"
+    },
+    {
+      "id": 46,
+      "title": "Process Optimisation",
+      "category": "Business",
+      "description": "Streamlining manufacturing workflows, reducing waste, and implementing quality systems across production lines.",
+      "gradient": "gradient-blue",
+      "year": "Ongoing",
+      "started": 2012
+    },
+    {
+      "id": 51,
+      "title": "Illustrator Automation",
+      "category": "Web/App Dev",
+      "description": "Custom Adobe Illustrator scripts automating sign manufacturing workflows at Ecoglo. Batch processing, layout generation, and production-ready file prep that saves hours of manual work.",
+      "gradient": "gradient-amber",
+      "year": "Ongoing",
+      "started": 2023,
+      "image": "assets/projects/business/illustrator.jpg"      
+    },
+    {
+      "id": 47,
+      "title": "Costing & Forecasting",
+      "category": "Business",
+      "description": "Building pricing models, procurement systems, and demand forecasting tools for manufacturing operations.",
+      "gradient": "gradient-emerald",
+      "year": "Ongoing",
+      "started": 2012
+    },
+    {
+      "id": 33,
+      "title": "CodeMark",
+      "category": "Business",
+      "description": "Managing production of a CodeMarked product for NZ and AU markets. Covers procurement, initial certification, and ongoing monitoring audits.",
+      "gradient": "gradient-emerald",
+      "year": "Ongoing",
+      "started": 2022,
+      "image": "assets/projects/business/codemark.png"
+    },
+    {
+      "id": 45,
+      "title": "TeaBreak",
+      "category": "Web/App Dev",
+      "description": "Business operations app in development. Tackling the admin tasks small business owners don't have time to think about.",
+      "gradient": "gradient-slate",
+      "year": "2026",
+      "image": "assets/projects/app/teabreak/teabreak1.png",
+      "gallery": [
+        "assets/projects/app/teabreak/teabreak2.png",
+        "assets/projects/app/teabreak/teabreak3.png",
+        "assets/projects/app/teabreak/teabreak4.png",
+        "assets/projects/app/teabreak/teabreak5.png",
+        "assets/projects/app/teabreak/teabreak6.png"
+      ]
+    },
+    {
+      "id": 32,
+      "title": "Air Certify",
+      "category": "Business",
+      "description": "Established and maintain Known Shipper accreditation for air freight compliance.",
+      "gradient": "gradient-emerald",
+      "year": "Ongoing",
+      "started": 2022,
+      "image": "assets/projects/business/aircertify.png"
+    },
+    {
+      "id": 54,
+      "title": "Specifications",
+      "category": "Business",
+      "description": "Develope comprehesive product specifications for procurement, manufacturing and QC of products",
+      "gradient": "gradient-red",
+      "year": "Ongoing",
+      "started": 2015
+    },
+    {
+      "id": 14,
+      "title": "Product Traceability",
+      "category": "Business",
+      "description": "Designed end-to-end traceability system mapping raw materials through to finished product dispatch.",
+      "gradient": "gradient-emerald",
+      "year": "2012",
+      "image": "assets/projects/business/trace.png"
+    },
+    {
+      "id": 13,
+      "title": "Factory Layout",
+      "category": "Business",
+      "description": "3D visualisation of factory floor layout and plant areas. Used for planning equipment placement and workflow optimisation.",
+      "gradient": "gradient-pink",
+      "year": "2011",
+      "image": "assets/projects/business/factory.png"
+    },
+    {
+      "id": 43,
+      "title": "SHMAKE Website",
+      "category": "Web/App Dev",
+      "description": "This portfolio site. Vanilla HTML/CSS/JS with scroll-snap sections, dark mode, and JSON-driven project data.",
+      "gradient": "gradient-amber",
+      "year": "2025",
+      "image": "assets/projects/app/shmake/shmake1.png",
+      "gallery": [
+        "assets/projects/app/shmake/shmake2.png",
+        "assets/projects/app/shmake/shmake3.png"
+      ]
+    },
+    {
+      "id": 27,
+      "title": "SiteWise",
+      "category": "Business",
+      "description": "SiteSafe and SiteWise certified. Developed and maintain OHS processes, incident reporting, and compliance documentation across manufacturing and field operations.",
+      "gradient": "gradient-emerald",
+      "year": "Ongoing",
+      "image": "assets/projects/business/sitewise.jpg"
+    },
+    {
+      "id": 38,
+      "title": "LEMUSA MOTO",
+      "category": "Web/App Dev",
+      "description": "A hobby site documenting my adventure riding passion. Trip logs, bike builds, and gear reviews.",
+      "gradient": "gradient-slate",
+      "year": "2024",
+      "image": "assets/projects/app/lemusa/lemusa1.png",
+      "gallery": [
+        "assets/projects/app/lemusa/lemusa2.png",
+        "assets/projects/app/lemusa/lemusa3.png",
+        "assets/projects/app/lemusa/lemusa4.png"
+      ]
+    },
+    {
+      "id": 1,
+      "title": "ahoythere",
+      "category": "Web/App Dev",
+      "description": "My very first website from 2006. Hand-coded HTML and CSS, hosted on free web hosting. Everyone starts somewhere.",
+      "gradient": "gradient-slate",
+      "year": "2006",
+      "image": "assets/projects/app/ahoythere.png"
+    },
+    {
+      "id": 49,
+      "title": "Product Mock-ups",
+      "category": "CAD",
+      "description": "Photoshop mock-ups and renders for product packaging, signage, and marketing materials.",
+      "gradient": "gradient-violet",
+      "year": "Ongoing",
+      "started": 2012
+    },
+    {
+      "id": 48,
+      "title": "Shop Drawings",
+      "category": ["Business", "CAD"],
+      "description": "Component and generating shop drawings and version control, submittal processes in platforms like Aconex",
+      "gradient": "gradient-lime",
+      "year": "Ongoing",
+      "started": 2015,
+      "image": "assets/projects/business/shopdrawing.jpg"
+    },
+    {
+      "id": 41,
+      "title": "Brackets",
+      "category": "CAD",
+      "description": "Custom bracket designs for ute tray bars. Modelled in CAD before fabrication to ensure proper fit and load capacity.",
+      "gradient": "gradient-amber",
+      "year": "2025",
+      "image": "assets/projects/cad/ute/ute1.png",
+      "gallery": [
+        "assets/projects/cad/ute/ute2.png",
+        "assets/projects/cad/ute/ute3.png",
+        "assets/projects/cad/ute/ute4.png",
+        "assets/projects/cad/ute/ute5.png"
+      ]
+    },
+    {
+      "id": 39,
+      "title": "Spa",
+      "category": "CAD",
+      "description": "3D visualisation for finishing touches to an outdoor spa area. Helped the client see options before committing.",
+      "gradient": "gradient-cyan",
+      "year": "2024",
+      "image": "assets/projects/cad/spa/spa1.png",
+      "gallery": [
+        "assets/projects/cad/spa/spa2.jpg",
+        "assets/projects/cad/spa/spa3.jpg",
+        "assets/projects/cad/spa/spa4.png"
+      ]
+    },
+    {
+      "id": 31,
+      "title": "Tiny Container Home",
+      "category": "CAD",
+      "description": "Concept design for a compact dwelling using two 20ft shipping containers. Modelled in SketchUp with full interior layout.",
+      "gradient": "gradient-pink",
+      "year": "2021",
+      "image": "assets/projects/cad/container/container1.jpg",
+      "gallery": [
+        "assets/projects/cad/container/container2.jpg",
+        "assets/projects/cad/container/container3.jpg"
+      ]
+    },
+    {
+      "id": 30,
+      "title": "Entertainment Unit",
+      "category": "CAD",
+      "description": "Floating TV unit designed in SketchUp. Tasmanian oak veneer with integrated cable management and hidden storage.",
+      "gradient": "gradient-amber",
+      "year": "2021"
+    },
+    {
+      "id": 29,
+      "title": "Home Office",
+      "category": "CAD",
+      "description": "Home office concept featuring built-in desk and floor-to-ceiling cabinetry. Designed to maximise a small space.",
+      "gradient": "gradient-pink",
+      "year": "2021",
+      "image": "assets/projects/cad/office.jpg"
+    },
+    {
+      "id": 28,
+      "title": "Business Card Template",
+      "category": "CAD",
+      "description": "Business card design template for professional use.",
+      "gradient": "gradient-pink",
+      "year": "2021",
+      "image": "assets/projects/graphic/flex.jpg"
+    },
+    {
+      "id": 24,
+      "title": "Kitchen",
+      "category": "CAD",
+      "description": "3D render of a kitchen renovation concept. Helped visualise layout changes and material choices before building.",
+      "gradient": "gradient-pink",
+      "year": "2020",
+      "image": "assets/projects/cad/kitchen.png"
+    },
+    {
+      "id": 35,
+      "title": "Album Art",
+      "category": "CAD",
+      "description": "Cover art for a local rock band.",
+      "gradient": "gradient-pink",
+      "year": "2011",
+      "image": "assets/projects/graphic/cto.jpg"
+    },
+    {
+      "id": 12,
+      "title": "Album Art",
+      "category": "CAD",
+      "description": "Cover art for a local rock band.",
+      "gradient": "gradient-pink",
+      "year": "2009",
+      "image": "assets/projects/graphic/ahi.jpg"
+    },
+    {
+      "id": 50,
+      "title": "PC Builds",
+      "category": "Technology",
+      "description": "Since 2007, I've built more gaming and workstation PCs than I can count. For myself, family, friends, and for resale.",
+      "gradient": "gradient-blue",
+      "year": "Ongoing",
+      "started": 2007,
+      "image": "assets/projects/tech/computers/2025.jpg",
+      "gallery": [
+        "assets/projects/tech/computers/2023.jpg",
+        "assets/projects/tech/computers/2022.jpg",
+        "assets/projects/tech/computers/2021.jpg",
+        "assets/projects/tech/computers/2018a.jpg",
+        "assets/projects/tech/computers/2018b.jpg",
+        "assets/projects/tech/computers/2017.jpg",
+        "assets/projects/tech/computers/2009.jpg",
+        "assets/projects/tech/computers/2008.jpg"
+      ]
+    },
+    {
+      "id": 42,
+      "title": "Home Workstation",
+      "category": "Technology",
+      "description": "An evolving setup balancing form and function. Multiple iterations over 15+ years of tweaking, upgrading, and starting fresh.",
+      "gradient": "gradient-cyan",
+      "year": "2025",
+      "image": "assets/projects/tech/desks/2025.jpg",
+      "gallery": [
+        "assets/projects/tech/desks/2022.jpg",
+        "assets/projects/tech/desks/2020.jpg",
+        "assets/projects/tech/desks/2017.jpg",
+        "assets/projects/tech/desks/2016.jpg",
+        "assets/projects/tech/desks/2015.jpg",
+        "assets/projects/tech/desks/2014.jpg",
+        "assets/projects/tech/desks/2012.jpg",
+        "assets/projects/tech/desks/2009.jpg"
+      ]
+    },
+    {
+      "id": 37,
+      "title": "Networking",
+      "category": "Technology",
+      "description": "Enterprise-grade home network with managed switches, multiple VLANs, and UniFi access points for full coverage.",
+      "gradient": "gradient-pink",
+      "year": "2023",
+      "image": "assets/projects/tech/network/network1.jpg",
+      "gallery": [
+        "assets/projects/tech/network/network2.png",
+        "assets/projects/tech/network/network3.png"
+      ],
+      "specs": [
+        "Ubiquiti EdgeRouter ER-4",
+        "TP-Link TL-SG1218MPE",
+        "Ubiquiti EdgeSwitch ES-48LITE",
+        "Ubiquiti UniFi UAP-AC-LR x 2"
+      ]
+    },
+    {
+      "id": 36,
+      "title": "Home Server",
+      "category": "Technology",
+      "description": "Unraid server handling NAS duties, NVR for security cameras, and running VMs for various services.",
+      "gradient": "gradient-violet",
+      "year": "2023",
+      "image": "assets/projects/tech/server/server1.jpg",
+      "gallery": [
+        "assets/projects/tech/server/server2.jpg",
+        "assets/projects/tech/server/server3.jpg",
+        "assets/projects/tech/server/server4.jpg",
+        "assets/projects/tech/server/server5.jpg"
+      ],
+      "specs": [
+        "Unraid",
+        "Ryzen 2700X, 32GB RAM, GTX1070 passthrough",
+        "Emby, DuckDNS, Unifi, AgentDVR, Duplicacy",
+        "VMs for Windows 10, Windows 11, Linux"
+      ]
+    },
+    {
+      "id": 22,
+      "title": "Rack Cases",
+      "category": "Technology",
+      "description": "Custom 19\" rack cases built from timber and steel. Houses server hardware in a more living-room-friendly package.",
+      "gradient": "gradient-violet",
+      "year": "2019",
+      "image": "assets/projects/tech/servercase/server1.jpg",
+      "gallery": [
+        "assets/projects/tech/servercase/server2.jpg",
+        "assets/projects/tech/servercase/server3.jpg",
+        "assets/projects/tech/servercase/server4.jpg",
+        "assets/projects/tech/servercase/server5.jpg"
+      ]
+    },
+    {
+      "id": 18,
+      "title": "HTPC",
+      "category": "Technology",
+      "description": "Custom home theatre PC case built to match the entertainment unit. Sleek form factor with proper cooling and cable management.",
+      "gradient": "gradient-violet",
+      "year": "2016",
+      "image": "assets/projects/tech/htpc/htpc1.jpg",
+      "gallery": [
+        "assets/projects/tech/htpc/htpc2.jpg",
+        "assets/projects/tech/htpc/htpc3.jpg",
+        "assets/projects/tech/htpc/htpc4.jpg",
+        "assets/projects/tech/htpc/htpc5.jpg"
+      ]
+    },
+    {
+      "id": 15,
+      "title": "Sim Racing",
+      "category": "Technology",
+      "description": "Custom sim rigs that started simple and escalated. Multiple iterations from a basic wheel stand to a full motion platform.",
+      "gradient": "gradient-red",
+      "year": "2012-2023",
+      "image": "assets/projects/tech/sim/simv2a.jpg",
+      "gallery": [
+        "assets/projects/tech/sim/simog.jpg",
+        "assets/projects/tech/sim/simv1a.jpg",
+        "assets/projects/tech/sim/simv1b.jpg",
+        "assets/projects/tech/sim/simv1c.jpg",
+        "assets/projects/tech/sim/simv1d.jpg",
+        "assets/projects/tech/sim/simv2b.jpg",
+        "assets/projects/tech/sim/simv2c.jpg",
+        "assets/projects/tech/sim/simv2d.jpg",
+        "assets/projects/tech/sim/simv2e.jpg",
+        "assets/projects/tech/sim/simv2f.jpg"
+      ]
+    },
+    {
+      "id": 40,
+      "title": "BBQ Area",
+      "category": "DIY",
+      "description": "Outdoor BBQ area build with paving, timber features, and a dedicated cooking space for entertaining.",
+      "gradient": "gradient-pink",
+      "year": "2024",
+      "image": "assets/projects/diy/bbq/bbq1.jpg",
+      "gallery": [
+        "assets/projects/diy/bbq/bbq2.jpg",
+        "assets/projects/diy/bbq/bbq3.jpg",
+        "assets/projects/diy/bbq/bbq4.jpg",
+        "assets/projects/diy/bbq/bbq5.jpg"
+      ]
+    },
+    {
+      "id": 19,
+      "title": "Welding Cart",
+      "category": "DIY",
+      "description": "A bit of inception - using the welder to build a cart for the welder",
+      "gradient": "gradient-emerald",
+      "year": "2024",
+      "image": "assets/projects/diy/weldcart/weld1.jpg",
+      "gallery": [
+        "assets/projects/diy/weldcart/weld2.jpg",
+        "assets/projects/diy/weldcart/weld3.jpg",
+        "assets/projects/diy/weldcart/weld4.jpg",
+        "assets/projects/diy/weldcart/weld5.jpg",
+        "assets/projects/diy/weldcart/weld6.jpg",
+        "assets/projects/diy/weldcart/weld7.jpg"
+      ]
+    },
+    {
+      "id": 34,
+      "title": "Small Deck Build",
+      "category": "DIY",
+      "description": "Full deck construction from design through to completion. Concrete piles, posts, framing, and H4 decking.",
+      "gradient": "gradient-yellow",
+      "year": "2022",
+      "image": "assets/projects/diy/decksmall/deck7.jpg",
+      "gallery": [
+        "assets/projects/diy/decksmall/deck1.jpg",
+        "assets/projects/diy/decksmall/deck2.jpg",
+        "assets/projects/diy/decksmall/deck3.jpg",
+        "assets/projects/diy/decksmall/deck4.jpg",
+        "assets/projects/diy/decksmall/deck5.jpg",
+        "assets/projects/diy/decksmall/deck6.jpg"
+      ]
+    },
+    {
+      "id": 341,
+      "title": "Large Deck Build",
+      "category": "DIY",
+      "description": "Full deck construction from design through to completion. Concrete piles, posts, framing, and H4 decking.",
+      "gradient": "gradient-yellow",
+      "year": "2022",
+      "image": "assets/projects/diy/decklarge/deck1.jpg",
+      "gallery": [
+        "assets/projects/diy/decklarge/deck2.jpg",
+        "assets/projects/diy/decklarge/deck3.jpg",
+        "assets/projects/diy/decklarge/deck4.jpg",
+        "assets/projects/diy/decklarge/deck5.jpg",
+        "assets/projects/diy/decklarge/deck6.jpg",
+        "assets/projects/diy/decklarge/deck7.jpg"
+      ]
+    },
+    {
+      "id": 271,
+      "title": "Shed",
+      "category": "DIY",
+      "description": "Kitset shed build for a local special needs family",
+      "gradient": "gradient-emerald",
+      "year": "2021",
+      "image": "assets/projects/diy/shed.jpg"
+    },
+    {
+      "id": 276,
+      "title": "Reception Desk",
+      "category": "DIY",
+      "description": "Designed and built a custom reception desk with LED lighting",
+      "gradient": "gradient-emerald",
+      "year": "2020",
+      "image": "assets/projects/diy/reception/desk1.jpg",
+      "gallery": [
+        "assets/projects/diy/reception/desk2.png",
+        "assets/projects/diy/reception/desk3.jpg",
+        "assets/projects/diy/reception/desk4.jpg",
+        "assets/projects/diy/reception/desk5.jpg"
+      ]
+    },    
+    {
+      "id": 26,
+      "title": "Arcade Machine",
+      "category": "DIY",
+      "description": "Full-size arcade cabinet designed from scratch to house an old iMac running MAME.",
+      "gradient": "gradient-emerald",
+      "year": "2020",
+      "image": "assets/projects/diy/arcade/arcade.jpg",
+      "gallery": [
+        "assets/projects/diy/arcade/arcade1.jpg",
+        "assets/projects/diy/arcade/arcade2.jpg",
+        "assets/projects/diy/arcade/arcade3.jpg",
+        "assets/projects/diy/arcade/arcade4.jpg",
+        "assets/projects/diy/arcade/arcade5.jpg"
+      ],
+      "specs": [
+        "Designed from scratch to house an old iMac",
+        "18mm MDF Construction",
+        "2-Player Controls",
+        "2.1 Audio"
+      ]
+    },
+    {
+      "id": 23,
+      "title": "House Renovation",
+      "category": "DIY",
+      "description": "Exterior modernisation with new cladding, windows, and landscaping to bring a dated house into the current decade.",
+      "gradient": "gradient-emerald",
+      "year": "2019",
+      "image": "assets/projects/diy/house/house1.jpg",
+      "gallery": [
+        "assets/projects/diy/house/house2.jpg",
+        "assets/projects/diy/house/house3.jpg",
+        "assets/projects/diy/house/house4.jpg",
+        "assets/projects/diy/house/house5.jpg",
+        "assets/projects/diy/house/house6.jpg",
+        "assets/projects/diy/house/house7.jpg",
+        "assets/projects/diy/house/house8.jpg",
+        "assets/projects/diy/house/house9.jpg",
+        "assets/projects/diy/house/house10.jpg",
+        "assets/projects/diy/house/house11.jpg",
+        "assets/projects/diy/house/house12.jpg",
+        "assets/projects/diy/house/house13.jpg",
+        "assets/projects/diy/house/house14.jpg",
+        "assets/projects/diy/house/house15.jpg",
+        "assets/projects/diy/house/house16.jpg",
+        "assets/projects/diy/house/house17.jpg"
+      ]
+    },
+    {
+      "id": 25,
+      "title": "Kitchen Upgrade",
+      "category": "DIY",
+      "description": "Budget-friendly kitchen refresh with new cabinet doors, laminate benchtops, and tiled splashbacks. Removed hot water cylinder for gas conversion",
+      "gradient": "gradient-emerald",
+      "year": "2018",
+      "image": "assets/projects/diy/kitchen/kitchen1.jpg",
+      "gallery": [
+        "assets/projects/diy/kitchen/kitchen2.jpg",
+        "assets/projects/diy/kitchen/kitchen3.jpg",
+        "assets/projects/diy/kitchen/kitchen4.jpg",
+        "assets/projects/diy/kitchen/kitchen5.jpg",
+        "assets/projects/diy/kitchen/kitchen6.jpg",
+        "assets/projects/diy/kitchen/kitchen7.jpg",
+        "assets/projects/diy/kitchen/kitchen8.jpg",
+        "assets/projects/diy/kitchen/kitchen9.jpg",
+        "assets/projects/diy/kitchen/kitchen10.jpg",
+        "assets/projects/diy/kitchen/kitchen11.jpg",
+        "assets/projects/diy/kitchen/kitchen12.jpg"
+      ]
+    },
+    {
+      "id": 500,
+      "title": "Laundry Remodel",
+      "category": "DIY",
+      "description": "Complete gut of the laundry, plumbing, cabinets, ventilation, shelving, backsplash",
+      "gradient": "gradient-blue",
+      "year": "2018",
+      "started": 2018,
+      "image": "assets/projects/diy/laundry/laundry1.jpg",
+      "gallery": [
+        "assets/projects/diy/laundry/laundry2.jpg",
+        "assets/projects/diy/laundry/laundry3.jpg",
+        "assets/projects/diy/laundry/laundry4.jpg",
+        "assets/projects/diy/laundry/laundry5.jpg",
+        "assets/projects/diy/laundry/laundry6.jpg",
+        "assets/projects/diy/laundry/laundry7.jpg",
+        "assets/projects/diy/laundry/laundry8.jpg",
+        "assets/projects/diy/laundry/laundry9.jpg",
+        "assets/projects/diy/laundry/laundry10.jpg"
+      ]
+    },
+    {
+      "id": 21,
+      "title": "Sound Bar",
+      "category": "DIY",
+      "description": "Custom sound bar built from salvaged Rimu timber with quality drivers and a built-in amplifier.",
+      "gradient": "gradient-violet",
+      "year": "2018",
+      "image": "assets/projects/diy/soundbar/soundbar1.jpg",
+      "gallery": [
+        "assets/projects/diy/soundbar/soundbar2.jpg",
+        "assets/projects/diy/soundbar/soundbar3.jpg",
+        "assets/projects/diy/soundbar/soundbar4.jpg",
+        "assets/projects/diy/soundbar/soundbar5.jpg",
+        "assets/projects/diy/soundbar/soundbar6.jpg",
+        "assets/projects/diy/soundbar/soundbar7.jpg"
+      ]
+    },
+    {
+      "id": 20,
+      "title": "Boom Box",
+      "category": "DIY",
+      "description": "Portable 2.1 speaker system built for more punch than off-the-shelf options. Runs on 12V for wall or car battery power.",
+      "gradient": "gradient-violet",
+      "year": "2018",
+      "image": "assets/projects/diy/boombox/boombox1.jpg",
+      "gallery": [
+        "assets/projects/diy/boombox/boombox2.jpg",
+        "assets/projects/diy/boombox/boombox3.jpg",
+        "assets/projects/diy/boombox/boombox4.jpg",
+        "assets/projects/diy/boombox/boombox5.jpg"
+      ],
+      "specs": [
+        "2.1 Audio",
+        "12V power from wall or car battery"
+      ]
+    },
+    {
+      "id": 188,
+      "title": "Cavity Slider",
+      "category": "DIY",
+      "description": "Removed a dated ornamental sliding door and replaced it with a cavity slider.",
+      "gradient": "gradient-violet",
+      "year": "2016",
+      "image": "assets/projects/diy/door/door1.jpg",
+      "gallery": [
+        "assets/projects/diy/door/door2.jpg",
+        "assets/projects/diy/door/door3.jpg",
+        "assets/projects/diy/door/door4.jpg",
+        "assets/projects/diy/door/door5.jpg",
+        "assets/projects/diy/door/door6.jpg",
+        "assets/projects/diy/door/door7.jpg",
+        "assets/projects/diy/door/door8.jpg",
+        "assets/projects/diy/door/door9.jpg"
+      ]
+    }
+  ]
+}

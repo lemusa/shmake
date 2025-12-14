@@ -1,0 +1,7 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(ls -la \"c:\\Users\\samha\\OneDrive\\Documents\\GitHub\\shmake\\assets\\projects\\app\"\" 2>/dev/null || dir \"c:UserssamhaOneDriveDocumentsGitHubshmakeassetsprojectsapp\" 2>/dev/null || echo \"Directory doesn 't exist \")"
+    ]
+  }
+}
