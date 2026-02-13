@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 80">
+  <!-- Horizontal lockup with tagline -->
+
+  <!-- Logo mark -->
+  <circle cx="40" cy="40" r="34" fill="#8B9A46"/>
+  <circle cx="40" cy="40" r="28" fill="#A8C256"/>
+  <circle cx="40" cy="40" r="21" fill="#C5D971"/>
+  <circle cx="40" cy="40" r="7" fill="#FFFEF0"/>
+
+  <!-- Segment lines -->
+  <g stroke="#FFFEF0" stroke-width="3" stroke-linecap="round">
+    <line x1="40" y1="40" x2="40" y2="6"/>
+    <line x1="40" y1="40" x2="72" y2="21"/>
+    <line x1="40" y1="40" x2="72" y2="59"/>
+    <line x1="40" y1="40" x2="8" y2="59"/>
+    <line x1="40" y1="40" x2="8" y2="21"/>
+  </g>
+
+  <!-- Wordmark -->
+  <text x="88" y="38" font-family="system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="36" font-weight="600" fill="#FFFFFF">KiwiSlice</text>
+
+  <!-- Tagline -->
+  <text x="88" y="58" font-family="system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="14" fill="rgba(255,255,255,0.9)">Budgeting for Kiwis.</text>
+</svg>
