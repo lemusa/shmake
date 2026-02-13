@@ -1,10 +1,13 @@
-import { useState, useCallback } from 'react'
-import { HERO_CARDS } from '../data/projects'
+import { useState, useEffect, useCallback } from 'react'
+import { loadHeroCards, HERO_CARDS as FALLBACK } from '../data/projects'
 import { usePortfolio } from '../context/PortfolioContext'
 
 export default function HeroCards() {
-  const [expanded, setExpanded] = useState(true) // tracks if initial expansion is active
+  const [expanded, setExpanded] = useState(true)
+  const [cards, setCards] = useState(FALLBACK)
   const { openPortfolio } = usePortfolio()
+
+  useEffect(() => { loadHeroCards().then(setCards) }, [])
 
   const handleMouseEnter = useCallback(() => {
     setExpanded(false)
@@ -20,7 +23,7 @@ export default function HeroCards() {
   return (
     <section className="hero-cards scroll-section" id="projects">
       <div className="card-container">
-        {HERO_CARDS.map((card, i) => (
+        {cards.map((card, i) => (
           <div
             key={card.key}
             className={`hero-card ${i === 0 && expanded ? 'initially-expanded' : ''}`}

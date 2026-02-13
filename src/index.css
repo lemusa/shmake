@@ -610,3 +610,17 @@ body {
 /* ── Scrollbar hiding ────────────────────────────────────── */
 .hide-scrollbar::-webkit-scrollbar { display: none; }
 .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* ── Admin styles ────────────────────────────────────────── */
+@keyframes slideIn {
+  from { transform: translateX(100%); }
+  to { transform: translateX(0); }
+}
+
+.fs {
+  font-family: 'DM Sans', sans-serif;
+}
+
+.fm {
+  font-family: 'DM Mono', monospace;
+}

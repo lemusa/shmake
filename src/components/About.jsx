@@ -1,9 +1,12 @@
-import { ABOUT_CONTENT } from '../data/projects'
+import { useState, useEffect } from 'react'
+import { loadSiteContent, ABOUT_CONTENT as FALLBACK } from '../data/projects'
 import { usePortfolio } from '../context/PortfolioContext'
 
 export default function About() {
   const { openPortfolio } = usePortfolio()
-  const { name, photo, tagline, taglineSub, bio, skills } = ABOUT_CONTENT
+  const [about, setAbout] = useState(FALLBACK)
+  useEffect(() => { loadSiteContent().then(sc => setAbout(sc.about)) }, [])
+  const { name, photo, tagline, taglineSub, bio, skills } = about
 
   const handlePortfolioClick = (e) => {
     e.preventDefault()

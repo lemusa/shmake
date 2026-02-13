@@ -1,9 +1,11 @@
 import { useState, useRef, useEffect } from 'react'
-import { CONTACT_CONFIG } from '../data/projects'
+import { loadSiteContent, CONTACT_CONFIG as FALLBACK } from '../data/projects'
 import SocialLinks from './SocialLinks'
 
 export default function Contact() {
-  const { formAction, recaptchaSiteKey, heading, subheading } = CONTACT_CONFIG
+  const [config, setConfig] = useState(FALLBACK)
+  useEffect(() => { loadSiteContent().then(sc => setConfig(sc.contact)) }, [])
+  const { formAction, recaptchaSiteKey, heading, subheading } = config
   const [status, setStatus] = useState(null) // 'success' | 'error' | null
   const [statusMsg, setStatusMsg] = useState('')
   const formRef = useRef(null)

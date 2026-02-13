@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm run build:*)",
+      "Bash(npx vite build)",
+      "Bash(dir:*)",
+      "Bash(if not exist \"c:\\\\Users\\\\samha\\\\OneDrive\\\\Documents\\\\GitHub\\\\shmake\\\\migrations\" mkdir \"c:\\\\Users\\\\samha\\\\OneDrive\\\\Documents\\\\GitHub\\\\shmake\\\\migrations\")"
+    ]
+  }
+}
