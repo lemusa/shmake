@@ -1,0 +1,5 @@
+# Supabase Edge Functions Configuration
+
+[functions.stripe-webhook]
+# Allow unauthenticated access (Stripe webhooks don't send Supabase auth headers)
+verify_jwt = false

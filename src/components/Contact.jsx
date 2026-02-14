@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from 'react'
 import { loadSiteContent, CONTACT_CONFIG as FALLBACK } from '../data/projects'
+import { supabase } from '../lib/supabase'
 import SocialLinks from './SocialLinks'
 
 export default function Contact() {
@@ -34,6 +35,14 @@ export default function Contact() {
 
     const formData = new FormData(formRef.current)
     formData.append('g-recaptcha-response', recaptchaResponse)
+
+    // Save to Supabase immediately (before Formspree, fire-and-forget)
+    supabase.from('enquiries').insert({
+      name: formData.get('name'),
+      email: formData.get('email'),
+      phone: formData.get('phone') || null,
+      message: formData.get('message'),
+    }).then(({ error }) => { if (error) console.error('Enquiry save:', error) })
 
     try {
       const response = await fetch(formAction, {

@@ -4,7 +4,13 @@
       "Bash(npm run build:*)",
       "Bash(npx vite build)",
       "Bash(dir:*)",
-      "Bash(if not exist \"c:\\\\Users\\\\samha\\\\OneDrive\\\\Documents\\\\GitHub\\\\shmake\\\\migrations\" mkdir \"c:\\\\Users\\\\samha\\\\OneDrive\\\\Documents\\\\GitHub\\\\shmake\\\\migrations\")"
+      "Bash(if not exist \"c:\\\\Users\\\\samha\\\\OneDrive\\\\Documents\\\\GitHub\\\\shmake\\\\migrations\" mkdir \"c:\\\\Users\\\\samha\\\\OneDrive\\\\Documents\\\\GitHub\\\\shmake\\\\migrations\")",
+      "Bash(npm run sync-stripe-real:*)",
+      "Bash(node:*)",
+      "Bash(ls:*)",
+      "Bash(del \"c:\\\\Users\\\\samha\\\\OneDrive\\\\Documents\\\\GitHub\\\\shmake\\\\scripts\\\\verify-data.js\")",
+      "Bash(npx supabase:*)",
+      "Bash(find:*)"
     ]
   }
 }

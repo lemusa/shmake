@@ -1,8 +1,24 @@
 import { supabase } from './supabase'
 
+const num = v => { const n = parseFloat(v); return isNaN(n) ? 0 : n }
+
+// ─── File Upload ─────────────────────────────────────────────────────────────
+
+export async function uploadFile(file, folder = 'uploads') {
+  try {
+    const ext = file.name.split('.').pop()
+    const name = `${folder}/${Date.now()}-${Math.random().toString(36).slice(2,8)}.${ext}`
+    const { error } = await supabase.storage.from('assets').upload(name, file, { upsert: true })
+    if (error) throw error
+    const { data: { publicUrl } } = supabase.storage.from('assets').getPublicUrl(name)
+    return publicUrl
+  } catch (e) { console.error('uploadFile:', e); return null }
+}
+
 // ─── Helpers ────────────────────────────────────────────────────────────────
 
 export async function resolveClientId(name) {
+  if (!name) return null
   try {
     const { data } = await supabase.from('clients').select('id').eq('name', name).single()
     return data?.id ?? null
@@ -10,6 +26,7 @@ export async function resolveClientId(name) {
 }
 
 export async function resolveJobId(title) {
+  if (!title) return null
   try {
     const { data } = await supabase.from('jobs').select('id').eq('title', title).single()
     return data?.id ?? null
@@ -20,12 +37,12 @@ export async function resolveJobId(title) {
 
 export async function listJobs() {
   try {
-    const { data, error } = await supabase.from('jobs').select('*, clients(name)')
+    const { data, error } = await supabase.from('jobs').select('*')
     if (error) throw error
     return (data || []).map(r => ({
       id: r.id,
       t: r.title,
-      cl: r.clients?.name ?? '',
+      clId: r.client_id,
       ty: r.type,
       st: r.status,
       pr: r.priority,
@@ -41,7 +58,7 @@ export async function createJob(d) {
     const client_id = await resolveClientId(d.cl)
     const { data, error } = await supabase.from('jobs').insert({
       title: d.t, client_id, type: d.ty, status: d.st,
-      priority: d.pr, value: d.v, due_date: d.due || null,
+      priority: d.pr, value: num(d.v), due_date: d.due || null,
       internal_note: d.n || null,
     }).select().single()
     if (error) throw error
@@ -57,7 +74,7 @@ export async function updateJob(id, d) {
     if (d.ty !== undefined) updates.type = d.ty
     if (d.st !== undefined) updates.status = d.st
     if (d.pr !== undefined) updates.priority = d.pr
-    if (d.v !== undefined) updates.value = d.v
+    if (d.v !== undefined) updates.value = num(d.v)
     if (d.due !== undefined) updates.due_date = d.due || null
     if (d.n !== undefined) updates.internal_note = d.n || null
     const { data, error } = await supabase.from('jobs').update(updates).eq('id', id).select().single()
@@ -198,12 +215,12 @@ export async function deleteContact(id) {
 
 export async function listQuotes() {
   try {
-    const { data, error } = await supabase.from('quotes').select('*, clients(name), jobs(title)')
+    const { data, error } = await supabase.from('quotes').select('*')
     if (error) throw error
     return (data || []).map(r => ({
       id: r.id,
-      cl: r.clients?.name ?? '',
-      job: r.jobs?.title ?? '',
+      clId: r.client_id,
+      jobId: r.job_id,
       am: r.amount,
       gst: r.gst,
       st: r.status,
@@ -235,7 +252,7 @@ export async function createQuote(d) {
     const client_id = d.cl ? await resolveClientId(d.cl) : null
     const job_id = d.job ? await resolveJobId(d.job) : null
     const { data, error } = await supabase.from('quotes').insert({
-      id, client_id, job_id, amount: d.am || 0, gst: d.gst || 0,
+      id, client_id, job_id, amount: num(d.am), gst: num(d.gst),
       status: d.st, date: d.dt, expiry_date: d.exp || null,
       version: d.v || 1, external_note: d.en || null, internal_note: d.inn || null,
     }).select().single()
@@ -249,8 +266,8 @@ export async function updateQuote(id, d) {
     const updates = {}
     if (d.cl !== undefined) updates.client_id = await resolveClientId(d.cl)
     if (d.job !== undefined) updates.job_id = d.job ? await resolveJobId(d.job) : null
-    if (d.am !== undefined) updates.amount = d.am
-    if (d.gst !== undefined) updates.gst = d.gst
+    if (d.am !== undefined) updates.amount = num(d.am)
+    if (d.gst !== undefined) updates.gst = num(d.gst)
     if (d.st !== undefined) updates.status = d.st
     if (d.dt !== undefined) updates.date = d.dt
     if (d.exp !== undefined) updates.expiry_date = d.exp || null
@@ -275,11 +292,11 @@ export async function deleteQuote(id) {
 
 export async function listInvoices() {
   try {
-    const { data, error } = await supabase.from('invoices').select('*, clients(name)')
+    const { data, error } = await supabase.from('invoices').select('*')
     if (error) throw error
     return (data || []).map(r => ({
       id: r.id,
-      cl: r.clients?.name ?? '',
+      clId: r.client_id,
       am: r.amount,
       gst: r.gst,
       st: r.status,
@@ -288,8 +305,22 @@ export async function listInvoices() {
       rec: r.recurring_template_id ? 1 : 0,
       en: r.external_note,
       inn: r.internal_note,
+      payDt: r.payment_date || null,
+      payMethod: r.payment_method || null,
+      payRef: r.payment_reference || null,
     }))
   } catch (e) { console.error('listInvoices:', e); return [] }
+}
+
+export async function markInvoicesOverdue(ids) {
+  if (!ids.length) return
+  try {
+    const { error } = await supabase.from('invoices')
+      .update({ status: 'Overdue' })
+      .in('id', ids)
+      .eq('status', 'Sent')
+    if (error) throw error
+  } catch (e) { console.error('markInvoicesOverdue:', e) }
 }
 
 export async function nextInvoiceId() {
@@ -311,7 +342,7 @@ export async function createInvoice(d) {
     const id = d.id || await nextInvoiceId()
     const client_id = d.cl ? await resolveClientId(d.cl) : null
     const { data, error } = await supabase.from('invoices').insert({
-      id, client_id, amount: d.am || 0, gst: d.gst || 0,
+      id, client_id, amount: num(d.am), gst: num(d.gst),
       status: d.st, date: d.dt, due_date: d.due || null,
       recurring_template_id: d.rec || null, linked_quote_id: d.quote || null,
       external_note: d.en || null, internal_note: d.inn || null,
@@ -325,13 +356,16 @@ export async function updateInvoice(id, d) {
   try {
     const updates = {}
     if (d.cl !== undefined) updates.client_id = await resolveClientId(d.cl)
-    if (d.am !== undefined) updates.amount = d.am
-    if (d.gst !== undefined) updates.gst = d.gst
+    if (d.am !== undefined) updates.amount = num(d.am)
+    if (d.gst !== undefined) updates.gst = num(d.gst)
     if (d.st !== undefined) updates.status = d.st
     if (d.dt !== undefined) updates.date = d.dt
     if (d.due !== undefined) updates.due_date = d.due || null
     if (d.en !== undefined) updates.external_note = d.en || null
     if (d.inn !== undefined) updates.internal_note = d.inn || null
+    if (d.payDt !== undefined) updates.payment_date = d.payDt || null
+    if (d.payMethod !== undefined) updates.payment_method = d.payMethod || null
+    if (d.payRef !== undefined) updates.payment_reference = d.payRef || null
     const { data, error } = await supabase.from('invoices').update(updates).eq('id', id).select().single()
     if (error) throw error
     return data
@@ -350,7 +384,7 @@ export async function deleteInvoice(id) {
 
 export async function listExpenses() {
   try {
-    const { data, error } = await supabase.from('expenses').select('*, jobs(title)')
+    const { data, error } = await supabase.from('expenses').select('*')
     if (error) throw error
     return (data || []).map(r => ({
       id: r.id,
@@ -359,12 +393,18 @@ export async function listExpenses() {
       am: r.amount,
       gst: r.gst,
       cat: r.category,
-      job: r.jobs?.title ?? null,
+      jobId: r.job_id,
+      rcUrl: r.receipt_url || "",
       rc: r.has_receipt ? 1 : 0,
       auto: r.auto_imported ? 1 : 0,
       ap: r.apportioned ? 1 : 0,
       full: r.full_amount,
       bp: r.business_percent,
+      sup: r.supplier || "",
+      paid: !!r.paid,
+      payDt: r.payment_date || null,
+      invNo: r.invoice_number || "",
+      due: r.due_date || null,
     }))
   } catch (e) { console.error('listExpenses:', e); return [] }
 }
@@ -373,10 +413,13 @@ export async function createExpense(d) {
   try {
     const job_id = d.job ? await resolveJobId(d.job) : null
     const { data, error } = await supabase.from('expenses').insert({
-      date: d.dt, description: d.d, amount: d.am, gst: d.gst || 0,
-      category: d.cat, job_id, has_receipt: !!d.rc,
+      date: d.dt, description: d.d, amount: num(d.am), gst: num(d.gst),
+      category: d.cat, job_id, supplier: d.sup || null,
+      receipt_url: d.rcUrl || null, has_receipt: !!d.rcUrl,
       auto_imported: !!d.auto, apportioned: !!d.ap,
-      full_amount: d.full || d.am, business_percent: d.bp ?? 100,
+      full_amount: d.ap ? num(d.full) : null, business_percent: d.ap ? (num(d.bp) || null) : null,
+      paid: !!d.paid, payment_date: d.payDt || null,
+      invoice_number: d.invNo || null, due_date: d.due || null,
     }).select().single()
     if (error) throw error
     return data
@@ -388,15 +431,20 @@ export async function updateExpense(id, d) {
     const updates = {}
     if (d.dt !== undefined) updates.date = d.dt
     if (d.d !== undefined) updates.description = d.d
-    if (d.am !== undefined) updates.amount = d.am
-    if (d.gst !== undefined) updates.gst = d.gst
+    if (d.am !== undefined) updates.amount = num(d.am)
+    if (d.gst !== undefined) updates.gst = num(d.gst)
     if (d.cat !== undefined) updates.category = d.cat
     if (d.job !== undefined) updates.job_id = d.job ? await resolveJobId(d.job) : null
-    if (d.rc !== undefined) updates.has_receipt = !!d.rc
+    if (d.sup !== undefined) updates.supplier = d.sup || null
+    if (d.rcUrl !== undefined) { updates.receipt_url = d.rcUrl || null; updates.has_receipt = !!d.rcUrl }
     if (d.auto !== undefined) updates.auto_imported = !!d.auto
     if (d.ap !== undefined) updates.apportioned = !!d.ap
-    if (d.full !== undefined) updates.full_amount = d.full
-    if (d.bp !== undefined) updates.business_percent = d.bp
+    if (d.full !== undefined) updates.full_amount = d.ap ? num(d.full) : null
+    if (d.bp !== undefined) updates.business_percent = d.ap ? (num(d.bp) || null) : null
+    if (d.paid !== undefined) updates.paid = !!d.paid
+    if (d.payDt !== undefined) updates.payment_date = d.payDt || null
+    if (d.invNo !== undefined) updates.invoice_number = d.invNo || null
+    if (d.due !== undefined) updates.due_date = d.due || null
     const { data, error } = await supabase.from('expenses').update(updates).eq('id', id).select().single()
     if (error) throw error
     return data
@@ -433,7 +481,7 @@ export async function createTrip(d) {
   try {
     const { data, error } = await supabase.from('trips').insert({
       date: d.dt, from_location: d.fr, to_location: d.to,
-      km: d.km, purpose: d.p, category: d.cat,
+      km: num(d.km), purpose: d.p, category: d.cat,
     }).select().single()
     if (error) throw error
     return data
@@ -467,8 +515,8 @@ export async function listHomeOfficeExpenses() {
 
 export async function createHomeOfficeExpense(d) {
   try {
-    const full = d.f || 0
-    const pc = d.pc || 0
+    const full = num(d.f)
+    const pc = num(d.pc)
     const { data, error } = await supabase.from('home_office_expenses').insert({
       month: d.m, type: d.ty, full_amount: full,
       business_percent: pc, deductible: full * pc / 100,
@@ -490,11 +538,11 @@ export async function deleteHomeOfficeExpense(id) {
 
 export async function listRecurringTemplates() {
   try {
-    const { data, error } = await supabase.from('recurring_templates').select('*, clients(name)')
+    const { data, error } = await supabase.from('recurring_templates').select('*')
     if (error) throw error
     return (data || []).map(r => ({
       id: r.id,
-      cl: r.clients?.name ?? '',
+      clId: r.client_id,
       d: r.description,
       am: r.amount,
       gst: r.gst,
@@ -510,7 +558,7 @@ export async function createRecurringTemplate(d) {
   try {
     const client_id = d.cl ? await resolveClientId(d.cl) : null
     const { data, error } = await supabase.from('recurring_templates').insert({
-      client_id, description: d.d, amount: d.am, gst: d.gst || 0,
+      client_id, description: d.d, amount: num(d.am), gst: num(d.gst),
       frequency: d.freq, next_date: d.next || null, status: d.st || 'active',
       generated_count: 0,
     }).select().single()
@@ -524,8 +572,8 @@ export async function updateRecurringTemplate(id, d) {
     const updates = {}
     if (d.cl !== undefined) updates.client_id = await resolveClientId(d.cl)
     if (d.d !== undefined) updates.description = d.d
-    if (d.am !== undefined) updates.amount = d.am
-    if (d.gst !== undefined) updates.gst = d.gst
+    if (d.am !== undefined) updates.amount = num(d.am)
+    if (d.gst !== undefined) updates.gst = num(d.gst)
     if (d.freq !== undefined) updates.frequency = d.freq
     if (d.next !== undefined) updates.next_date = d.next || null
     if (d.st !== undefined) updates.status = d.st
@@ -533,6 +581,14 @@ export async function updateRecurringTemplate(id, d) {
     if (error) throw error
     return data
   } catch (e) { console.error('updateRecurringTemplate:', e); return null }
+}
+
+export async function deleteRecurringTemplate(id) {
+  try {
+    const { error } = await supabase.from('recurring_templates').delete().eq('id', id)
+    if (error) throw error
+    return true
+  } catch (e) { console.error('deleteRecurringTemplate:', e); return false }
 }
 
 // ─── Subscription Sources ───────────────────────────────────────────────────
@@ -546,15 +602,169 @@ export async function listSubscriptionSources() {
       return {
         id: r.id,
         app: r.app_name,
+        platform: r.platform || 'Other',
         subscribers: r.subscribers,
         mrr: r.mrr,
-        grossJan: m.grossJan ?? null,
-        feesJan: m.feesJan ?? null,
-        netJan: m.netJan ?? null,
-        trend: m.trend ?? null,
+        grossJan: r.gross_jan ?? m.grossJan ?? null,
+        feesJan: r.fees_jan ?? m.feesJan ?? null,
+        netJan: r.net_jan ?? m.netJan ?? null,
+        gstJan: r.gst_jan ?? null,
+        trend: m.trend ?? [],
+        metadata: r.metadata,
+        status: r.status ?? 'active',
+        stripeSubscriptionId: r.stripe_subscription_id,
+        stripeCustomerId: r.stripe_customer_id,
       }
     })
   } catch (e) { console.error('listSubscriptionSources:', e); return [] }
+}
+
+export async function createSubscriptionSource(d) {
+  try {
+    const { data, error } = await supabase.from('subscription_sources').insert({
+      app_name: d.appName,
+      platform: d.platform || 'Other',
+      subscribers: parseInt(d.subscribers) || 1,
+      mrr: num(d.mrr),
+      gross_jan: num(d.grossJan),
+      fees_jan: num(d.feesJan),
+      net_jan: num(d.netJan),
+      gst_jan: num(d.gstJan),
+      metadata: d.metadata || {},
+    }).select().single()
+    if (error) throw error
+    return data
+  } catch (e) { console.error('createSubscriptionSource:', e); return null }
+}
+
+export async function updateSubscriptionSource(id, d) {
+  try {
+    const updates = {}
+    if (d.appName !== undefined) updates.app_name = d.appName
+    if (d.subscribers !== undefined) updates.subscribers = parseInt(d.subscribers) || 0
+    if (d.mrr !== undefined) updates.mrr = num(d.mrr)
+    if (d.grossJan !== undefined) updates.gross_jan = num(d.grossJan)
+    if (d.feesJan !== undefined) updates.fees_jan = num(d.feesJan)
+    if (d.netJan !== undefined) updates.net_jan = num(d.netJan)
+    if (d.gstJan !== undefined) updates.gst_jan = num(d.gstJan)
+    if (d.metadata !== undefined) updates.metadata = d.metadata
+    const { data, error } = await supabase.from('subscription_sources').update(updates).eq('id', id).select().single()
+    if (error) throw error
+    return data
+  } catch (e) { console.error('updateSubscriptionSource:', e); return null }
+}
+
+// ─── Manual Payments ─────────────────────────────────────────────────────────
+
+export async function listManualPayments() {
+  try {
+    const { data, error } = await supabase.from('manual_payments').select('*').order('date', { ascending: false })
+    if (error) throw error
+    return (data || []).map(r => ({
+      id: r.id,
+      sid: r.source_id,
+      dt: r.date,
+      g: Number(r.gross) || 0,
+      fe: Number(r.fee) || 0,
+      ne: Number(r.net) || 0,
+      payer: r.payer,
+      n: r.notes,
+    }))
+  } catch (e) { console.error('listManualPayments:', e); return [] }
+}
+
+export async function createManualPayment(d) {
+  try {
+    const { data, error } = await supabase.from('manual_payments').insert({
+      source_id: d.sid,
+      date: d.dt,
+      gross: num(d.g),
+      fee: num(d.fe),
+      payer: d.payer || null,
+      notes: d.n || null,
+    }).select().single()
+    if (error) throw error
+    return data
+  } catch (e) { console.error('createManualPayment:', e); return null }
+}
+
+export async function updateManualPayment(id, d) {
+  try {
+    const updates = {}
+    if (d.sid !== undefined) updates.source_id = d.sid
+    if (d.dt !== undefined) updates.date = d.dt
+    if (d.g !== undefined) updates.gross = num(d.g)
+    if (d.fe !== undefined) updates.fee = num(d.fe)
+    if (d.payer !== undefined) updates.payer = d.payer
+    if (d.n !== undefined) updates.notes = d.n
+    const { data, error } = await supabase.from('manual_payments').update(updates).eq('id', id).select().single()
+    if (error) throw error
+    return data
+  } catch (e) { console.error('updateManualPayment:', e); return null }
+}
+
+export async function deleteManualPayment(id) {
+  try {
+    const { error } = await supabase.from('manual_payments').delete().eq('id', id)
+    if (error) throw error
+    return true
+  } catch (e) { console.error('deleteManualPayment:', e); return false }
+}
+
+export function computeManualPaymentYTD(payments, sourceId) {
+  const now = new Date()
+  const fyStart = now.getMonth() >= 3
+    ? new Date(now.getFullYear(), 3, 1)
+    : new Date(now.getFullYear() - 1, 3, 1)
+  const filtered = payments.filter(p => {
+    if (p.sid !== sourceId) return false
+    return new Date(p.dt) >= fyStart
+  })
+  return {
+    ytdGross: filtered.reduce((s, p) => s + (p.g || 0), 0),
+    ytdFees: filtered.reduce((s, p) => s + (p.fe || 0), 0),
+    ytdNet: filtered.reduce((s, p) => s + (p.ne || 0), 0),
+  }
+}
+
+// ─── Enquiries ──────────────────────────────────────────────────────────────
+
+export async function listEnquiries() {
+  try {
+    const { data, error } = await supabase.from('enquiries').select('*').order('created_at', { ascending: false })
+    if (error) throw error
+    return (data || []).map(r => ({
+      id: r.id,
+      name: r.name,
+      email: r.email,
+      phone: r.phone || "",
+      msg: r.message,
+      status: r.status || "New",
+      notes: r.notes || "",
+      jobId: r.job_id || null,
+      dt: r.created_at,
+    }))
+  } catch (e) { console.error('listEnquiries:', e); return [] }
+}
+
+export async function updateEnquiry(id, d) {
+  try {
+    const updates = {}
+    if (d.status !== undefined) updates.status = d.status
+    if (d.notes !== undefined) updates.notes = d.notes || null
+    if (d.jobId !== undefined) updates.job_id = d.jobId
+    const { data, error } = await supabase.from('enquiries').update(updates).eq('id', id).select().single()
+    if (error) throw error
+    return data
+  } catch (e) { console.error('updateEnquiry:', e); return null }
+}
+
+export async function deleteEnquiry(id) {
+  try {
+    const { error } = await supabase.from('enquiries').delete().eq('id', id)
+    if (error) throw error
+    return true
+  } catch (e) { console.error('deleteEnquiry:', e); return false }
 }
 
 // ─── Stripe Transactions ────────────────────────────────────────────────────
@@ -567,9 +777,9 @@ export async function listStripeTransactions() {
       id: r.id,
       dt: r.date,
       ty: r.type,
-      g: r.gross,
-      fe: r.fee,
-      ne: r.net,
+      g: Number(r.gross) || 0,
+      fe: Number(r.fee) || 0,
+      ne: Number(r.net) || 0,
       d: r.description,
     }))
   } catch (e) { console.error('listStripeTransactions:', e); return [] }
@@ -579,16 +789,132 @@ export async function listStripeTransactions() {
 
 export async function listBankTransactions() {
   try {
-    const { data, error } = await supabase.from('bank_transactions').select('*')
+    const { data, error } = await supabase.from('bank_transactions')
+      .select('*, bank_matches(id, match_type, invoice_id, expense_id, amount)')
+      .order('date', { ascending: false })
     if (error) throw error
     return (data || []).map(r => ({
       id: r.id,
       dt: r.date,
       d: r.description,
-      am: r.amount,
+      am: Number(r.amount) || 0,
       mt: r.matched_text,
+      bank: r.bank_name,
+      rec: !!r.reconciled,
+      batch: r.import_batch,
+      matches: (r.bank_matches || []).map(m => ({
+        id: m.id, ty: m.match_type,
+        invId: m.invoice_id, expId: m.expense_id,
+        am: Number(m.amount) || 0,
+      })),
     }))
   } catch (e) { console.error('listBankTransactions:', e); return [] }
+}
+
+export async function createBankTransactions(rows) {
+  try {
+    const { data, error } = await supabase.from('bank_transactions')
+      .insert(rows.map(r => ({
+        date: r.date, description: r.description,
+        amount: num(r.amount), bank_name: r.bank,
+        import_batch: r.batch, reconciled: false,
+      }))).select()
+    if (error) throw error
+    return data
+  } catch (e) { console.error('createBankTransactions:', e); return null }
+}
+
+export async function deleteBankTransaction(id) {
+  try {
+    const { error } = await supabase.from('bank_transactions').delete().eq('id', id)
+    if (error) throw error
+    return true
+  } catch (e) { console.error('deleteBankTransaction:', e); return false }
+}
+
+export async function deleteBankBatch(batchId) {
+  try {
+    const { error } = await supabase.from('bank_transactions').delete().eq('import_batch', batchId)
+    if (error) throw error
+    return true
+  } catch (e) { console.error('deleteBankBatch:', e); return false }
+}
+
+export async function createBankMatch(d) {
+  try {
+    const { data, error } = await supabase.from('bank_matches').insert({
+      bank_transaction_id: d.bankTxnId,
+      match_type: d.type,
+      invoice_id: d.type === 'invoice' ? d.targetId : null,
+      expense_id: d.type === 'expense' ? d.targetId : null,
+      amount: num(d.amount),
+    }).select().single()
+    if (error) throw error
+    await supabase.from('bank_transactions')
+      .update({ reconciled: true }).eq('id', d.bankTxnId)
+    if (d.type === 'expense' && d.targetId) {
+      await supabase.from('expenses').update({ paid: true, payment_date: d.payDt || null }).eq('id', d.targetId)
+    }
+    return data
+  } catch (e) { console.error('createBankMatch:', e); return null }
+}
+
+export async function deleteBankMatch(id, bankTxnId) {
+  try {
+    // Get match details before deleting (to know if it's an expense)
+    const { data: match } = await supabase.from('bank_matches').select('match_type, expense_id').eq('id', id).single()
+    const { error } = await supabase.from('bank_matches').delete().eq('id', id)
+    if (error) throw error
+    const { data: remaining } = await supabase.from('bank_matches')
+      .select('id').eq('bank_transaction_id', bankTxnId)
+    if (!remaining?.length) {
+      await supabase.from('bank_transactions')
+        .update({ reconciled: false }).eq('id', bankTxnId)
+    }
+    // Unmark expense as paid if it was an expense match
+    if (match?.match_type === 'expense' && match?.expense_id) {
+      const { data: otherMatches } = await supabase.from('bank_matches')
+        .select('id').eq('expense_id', match.expense_id)
+      if (!otherMatches?.length) {
+        await supabase.from('expenses').update({ paid: false, payment_date: null }).eq('id', match.expense_id)
+      }
+    }
+    return true
+  } catch (e) { console.error('deleteBankMatch:', e); return false }
+}
+
+export function suggestMatches(bankRow, invoices, expenses) {
+  const candidates = []
+  if (bankRow.am > 0) {
+    for (const inv of invoices) {
+      if (inv.st === 'Paid' || inv.st === 'Draft') continue
+      let score = 0
+      if (Math.abs(bankRow.am - inv.am) < 0.01) score += 50
+      else if (inv.am > 0 && Math.abs(bankRow.am - inv.am) / inv.am < 0.05) score += 20
+      if (bankRow.d && inv.id && bankRow.d.toLowerCase().includes(inv.id.toLowerCase())) score += 40
+      if (inv.cl && bankRow.d && bankRow.d.toLowerCase().includes(inv.cl.toLowerCase())) score += 20
+      if (inv.due) { const dd = Math.abs((new Date(bankRow.dt) - new Date(inv.due)) / 86400000); if (dd <= 7) score += 10 }
+      if (score >= 30) candidates.push({ type: 'invoice', id: inv.id, score, label: `${inv.id} — ${inv.cl || ''}`, amount: inv.am })
+    }
+  }
+  if (bankRow.am < 0) {
+    const abs = Math.abs(bankRow.am)
+    for (const exp of expenses) {
+      if (exp.paid) continue
+      let score = 0
+      if (Math.abs(abs - exp.am) < 0.01) score += 50
+      if (exp.sup && bankRow.d && bankRow.d.toLowerCase().includes(exp.sup.toLowerCase())) score += 25
+      if (bankRow.d && exp.d) {
+        const bw = new Set(bankRow.d.toLowerCase().split(/\s+/))
+        const overlap = exp.d.toLowerCase().split(/\s+/).filter(w => w.length > 2 && bw.has(w)).length
+        score += overlap * 10
+      }
+      if (exp.dt) { const dd = Math.abs((new Date(bankRow.dt) - new Date(exp.dt)) / 86400000); if (dd <= 3) score += 15 }
+      if (score >= 30) candidates.push({ type: 'expense', id: exp.id, score, label: exp.d, amount: exp.am })
+    }
+  }
+  candidates.sort((a, b) => b.score - a.score)
+  return candidates.slice(0, 5)
 }
 
 // ─── Line Items ─────────────────────────────────────────────────────────────
@@ -625,9 +951,9 @@ export async function saveLineItems(type, parentId, items) {
       [fk]: parentId,
       description: i.description,
       type: i.type,
-      quantity: i.quantity,
-      unit_price: i.unitPrice,
-      total: i.total,
+      quantity: num(i.quantity),
+      unit_price: num(i.unitPrice),
+      total: num(i.total),
     }))
     const { error: insErr } = await supabase.from(table).insert(rows)
     if (insErr) throw insErr
@@ -775,7 +1101,7 @@ export async function createPortfolioProject(d) {
     const { data, error } = await supabase.from('portfolio_projects').insert({
       title: d.title, category, description: d.description,
       long_description: d.longDescription, gradient: d.gradient,
-      year: d.year, started: d.started, image: d.image,
+      year: d.year, started: d.started ? parseInt(d.started) : null, image: d.image,
       gallery: d.gallery || [], specs: d.specs || [],
       skills: d.skills || [], sort_order: d.sortOrder || 0,
     }).select().single()
@@ -793,7 +1119,7 @@ export async function updatePortfolioProject(id, d) {
     if (d.longDescription !== undefined) updates.long_description = d.longDescription
     if (d.gradient !== undefined) updates.gradient = d.gradient
     if (d.year !== undefined) updates.year = d.year
-    if (d.started !== undefined) updates.started = d.started
+    if (d.started !== undefined) updates.started = d.started ? parseInt(d.started) : null
     if (d.image !== undefined) updates.image = d.image
     if (d.gallery !== undefined) updates.gallery = d.gallery
     if (d.specs !== undefined) updates.specs = d.specs
@@ -899,7 +1225,7 @@ export async function createBudgetItem(d) {
       tax_year: d.taxYear,
       category: d.category,
       type: d.type,
-      annual_amount: d.annualAmount || 0,
+      annual_amount: num(d.annualAmount),
       monthly_amounts: d.monthlyAmounts || {},
       notes: d.notes || null,
     })
@@ -914,7 +1240,7 @@ export async function updateBudgetItem(id, d) {
     if (d.taxYear !== undefined) updates.tax_year = d.taxYear
     if (d.category !== undefined) updates.category = d.category
     if (d.type !== undefined) updates.type = d.type
-    if (d.annualAmount !== undefined) updates.annual_amount = d.annualAmount
+    if (d.annualAmount !== undefined) updates.annual_amount = num(d.annualAmount)
     if (d.monthlyAmounts !== undefined) updates.monthly_amounts = d.monthlyAmounts
     if (d.notes !== undefined) updates.notes = d.notes || null
     const { error } = await supabase.from('budget_items').update(updates).eq('id', id)

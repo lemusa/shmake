@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Header from './components/Header'
 import NavSidebar from './components/NavSidebar'
 import HeroCards from './components/HeroCards'
@@ -10,6 +10,13 @@ import ProjectDetailModal from './components/ProjectDetailModal'
 
 export default function App() {
   const [navOpen, setNavOpen] = useState(false)
+
+  useEffect(() => {
+    if (window.location.hash) {
+      const el = document.querySelector(window.location.hash)
+      if (el) setTimeout(() => el.scrollIntoView({ behavior: 'smooth', block: 'start' }), 100)
+    }
+  }, [])
 
   return (
     <>
