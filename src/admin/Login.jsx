@@ -95,10 +95,6 @@ export default function Login() {
             </button>
           </form>
         </div>
-
-        <p className="text-center text-zinc-700 text-xs mt-6 tracking-wide">
-          Authorised access only
-        </p>
       </div>
     </div>
   )
