@@ -1,2 +1,0 @@
-id,Amount,Created (UTC),Currency,Livemode,Arrival Date (UTC),Source Type,Destination,Status,Type,Method,Description,Balance Transaction,Failure Balance Transaction,Failure Message,Failure Code,Statement Descriptor,Trace ID,Trace ID Status,Destination Name,Destination Country,Destination Last 4
-po_1SB2svQrwMHPqgYoyCTBJK0f,43.21,2025-09-25 00:18,nzd,true,2025-09-29 00:00,card,ba_1PyuJuQrwMHPqgYomOwqmKRd,paid,bank_account,standard,STRIPE PAYOUT,txn_1SB2swQrwMHPqgYoBhyGXZEL,,,,Buy Me a Coffee,BUY ME A-DZ2F0D,supported,Westpac,NZ,4000
