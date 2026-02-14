@@ -56,6 +56,7 @@ export default function NavSidebar({ open, onClose }) {
             </a>
           </div>
         </div>
+        <a href="/admin" className="nav-admin" onClick={onClose}>Admin</a>
       </nav>
     </>
   )

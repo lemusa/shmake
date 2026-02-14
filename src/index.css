@@ -346,6 +346,20 @@ body {
   border-bottom: none !important;
 }
 
+.nav-sidebar a.nav-admin {
+  margin-top: auto;
+  font-size: 0.75rem !important;
+  font-weight: 400 !important;
+  color: var(--text-secondary, #888) !important;
+  border-bottom: none;
+  opacity: 0.5;
+  transition: opacity 0.2s ease;
+}
+
+.nav-sidebar a.nav-admin:hover {
+  opacity: 1;
+}
+
 @media (max-width: 768px) {
   .nav-sidebar {
     width: 280px;
