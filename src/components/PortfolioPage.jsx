@@ -143,7 +143,7 @@ export default function PortfolioPage() {
       <section className="pf-hero">
         <div className="pf-hero-inner">
           <div className="pf-hero-text">
-            <div className="pf-hero-eyebrow">Build things — since 2006</div>
+            <div className="pf-hero-eyebrow">Building things — since 2006</div>
             <h1 className="pf-hero-h1">I get curious<span className="pf-accent">,</span><br />build things<span className="pf-accent">,</span><br />move on<span className="pf-accent">.</span></h1>
             <p className="pf-hero-sub">Operations manager, maker, developer, designer. Equally comfortable with power tools and code editors — 18 years of solving problems across every discipline I can get my hands on.</p>
           </div>

@@ -346,6 +346,7 @@ body {
     opacity: 1;
     max-height: none;
   }
+  .hero-card:nth-child(n+2) { display: none; }
 }
 
 /* ── Nav sidebar ─────────────────────────────────────────── */
