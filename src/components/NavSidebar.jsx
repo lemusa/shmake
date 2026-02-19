@@ -4,7 +4,8 @@ export default function NavSidebar({ open, onClose }) {
     if (href.startsWith('#')) {
       e.preventDefault()
       const target = document.querySelector(href)
-      if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' })
+      const sc = document.querySelector('.scroll-container')
+      if (target && sc) sc.scrollTo({ top: target.offsetTop, behavior: 'smooth' })
     }
   }
 

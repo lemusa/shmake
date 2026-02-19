@@ -15,7 +15,8 @@ export default function App() {
   useEffect(() => {
     if (window.location.hash) {
       const el = document.querySelector(window.location.hash)
-      if (el) setTimeout(() => el.scrollIntoView({ behavior: 'smooth', block: 'start' }), 100)
+      const sc = document.querySelector('.scroll-container')
+      if (el && sc) setTimeout(() => sc.scrollTo({ top: el.offsetTop, behavior: 'smooth' }), 100)
     }
   }, [])
 
@@ -48,7 +49,7 @@ export default function App() {
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><polygon points="5,3 19,12 5,21"/></svg>
           <span>Demo</span>
         </a>
-        <a href="#contact" className="mbb-item" onClick={e => { e.preventDefault(); document.querySelector('#contact')?.scrollIntoView({ behavior: 'smooth', block: 'start' }) }}>
+        <a href="#contact" className="mbb-item" onClick={e => { e.preventDefault(); const t = document.querySelector('#contact'); const sc = document.querySelector('.scroll-container'); if (t && sc) sc.scrollTo({ top: t.offsetTop, behavior: 'smooth' }) }}>
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
           <span>Contact</span>
         </a>
