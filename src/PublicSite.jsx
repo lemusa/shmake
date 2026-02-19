@@ -7,6 +7,7 @@ import Contact from './components/Contact'
 import Footer from './components/Footer'
 import PortfolioOverlay from './components/PortfolioOverlay'
 import ProjectDetailModal from './components/ProjectDetailModal'
+import SEO from './components/SEO'
 
 export default function App() {
   const [navOpen, setNavOpen] = useState(false)
@@ -20,6 +21,11 @@ export default function App() {
 
   return (
     <>
+      <SEO
+        title="SHMAKE — Software & Product Development, Christchurch NZ"
+        description="Custom software and product development by Sam Haughey. Building tools like myMECA, TeaBreak, and shmakeCut from Christchurch, New Zealand."
+        path="/"
+      />
       <Header navOpen={navOpen} setNavOpen={setNavOpen} />
       <NavSidebar open={navOpen} onClose={() => setNavOpen(false)} />
 

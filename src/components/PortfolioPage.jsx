@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { loadProjects } from '../data/projects'
 import { usePortfolio } from '../context/PortfolioContext'
 import ProjectDetailModal from './ProjectDetailModal'
+import SEO from './SEO'
 
 /* ── Category → color mapping ── */
 const CAT_COLORS = {
@@ -125,6 +126,11 @@ export default function PortfolioPage() {
 
   return (
     <div className="pf-page">
+      <SEO
+        title="Portfolio — SHMAKE"
+        description="Explore SHMAKE's portfolio of software, design, CAD, and DIY projects. Real tools solving real problems, built from Christchurch, NZ."
+        path="/portfolio"
+      />
       {/* ── Top Bar ── */}
       <nav className="pf-top-bar">
         <div className="pf-top-left">

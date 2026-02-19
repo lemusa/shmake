@@ -15,7 +15,8 @@
       "Bash(cat:*)",
       "WebFetch(domain:admin-widget.shmake.nz)",
       "Bash(curl:*)",
-      "Bash(grep:*)"
+      "Bash(grep:*)",
+      "Bash(npm ls:*)"
     ]
   }
 }

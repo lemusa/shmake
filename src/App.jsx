@@ -4,6 +4,7 @@ import { ThemeProvider } from './context/ThemeContext'
 import { PortfolioProvider } from './context/PortfolioContext'
 import PublicSite from './PublicSite'
 import PortfolioPage from './components/PortfolioPage'
+import SEO from './components/SEO'
 
 // Admin is lazy-loaded — public visitors never download this code
 const AdminApp = lazy(() => import('./admin/AdminApp'))
@@ -19,10 +20,11 @@ function LoadingFallback() {
   )
 }
 
-function EmbedPage({ title, src, badge }) {
+function EmbedPage({ title, src, badge, seoTitle, seoDescription, seoPath }) {
   const iframeRef = useRef(null)
   return (
     <div style={{ height: '100vh', background: '#0a0a0a', display: 'flex', flexDirection: 'column' }}>
+      {seoPath && <SEO title={seoTitle || title} description={seoDescription} path={seoPath} />}
       <header className="embed-header">
         <div className="embed-header-left">
           <a href="/" className="embed-back">
@@ -73,10 +75,10 @@ export default function App() {
         />
 
         {/* Client portal — embedded iframe */}
-        <Route path="/portal" element={<EmbedPage title="Client Portal" src="https://portal.shmake.nz" badge="Portal" />} />
+        <Route path="/portal" element={<EmbedPage title="Client Portal" src="https://portal.shmake.nz" badge="Portal" seoTitle="Client Portal — SHMAKE" seoDescription="Secure client portal for SHMAKE project access, updates, and collaboration." seoPath="/portal" />} />
 
         {/* Client demo — embedded iframe */}
-        <Route path="/demo" element={<EmbedPage title="Client Portal Demo" src="https://demo.shmake.nz" badge="Demo" />} />
+        <Route path="/demo" element={<EmbedPage title="Client Portal Demo" src="https://demo.shmake.nz" badge="Demo" seoTitle="Client Demo — SHMAKE" seoDescription="Try a live demo of SHMAKE's client portal and see what we can build for your business." seoPath="/demo" />} />
 
         {/* Admin — lazy-loaded, auth-guarded */}
         <Route
