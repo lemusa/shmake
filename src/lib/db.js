@@ -1095,6 +1095,46 @@ export async function listPortfolioCategories() {
   } catch (e) { console.error('listPortfolioCategories:', e); return { categories: ['All'], categoryDescriptions: {} } }
 }
 
+// ─── Portfolio Categories (from portfolio_categories table) ──────────────────
+
+export async function listPortfolioCats() {
+  try {
+    const { data, error } = await supabase.from('portfolio_categories').select('*').order('sort_order')
+    if (error) throw error
+    return data || []
+  } catch (e) { console.error('listPortfolioCats:', e); return [] }
+}
+
+export async function createPortfolioCat(d) {
+  try {
+    const { data, error } = await supabase.from('portfolio_categories').insert({
+      name: d.name, description: d.description || '', sort_order: d.sortOrder || 0,
+    }).select().single()
+    if (error) throw error
+    return data
+  } catch (e) { console.error('createPortfolioCat:', e); return null }
+}
+
+export async function updatePortfolioCat(id, d) {
+  try {
+    const updates = {}
+    if (d.name !== undefined) updates.name = d.name
+    if (d.description !== undefined) updates.description = d.description
+    if (d.sortOrder !== undefined) updates.sort_order = d.sortOrder
+    const { data, error } = await supabase.from('portfolio_categories').update(updates).eq('id', id).select().single()
+    if (error) throw error
+    return data
+  } catch (e) { console.error('updatePortfolioCat:', e); return null }
+}
+
+export async function deletePortfolioCat(id) {
+  try {
+    const { error } = await supabase.from('portfolio_categories').delete().eq('id', id)
+    if (error) throw error
+    return true
+  } catch (e) { console.error('deletePortfolioCat:', e); return false }
+}
+
 export async function createPortfolioProject(d) {
   try {
     const category = Array.isArray(d.category) ? d.category : [d.category]
@@ -1157,6 +1197,7 @@ export async function listHeroCards() {
     const { data, error } = await supabase.from('hero_cards').select('*').order('sort_order')
     if (error) throw error
     return (data || []).map(r => ({
+      id: r.id,
       key: r.key,
       title: r.title,
       logo: r.logo,

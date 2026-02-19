@@ -1,6 +1,7 @@
 import { useState, useEffect, useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { loadProjects } from '../data/projects'
+import { getSiteContent } from '../lib/db'
 import { usePortfolio } from '../context/PortfolioContext'
 import ProjectDetailModal from './ProjectDetailModal'
 import SEO from './SEO'
@@ -62,6 +63,7 @@ export default function PortfolioPage() {
   const [filter, setFilter] = useState('All')
   const [sortDir, setSortDir] = useState('newest')
   const [loading, setLoading] = useState(true)
+  const [hero, setHero] = useState({ eyebrow: 'Building things — since 2006', headingLines: ['I get curious,', 'build things,', 'move on.'], subtitle: 'Operations manager, maker, developer, designer. Equally comfortable with power tools and code editors — 20 years of solving problems across every discipline I can get my hands on.' })
 
   useEffect(() => {
     document.body.style.overflow = 'auto'
@@ -70,10 +72,16 @@ export default function PortfolioPage() {
 
   useEffect(() => {
     loadProjects().then(data => {
-      // Exclude SkillsCard (id=0)
       setProjects(data.projects.filter(p => p.id !== 0))
       setCategories(data.categories)
       setLoading(false)
+    })
+    getSiteContent().then(sc => {
+      if (sc?.portfolio) setHero(h => ({
+        eyebrow: sc.portfolio.eyebrow || h.eyebrow,
+        headingLines: sc.portfolio.headingLines?.length ? sc.portfolio.headingLines : h.headingLines,
+        subtitle: sc.portfolio.subtitle || h.subtitle,
+      }))
     })
   }, [])
 
@@ -171,9 +179,14 @@ export default function PortfolioPage() {
       <section className="pf-hero">
         <div className="pf-hero-inner">
           <div className="pf-hero-text">
-            <div className="pf-hero-eyebrow">Building things — since 2006</div>
-            <h1 className="pf-hero-h1">I get curious<span className="pf-accent">,</span><br />build things<span className="pf-accent">,</span><br />move on<span className="pf-accent">.</span></h1>
-            <p className="pf-hero-sub">Operations manager, maker, developer, designer. Equally comfortable with power tools and code editors — 20 years of solving problems across every discipline I can get my hands on.</p>
+            <div className="pf-hero-eyebrow">{hero.eyebrow}</div>
+            <h1 className="pf-hero-h1">{hero.headingLines.map((line, i) => {
+              const m = line.match(/^(.*?)([,.\-!?]?)$/)
+              const text = m ? m[1] : line
+              const punct = m ? m[2] : ''
+              return <span key={i}>{text}{punct && <span className="pf-accent">{punct}</span>}{i < hero.headingLines.length - 1 && <br />}</span>
+            })}</h1>
+            <p className="pf-hero-sub">{hero.subtitle}</p>
           </div>
           {featuredProject && (() => {
             const cc = catColor(featuredProject.category)

@@ -263,6 +263,16 @@ function HeroF({item,isNew,c,toast,onSave}){
     <div className="flex gap-3 pt-4 border-t border-stone-200 mt-6"><B icon={isNew?Plus:CheckCircle} onClick={async()=>{if(isNew)await db.createHeroCard(f);else await db.updateHeroCard(item.id,f);if(onSave)await onSave();toast(isNew?"Card added":"Card updated","success");c()}}>{isNew?"Add Card":"Save"}</B><B vr="ghost" onClick={c}>Cancel</B>{!isNew&&<B vr="danger" icon={Trash2} onClick={async()=>{await db.deleteHeroCard(item.id);if(onSave)await onSave();toast("Removed","info");c()}}>Delete</B>}</div>
   </div>}
 
+function CatF({item,isNew,c,toast,onSave}){
+  const[f,sF]=useState({name:item?.name||"",description:item?.description||"",sortOrder:item?.sort_order||0});
+  const u=(k,v)=>sF(p=>({...p,[k]:v}));
+  return<div>
+    <FF l="Name"><I value={f.name} onChange={e=>u("name",e.target.value)} placeholder="e.g. Web/App Dev"/></FF>
+    <FF l="Description" h="Shown in category tooltips"><T value={f.description} onChange={e=>u("description",e.target.value)} placeholder="Brief description of this category..."/></FF>
+    <FF l="Sort Order"><I type="number" value={f.sortOrder} onChange={e=>u("sortOrder",parseInt(e.target.value)||0)} placeholder="0"/></FF>
+    <div className="flex gap-3 pt-4 border-t border-stone-200 mt-6"><B icon={isNew?Plus:CheckCircle} onClick={async()=>{if(isNew)await db.createPortfolioCat(f);else await db.updatePortfolioCat(item.id,f);if(onSave)await onSave();toast(isNew?"Category added":"Category updated","success");c()}}>{isNew?"Add Category":"Save"}</B><B vr="ghost" onClick={c}>Cancel</B>{!isNew&&<B vr="danger" icon={Trash2} onClick={async()=>{await db.deletePortfolioCat(item.id);if(onSave)await onSave();toast("Deleted","info");c()}}>Delete</B>}</div>
+  </div>}
+
 function WidgetsPg(){const doc='<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><style>body{margin:0}</style></head><body><div id="shmakecut-admin"></div><script src="https://admin-widget.shmake.nz/shmakecut-admin.iife.js"><\/script></body></html>';return<iframe srcDoc={doc} style={{width:"100%",height:"100%",border:"none"}} title="Widget Admin"/>}
 
 function PortfolioPg({toast}){
@@ -271,16 +281,18 @@ function PortfolioPg({toast}){
   const[q,sQ]=useState("");
   const[editing,setEditing]=useState(null);
   const[heroCards,setHeroCards]=useState([]);
+  const[portfolioCats,setPortfolioCats]=useState([]);
+  const[pfHeader,setPfHeader]=useState({eyebrow:"Building things — since 2006",headingLines:["I get curious,","build things,","move on."],subtitle:"Operations manager, maker, developer, designer. Equally comfortable with power tools and code editors — 20 years of solving problems across every discipline I can get my hands on."});
   const[about,setAbout]=useState({name:"",photo:"",tagline:"",taglineSub:"",bio:[],skills:[]});
   const[contact,setContact]=useState({formAction:"",recaptchaSiteKey:"",heading:"",subheading:"",socials:[]});
   const[siteMeta,setSiteMeta]=useState({title:"",gaId:""});
   const[skillIn,setSkillIn]=useState({});
   const{sort,toggle,sorted}=useSort("id","desc");
 
-  useEffect(()=>{loadProjects().then(setData);db.listHeroCards().then(setHeroCards);db.getSiteContent().then(sc=>{if(sc){if(sc.about)setAbout({...sc.about,bio:sc.about.bio||[],skills:(sc.about.skills||[]).map(s=>({...s,items:[...s.items]}))});if(sc.contact)setContact({...sc.contact,socials:(sc.contact.socials||[]).map(s=>({...s}))});if(sc.meta)setSiteMeta(sc.meta)}})},[]);
+  useEffect(()=>{loadProjects().then(setData);db.listHeroCards().then(setHeroCards);db.listPortfolioCats().then(setPortfolioCats);db.getSiteContent().then(sc=>{if(sc){if(sc.about)setAbout({...sc.about,bio:sc.about.bio||[],skills:(sc.about.skills||[]).map(s=>({...s,items:[...s.items]}))});if(sc.contact)setContact({...sc.contact,socials:(sc.contact.socials||[]).map(s=>({...s}))});if(sc.meta)setSiteMeta(sc.meta);if(sc.portfolio?.eyebrow||sc.portfolio?.headingLines||sc.portfolio?.subtitle)setPfHeader(h=>({eyebrow:sc.portfolio.eyebrow||h.eyebrow,headingLines:sc.portfolio.headingLines?.length?sc.portfolio.headingLines:h.headingLines,subtitle:sc.portfolio.subtitle||h.subtitle}))}})},[]);
 
   const closeEdit=()=>setEditing(null);
-  const editTitle=editing?(editing.isNew?`New ${editing.type==="project"?"Project":"Hero Card"}`:`Edit ${editing.type==="project"?"Project":"Hero Card"}`):"";
+  const editTitle=editing?(editing.isNew?`New ${({project:"Project",hero:"Hero Card",category:"Category"})[editing.type]||""}`:`Edit ${({project:"Project",hero:"Hero Card",category:"Category"})[editing.type]||""}`):"";
 
   if(!data)return<p className="text-sm text-stone-400">Loading portfolio...</p>;
 
@@ -290,10 +302,10 @@ function PortfolioPg({toast}){
 
   return<div>
     <div className="flex items-center justify-between mb-6">
-      <div><h1 className="text-2xl font-bold text-stone-900 fs">Portfolio</h1><p className="text-sm text-stone-500 mt-1">{projects.length} projects · {data.categories.length-1} categories · {heroCards.length} hero cards</p></div>
-      <a href="/" target="_blank" rel="noopener"><B vr="secondary" sz="sm" icon={Eye}>View Site</B></a>
+      <div><h1 className="text-2xl font-bold text-stone-900 fs">Portfolio</h1><p className="text-sm text-stone-500 mt-1">{projects.length} projects · {portfolioCats.filter(c=>c.name!=="All").length} categories · {heroCards.length} hero cards</p></div>
+      <a href="/portfolio" target="_blank" rel="noopener"><B vr="secondary" sz="sm" icon={Eye}>View Portfolio</B></a>
     </div>
-    <Tabs items={["Projects","Hero Cards","About","Contact & Meta"]} active={tab} onChange={sTab}/>
+    <Tabs items={["Projects","Hero Cards","Categories","Page Header","About","Contact & Meta"]} active={tab} onChange={sTab}/>
 
     {tab==="Projects"&&<div>
       <SearchBar value={q} onChange={sQ} placeholder="Search projects..."><B sz="sm" icon={Plus} onClick={()=>setEditing({type:"project",item:null,isNew:true})}>Add Project</B></SearchBar>
@@ -341,6 +353,37 @@ function PortfolioPg({toast}){
           </div>
         </div>
       </div>)}</div>
+    </div>}
+
+    {tab==="Categories"&&<div>
+      <div className="flex items-center justify-between mb-6"><p className="text-sm text-stone-500">{portfolioCats.filter(c=>c.name!=="All").length} categories · drag to reorder (sort_order)</p><B sz="sm" icon={Plus} onClick={()=>setEditing({type:"category",item:null,isNew:true})}>Add Category</B></div>
+      <div className="space-y-2">{portfolioCats.filter(c=>c.name!=="All").map(cat=><div key={cat.id} className="bg-white shadow-sm border border-stone-200/60 rounded-xl p-4 hover:border-stone-300 cursor-pointer" onClick={()=>setEditing({type:"category",item:cat,isNew:false})}>
+        <div className="flex items-center justify-between">
+          <div className="flex-1 min-w-0">
+            <div className="flex items-center gap-2"><h3 className="text-sm font-semibold text-stone-800">{cat.name}</h3><span className="text-xs text-stone-400 fm">#{cat.sort_order}</span></div>
+            {cat.description&&<p className="text-xs text-stone-500 mt-1 line-clamp-2">{cat.description}</p>}
+          </div>
+          <button className="p-1 rounded hover:bg-stone-100 text-stone-400 ml-3" onClick={e=>{e.stopPropagation();setEditing({type:"category",item:cat,isNew:false})}}><Edit3 size={14}/></button>
+        </div>
+      </div>)}</div>
+    </div>}
+
+    {tab==="Page Header"&&<div className="max-w-2xl">
+      <div className="bg-white shadow-sm border border-stone-200/60 rounded-xl p-6 mb-6">
+        <h3 className="text-sm font-semibold text-stone-700 mb-4 fs">Portfolio Page Hero</h3>
+        <FF l="Eyebrow" h="Small text above the heading"><I value={pfHeader.eyebrow} onChange={e=>setPfHeader({...pfHeader,eyebrow:e.target.value})} placeholder="Building things — since 2006"/></FF>
+        <FF l="Heading Lines" h="One line per row. Trailing punctuation (,.!) is auto-accented in orange">
+          <div className="space-y-2">
+            {pfHeader.headingLines.map((line,i)=><div key={i} className="flex items-center gap-2">
+              <I value={line} onChange={e=>{const l=[...pfHeader.headingLines];l[i]=e.target.value;setPfHeader({...pfHeader,headingLines:l})}} placeholder={`Line ${i+1}`}/>
+              {pfHeader.headingLines.length>1&&<button className="p-1 text-stone-400 hover:text-red-500" onClick={()=>setPfHeader({...pfHeader,headingLines:pfHeader.headingLines.filter((_,j)=>j!==i)})}><X size={14}/></button>}
+            </div>)}
+            <B vr="ghost" sz="sm" icon={Plus} onClick={()=>setPfHeader({...pfHeader,headingLines:[...pfHeader.headingLines,""]})}>Add Line</B>
+          </div>
+        </FF>
+        <FF l="Subtitle"><T value={pfHeader.subtitle} onChange={e=>setPfHeader({...pfHeader,subtitle:e.target.value})} placeholder="Operations manager, maker, developer..."/></FF>
+      </div>
+      <B icon={CheckCircle} onClick={async()=>{await db.updateSiteContent("portfolio",pfHeader);toast("Page header saved","success")}}>Save Header</B>
     </div>}
 
     {tab==="About"&&<div className="max-w-2xl">
@@ -391,6 +434,7 @@ function PortfolioPg({toast}){
     <Sld open={!!editing} onClose={closeEdit} title={editTitle}>
       {editing?.type==="project"&&<ProjF item={editing.item} isNew={editing.isNew} c={closeEdit} toast={toast} cats={data.categories.filter(c=>c!=="All")} onSave={()=>loadProjects().then(setData)}/>}
       {editing?.type==="hero"&&<HeroF item={editing.item} isNew={editing.isNew} c={closeEdit} toast={toast} onSave={()=>db.listHeroCards().then(setHeroCards)}/>}
+      {editing?.type==="category"&&<CatF item={editing.item} isNew={editing.isNew} c={closeEdit} toast={toast} onSave={async()=>{await db.listPortfolioCats().then(setPortfolioCats);await loadProjects().then(setData)}}/>}
     </Sld>
   </div>
 }
