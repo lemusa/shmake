@@ -3,12 +3,6 @@ import { usePortfolio } from '../context/PortfolioContext'
 export default function NavSidebar({ open, onClose }) {
   const { openPortfolio } = usePortfolio()
 
-  const handlePortfolioClick = (e) => {
-    e.preventDefault()
-    onClose()
-    openPortfolio()
-  }
-
   const handleNavClick = (e, href) => {
     onClose()
     if (href === '#portfolio') {
@@ -16,7 +10,6 @@ export default function NavSidebar({ open, onClose }) {
       openPortfolio()
       return
     }
-    // Let smooth scroll handle anchor links
     if (href.startsWith('#')) {
       e.preventDefault()
       const target = document.querySelector(href)
@@ -36,12 +29,42 @@ export default function NavSidebar({ open, onClose }) {
 
       {/* Sidebar */}
       <nav className={`nav-sidebar ${open ? 'active' : ''}`}>
-        <a href="/portal" className="nav-portal" onClick={onClose}>Client Portal →</a>
-        <a href="/demo" className="nav-demo" onClick={onClose}>Client Demo →</a>
-        <a href="#portfolio" onClick={(e) => handleNavClick(e, '#portfolio')}>Portfolio</a>
-        <a href="#about" onClick={(e) => handleNavClick(e, '#about')}>About</a>
-        <a href="#contact" onClick={(e) => handleNavClick(e, '#contact')}>Contact</a>
-        <div className="nav-contact-details">
+
+        {/* Explore */}
+        <div className="nav-section">
+          <p className="nav-section-label">Explore</p>
+          <a href="#portfolio" onClick={(e) => handleNavClick(e, '#portfolio')}>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+            Portfolio
+          </a>
+          <a href="#about" onClick={(e) => handleNavClick(e, '#about')}>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+            About
+          </a>
+          <a href="#contact" onClick={(e) => handleNavClick(e, '#contact')}>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            Contact
+          </a>
+        </div>
+
+        {/* Client Access */}
+        <div className="nav-section">
+          <p className="nav-section-label">Client Access</p>
+          <a href="/portal" className="nav-portal" onClick={onClose}>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            Client Portal
+            <svg className="nav-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </a>
+          <a href="/demo" className="nav-demo" onClick={onClose}>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><polygon points="5,3 19,12 5,21"/></svg>
+            Product Demo
+            <span className="nav-badge">Preview</span>
+          </a>
+        </div>
+
+        {/* Connect */}
+        <div className="nav-section">
+          <p className="nav-section-label">Connect</p>
           <div className="nav-contact-socials">
             <a href="#contact" onClick={(e) => handleNavClick(e, '#contact')} aria-label="Email" className="social-icon">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
@@ -57,6 +80,7 @@ export default function NavSidebar({ open, onClose }) {
             </a>
           </div>
         </div>
+
         <a href="/admin" className="nav-admin" onClick={onClose}>Admin</a>
       </nav>
     </>
