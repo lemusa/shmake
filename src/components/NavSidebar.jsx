@@ -1,15 +1,6 @@
-import { usePortfolio } from '../context/PortfolioContext'
-
 export default function NavSidebar({ open, onClose }) {
-  const { openPortfolio } = usePortfolio()
-
   const handleNavClick = (e, href) => {
     onClose()
-    if (href === '#portfolio') {
-      e.preventDefault()
-      openPortfolio()
-      return
-    }
     if (href.startsWith('#')) {
       e.preventDefault()
       const target = document.querySelector(href)
@@ -33,7 +24,7 @@ export default function NavSidebar({ open, onClose }) {
         {/* Explore */}
         <div className="nav-section">
           <p className="nav-section-label">Explore</p>
-          <a href="#portfolio" onClick={(e) => handleNavClick(e, '#portfolio')}>
+          <a href="/portfolio" onClick={onClose}>
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
             Portfolio
           </a>

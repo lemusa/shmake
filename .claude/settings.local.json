@@ -14,7 +14,8 @@
       "Bash(npm run sync-stripe-agg:*)",
       "Bash(cat:*)",
       "WebFetch(domain:admin-widget.shmake.nz)",
-      "Bash(curl:*)"
+      "Bash(curl:*)",
+      "Bash(grep:*)"
     ]
   }
 }

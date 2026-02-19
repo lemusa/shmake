@@ -1,0 +1,877 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SHMAKE — Build Things</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --orange: #E8751A;
+    --orange-dim: rgba(232,117,26,0.12);
+    --orange-glow: rgba(232,117,26,0.3);
+    --cyan: #24acdd;
+    --cyan-dim: rgba(36,172,221,0.12);
+    --green: #8db600;
+    --green-dim: rgba(141,182,0,0.12);
+    --purple: #9b7ed8;
+    --purple-dim: rgba(155,126,216,0.12);
+    --warm: #c4956a;
+    --warm-dim: rgba(196,149,106,0.12);
+    --rose: #d46b7a;
+    --rose-dim: rgba(212,107,122,0.12);
+
+    --dark-bg: #0f0f0f;
+    --dark-card: #171717;
+    --dark-card-hover: #1d1d1d;
+    --dark-surface: #222;
+    --dark-border: rgba(255,255,255,0.06);
+    --dark-border-hover: rgba(255,255,255,0.12);
+    --grey-600: #555;
+    --grey-500: #777;
+    --grey-400: #999;
+    --grey-300: #bbb;
+    --white: #f0ede8;
+    --header-h: 56px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--dark-bg);
+    color: var(--white);
+    line-height: 1.5;
+    overflow-x: hidden;
+  }
+
+  /* ═══════════════════════════
+     TOP BAR
+  ═══════════════════════════ */
+  .top-bar {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(15,15,15,0.88);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--dark-border);
+    padding: 0 clamp(16px, 4vw, 48px);
+    height: var(--header-h);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .top-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .logo {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: -0.3px;
+    text-decoration: none;
+  }
+  .logo .sh { color: var(--grey-500); }
+  .logo .make { color: var(--white); }
+  .logo .dot { color: var(--orange); }
+
+  .bc-sep { color: rgba(255,255,255,0.15); font-size: 18px; user-select: none; }
+  .bc-page { font-size: 14px; font-weight: 500; color: var(--grey-400); }
+
+  .close-btn {
+    width: 36px; height: 36px; border-radius: 10px;
+    border: 1px solid var(--dark-border); background: transparent;
+    color: var(--grey-500); cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.2s;
+  }
+  .close-btn:hover { color: var(--white); border-color: var(--dark-border-hover); }
+  .close-btn svg { width: 16px; height: 16px; }
+
+
+  /* ═══════════════════════════
+     HERO — IDENTITY
+  ═══════════════════════════ */
+  .hero {
+    padding: clamp(36px, 6vw, 72px) clamp(16px, 4vw, 48px) clamp(24px, 4vw, 40px);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -100px; right: -60px;
+    width: 380px; height: 380px;
+    background: radial-gradient(circle, var(--orange-glow) 0%, transparent 70%);
+    opacity: 0.25;
+    pointer-events: none;
+  }
+
+  .hero-inner {
+    max-width: 780px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .hero-eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--orange);
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    animation: fadeUp 0.5s ease both;
+  }
+  .hero-eyebrow::before {
+    content: '';
+    width: 24px; height: 1px;
+    background: var(--orange);
+  }
+
+  .hero h1 {
+    font-size: clamp(30px, 5vw, 50px);
+    font-weight: 700;
+    line-height: 1.08;
+    letter-spacing: -1.5px;
+    margin-bottom: 16px;
+    animation: fadeUp 0.5s 0.08s ease both;
+  }
+  .hero h1 .accent { color: var(--orange); }
+
+  .hero-sub {
+    font-size: clamp(15px, 1.8vw, 17px);
+    color: var(--grey-400);
+    max-width: 600px;
+    line-height: 1.65;
+    animation: fadeUp 0.5s 0.16s ease both;
+  }
+
+  /* ─ Discipline pills ─ */
+  .discipline-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 28px;
+    animation: fadeUp 0.5s 0.24s ease both;
+  }
+
+  .discipline-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 6px 14px 6px 10px;
+    border-radius: 100px;
+    font-size: 12px;
+    font-weight: 500;
+    border: 1px solid var(--dark-border);
+    background: rgba(255,255,255,0.02);
+    color: var(--grey-300);
+    transition: all 0.25s;
+  }
+  .discipline-pill:hover { border-color: var(--dark-border-hover); background: rgba(255,255,255,0.04); }
+
+  .pill-dot {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .pill-dot.c-webdev { background: var(--cyan); }
+  .pill-dot.c-gfx { background: var(--rose); }
+  .pill-dot.c-cad { background: var(--purple); }
+  .pill-dot.c-business { background: var(--orange); }
+  .pill-dot.c-diy { background: var(--warm); }
+  .pill-dot.c-tech { background: var(--green); }
+
+
+  /* ═══════════════════════════
+     FILTER BAR
+  ═══════════════════════════ */
+  .filter-bar {
+    position: sticky;
+    top: var(--header-h);
+    z-index: 90;
+    background: rgba(15,15,15,0.92);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--dark-border);
+    padding: 10px clamp(16px, 4vw, 48px);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    animation: fadeUp 0.5s 0.3s ease both;
+  }
+  .filter-bar::-webkit-scrollbar { display: none; }
+
+  .filter-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 14px;
+    border-radius: 100px;
+    border: 1px solid var(--dark-border);
+    background: transparent;
+    color: var(--grey-400);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.25s;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  .filter-chip:hover {
+    color: var(--white);
+    border-color: var(--dark-border-hover);
+    background: rgba(255,255,255,0.03);
+  }
+
+  .filter-chip .fc-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    opacity: 0.7;
+  }
+  .filter-chip.active .fc-dot { opacity: 1; }
+
+  .filter-chip.active {
+    color: var(--white);
+    background: rgba(255,255,255,0.08);
+    border-color: rgba(255,255,255,0.15);
+  }
+
+  .fc-count {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    opacity: 0.5;
+  }
+
+  .filter-sep {
+    width: 1px; height: 20px;
+    background: var(--dark-border);
+    flex-shrink: 0;
+    margin: 0 4px;
+  }
+
+  .sort-btn {
+    margin-left: auto;
+    display: flex; align-items: center; gap: 5px;
+    color: var(--grey-500); font-size: 12px;
+    cursor: pointer; padding: 5px 10px; border-radius: 6px;
+    transition: all 0.2s; flex-shrink: 0;
+    border: none; background: none;
+    font-family: 'DM Sans', sans-serif;
+  }
+  .sort-btn:hover { color: var(--grey-300); background: rgba(255,255,255,0.03); }
+  .sort-btn svg { width: 13px; height: 13px; }
+
+
+  /* ═══════════════════════════
+     PORTFOLIO BODY
+  ═══════════════════════════ */
+  .portfolio-body {
+    padding: 0 clamp(16px, 4vw, 48px) 80px;
+  }
+
+  /* ─── Year group ─── */
+  .year-group { margin-top: 40px; }
+
+  .year-marker {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 16px;
+  }
+  .year-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px; font-weight: 600;
+    color: var(--orange);
+    background: var(--orange-dim);
+    padding: 3px 10px;
+    border-radius: 5px;
+    flex-shrink: 0;
+  }
+  .year-line {
+    flex: 1; height: 1px;
+    background: linear-gradient(to right, var(--dark-border-hover), transparent);
+  }
+
+  /* ─── Card Grid ─── */
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 14px;
+  }
+  @media (max-width: 620px) { .card-grid { grid-template-columns: 1fr; } }
+
+  /* ─── Project Card ─── */
+  .card {
+    background: var(--dark-card);
+    border: 1px solid var(--dark-border);
+    border-radius: 14px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: flex;
+    flex-direction: column;
+  }
+  .card:hover {
+    border-color: var(--dark-border-hover);
+    background: var(--dark-card-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 28px rgba(0,0,0,0.3);
+  }
+
+  .card-img {
+    width: 100%;
+    aspect-ratio: 16/10;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Category colour wash on thumbnails */
+  .card-img.ci-webdev { background: linear-gradient(135deg, rgba(36,172,221,0.15), rgba(36,172,221,0.04)); }
+  .card-img.ci-gfx { background: linear-gradient(135deg, rgba(212,107,122,0.15), rgba(212,107,122,0.04)); }
+  .card-img.ci-cad { background: linear-gradient(135deg, rgba(155,126,216,0.15), rgba(155,126,216,0.04)); }
+  .card-img.ci-business { background: linear-gradient(135deg, rgba(232,117,26,0.15), rgba(232,117,26,0.04)); }
+  .card-img.ci-diy { background: linear-gradient(135deg, rgba(196,149,106,0.15), rgba(196,149,106,0.04)); }
+  .card-img.ci-tech { background: linear-gradient(135deg, rgba(141,182,0,0.15), rgba(141,182,0,0.04)); }
+
+  /* Patterns */
+  .card-img::after {
+    content: '';
+    position: absolute; inset: 0;
+    opacity: 0.12;
+    pointer-events: none;
+  }
+  .card-img.pat-grid::after {
+    background: repeating-linear-gradient(0deg, transparent, transparent 19px, rgba(255,255,255,0.1) 19px, rgba(255,255,255,0.1) 20px),
+    repeating-linear-gradient(90deg, transparent, transparent 19px, rgba(255,255,255,0.1) 19px, rgba(255,255,255,0.1) 20px);
+  }
+  .card-img.pat-diag::after {
+    background: repeating-linear-gradient(45deg, transparent, transparent 12px, rgba(255,255,255,0.06) 12px, rgba(255,255,255,0.06) 13px);
+  }
+  .card-img.pat-dots::after {
+    background: radial-gradient(circle, rgba(255,255,255,0.12) 1px, transparent 1px);
+    background-size: 10px 10px;
+  }
+  .card-img.pat-cross::after {
+    background:
+      linear-gradient(90deg, transparent 48%, rgba(255,255,255,0.06) 48%, rgba(255,255,255,0.06) 52%, transparent 52%),
+      linear-gradient(0deg, transparent 48%, rgba(255,255,255,0.06) 48%, rgba(255,255,255,0.06) 52%, transparent 52%);
+    background-size: 36px 36px;
+  }
+
+  .card-img-icon {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 36px; height: 36px;
+    color: rgba(255,255,255,0.06);
+    transition: all 0.3s;
+  }
+  .card:hover .card-img-icon { color: rgba(255,255,255,0.12); }
+
+  .card-cat-tag {
+    position: absolute;
+    top: 10px; left: 10px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    border-radius: 5px;
+    font-weight: 500;
+    color: #fff;
+  }
+  .ct-webdev { background: rgba(36,172,221,0.85); }
+  .ct-gfx { background: rgba(212,107,122,0.85); }
+  .ct-cad { background: rgba(155,126,216,0.85); }
+  .ct-business { background: rgba(232,117,26,0.85); }
+  .ct-diy { background: rgba(196,149,106,0.85); }
+  .ct-tech { background: rgba(141,182,0,0.85); }
+
+  .card-year-tag {
+    position: absolute;
+    top: 10px; right: 10px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    font-weight: 500;
+    color: var(--grey-400);
+    background: rgba(0,0,0,0.5);
+    backdrop-filter: blur(8px);
+    padding: 2px 8px;
+    border-radius: 4px;
+  }
+
+  .card-body {
+    padding: 14px 16px 16px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .card-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--white);
+    margin-bottom: 5px;
+    line-height: 1.3;
+  }
+
+  .card-desc {
+    font-size: 13px;
+    color: var(--grey-500);
+    line-height: 1.5;
+    flex: 1;
+  }
+
+  .card-foot {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 12px;
+    padding-top: 10px;
+    border-top: 1px solid var(--dark-border);
+  }
+
+  .card-tags {
+    display: flex; gap: 5px; flex-wrap: wrap;
+  }
+  .card-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    color: var(--grey-500);
+    background: rgba(255,255,255,0.04);
+    padding: 2px 6px; border-radius: 3px;
+  }
+
+  .card-arrow {
+    width: 26px; height: 26px; border-radius: 50%;
+    background: rgba(255,255,255,0.03);
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.25s;
+    flex-shrink: 0;
+  }
+  .card-arrow svg { width: 13px; height: 13px; color: var(--grey-600); transition: all 0.25s; }
+  .card:hover .card-arrow { background: var(--orange); }
+  .card:hover .card-arrow svg { color: white; transform: translateX(1px); }
+
+
+  /* ═══════════════════════════
+     FEATURED CARD (flagship)
+  ═══════════════════════════ */
+  .card.featured {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: 1.1fr 1fr;
+  }
+  @media (max-width: 620px) {
+    .card.featured { grid-template-columns: 1fr; }
+  }
+
+  .card.featured .card-img {
+    aspect-ratio: unset;
+    min-height: 200px;
+    border-radius: 14px 0 0 14px;
+  }
+  @media (max-width: 620px) {
+    .card.featured .card-img { border-radius: 14px 14px 0 0; min-height: 160px; }
+  }
+
+  .card.featured .card-body {
+    padding: 22px 24px;
+    justify-content: center;
+  }
+  .card.featured .card-title { font-size: 19px; }
+  .card.featured .card-desc { font-size: 14px; max-width: 420px; }
+
+  .feat-badge {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .feat-badge.fb-cyan { color: var(--cyan); }
+  .feat-badge.fb-green { color: var(--green); }
+  .feat-badge.fb-orange { color: var(--orange); }
+  .feat-badge::before {
+    content: '';
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: currentColor;
+    box-shadow: 0 0 8px currentColor;
+  }
+
+
+  /* ═══════════════════════════
+     ANIMATIONS
+  ═══════════════════════════ */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(14px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .year-group { animation: fadeUp 0.5s ease both; }
+  .year-group:nth-child(1) { animation-delay: 0s; }
+  .year-group:nth-child(2) { animation-delay: 0.06s; }
+  .year-group:nth-child(3) { animation-delay: 0.12s; }
+  .year-group:nth-child(4) { animation-delay: 0.18s; }
+  .year-group:nth-child(5) { animation-delay: 0.24s; }
+
+  .card { animation: fadeUp 0.45s ease both; }
+
+
+  /* ═══════════════════════════
+     MOBILE
+  ═══════════════════════════ */
+  @media (max-width: 520px) {
+    .discipline-row { gap: 6px; }
+    .discipline-pill { font-size: 11px; padding: 5px 10px 5px 8px; }
+    .sort-btn .sort-label { display: none; }
+    .card-grid { gap: 10px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══ Top Bar ═══ -->
+<nav class="top-bar">
+  <div class="top-left">
+    <a href="#" class="logo"><span class="sh">SH</span><span class="make">MAKE</span><span class="dot">.</span></a>
+    <span class="bc-sep">›</span>
+    <span class="bc-page">Portfolio</span>
+  </div>
+  <button class="close-btn">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+  </button>
+</nav>
+
+
+<!-- ═══ Hero ═══ -->
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-eyebrow">Build things — since 2006</div>
+    <h1>I get curious<span class="accent">,</span><br>build things<span class="accent">,</span><br>move on<span class="accent">.</span></h1>
+    <p class="hero-sub">Operations manager, maker, developer, designer. Equally comfortable with power tools and code editors — 18 years of solving problems across every discipline I can get my hands on.</p>
+
+    <div class="discipline-row">
+      <span class="discipline-pill"><span class="pill-dot c-webdev"></span>Web / App Dev</span>
+      <span class="discipline-pill"><span class="pill-dot c-gfx"></span>Graphic Design</span>
+      <span class="discipline-pill"><span class="pill-dot c-cad"></span>CAD</span>
+      <span class="discipline-pill"><span class="pill-dot c-business"></span>Business</span>
+      <span class="discipline-pill"><span class="pill-dot c-diy"></span>DIY</span>
+      <span class="discipline-pill"><span class="pill-dot c-tech"></span>Technology</span>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══ Filter Bar ═══ -->
+<div class="filter-bar">
+  <button class="filter-chip active">All <span class="fc-count">16</span></button>
+  <div class="filter-sep"></div>
+  <button class="filter-chip"><span class="fc-dot" style="background:var(--cyan)"></span>Web / App <span class="fc-count">4</span></button>
+  <button class="filter-chip"><span class="fc-dot" style="background:var(--orange)"></span>Business <span class="fc-count">3</span></button>
+  <button class="filter-chip"><span class="fc-dot" style="background:var(--green)"></span>Technology <span class="fc-count">3</span></button>
+  <button class="filter-chip"><span class="fc-dot" style="background:var(--rose)"></span>Graphic Design <span class="fc-count">2</span></button>
+  <button class="filter-chip"><span class="fc-dot" style="background:var(--purple)"></span>CAD <span class="fc-count">2</span></button>
+  <button class="filter-chip"><span class="fc-dot" style="background:var(--warm)"></span>DIY <span class="fc-count">2</span></button>
+  <button class="sort-btn">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg>
+    <span class="sort-label">Newest</span>
+  </button>
+</div>
+
+
+<!-- ═══ Portfolio Body ═══ -->
+<div class="portfolio-body">
+
+  <!-- ─── 2023 – Present ─── -->
+  <div class="year-group">
+    <div class="year-marker">
+      <span class="year-num">2023 — Present</span>
+      <div class="year-line"></div>
+    </div>
+    <div class="card-grid">
+
+      <!-- FEATURED: myMECA -->
+      <div class="card featured">
+        <div class="card-img ci-webdev pat-cross">
+          <span class="card-cat-tag ct-webdev">Web/App</span>
+          <svg class="card-img-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
+        </div>
+        <div class="card-body">
+          <div class="feat-badge fb-cyan">250+ active users</div>
+          <div class="card-title">myMECA</div>
+          <div class="card-desc">Got curious about healthcare payroll. Built an app. 250+ nurses use it daily to calculate pay under the NZNO-HNZ collective agreement.</div>
+          <div class="card-foot">
+            <div class="card-tags">
+              <span class="card-tag">React</span>
+              <span class="card-tag">Supabase</span>
+              <span class="card-tag">Stripe</span>
+              <span class="card-tag">PWA</span>
+            </div>
+            <div class="card-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TeaBreak -->
+      <div class="card">
+        <div class="card-img ci-business pat-dots">
+          <span class="card-cat-tag ct-business">Business</span>
+          <svg class="card-img-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        </div>
+        <div class="card-body">
+          <div class="card-title">TeaBreak</div>
+          <div class="card-desc">Business ops platform for SMEs. HR, assets, OHS, document control — the admin stuff small business owners don't have time to think about.</div>
+          <div class="card-foot">
+            <div class="card-tags">
+              <span class="card-tag">React</span>
+              <span class="card-tag">Supabase</span>
+              <span class="card-tag">Platform</span>
+            </div>
+            <div class="card-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- shmakeCut -->
+      <div class="card">
+        <div class="card-img ci-webdev pat-grid">
+          <span class="card-cat-tag ct-webdev">Web/App</span>
+          <svg class="card-img-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+        </div>
+        <div class="card-body">
+          <div class="card-title">shmakeCut</div>
+          <div class="card-desc">Cutting calculator for NZ timber yards. Optimises material usage and generates cut lists for fencing and wall framing.</div>
+          <div class="card-foot">
+            <div class="card-tags">
+              <span class="card-tag">React</span>
+              <span class="card-tag">SaaS</span>
+              <span class="card-tag">$129/mo</span>
+            </div>
+            <div class="card-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- KiwiSlice -->
+      <div class="card">
+        <div class="card-img ci-webdev pat-diag">
+          <span class="card-cat-tag ct-webdev">Web/App</span>
+          <svg class="card-img-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+        </div>
+        <div class="card-body">
+          <div class="card-title">KiwiSlice</div>
+          <div class="card-desc">Personal budget app for Kiwis. Track income, expenses, assets and liabilities. Run planning scenarios to see where you're headed.</div>
+          <div class="card-foot">
+            <div class="card-tags">
+              <span class="card-tag">React</span>
+              <span class="card-tag">Finance</span>
+            </div>
+            <div class="card-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SHMAKE Website -->
+      <div class="card">
+        <div class="card-img ci-gfx pat-cross">
+          <span class="card-cat-tag ct-gfx">Design</span>
+          <svg class="card-img-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+        </div>
+        <div class="card-body">
+          <div class="card-title">SHMAKE Website</div>
+          <div class="card-desc">This portfolio site. React + Vite + Tailwind, Supabase CMS, Vercel hosting.</div>
+          <div class="card-foot">
+            <div class="card-tags">
+              <span class="card-tag">React</span>
+              <span class="card-tag">Vite</span>
+              <span class="card-tag">Tailwind</span>
+            </div>
+            <div class="card-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+
+  <!-- ─── 2012 – 2023 ─── -->
+  <div class="year-group">
+    <div class="year-marker">
+      <span class="year-num">2012 — 2023</span>
+      <div class="year-line"></div>
+    </div>
+    <div class="card-grid">
+
+      <!-- Sim Racing -->
+      <div class="card">
+        <div class="card-img ci-tech pat-diag">
+          <span class="card-cat-tag ct-tech">Technology</span>
+          <span class="card-year-tag">2012–2023</span>
+          <svg class="card-img-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg>
+        </div>
+        <div class="card-body">
+          <div class="card-title">Sim Racing</div>
+          <div class="card-desc">Custom sim racing rig builds, hardware mods, and telemetry integration. Where physical building meets digital tuning.</div>
+          <div class="card-foot">
+            <div class="card-tags">
+              <span class="card-tag">Hardware</span>
+              <span class="card-tag">Fabrication</span>
+            </div>
+            <div class="card-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Product Traceability -->
+      <div class="card">
+        <div class="card-img ci-business pat-grid">
+          <span class="card-cat-tag ct-business">Business</span>
+          <span class="card-year-tag">2012</span>
+          <svg class="card-img-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        </div>
+        <div class="card-body">
+          <div class="card-title">Product Traceability</div>
+          <div class="card-desc">End-to-end traceability chart for manufacturing. Batch tracking, QC holds, and compliance documentation.</div>
+          <div class="card-foot">
+            <div class="card-tags">
+              <span class="card-tag">ISO 9001</span>
+              <span class="card-tag">Quality</span>
+            </div>
+            <div class="card-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+
+  <!-- ─── 2011 ─── -->
+  <div class="year-group">
+    <div class="year-marker">
+      <span class="year-num">2011</span>
+      <div class="year-line"></div>
+    </div>
+    <div class="card-grid">
+
+      <!-- Factory Layout -->
+      <div class="card">
+        <div class="card-img ci-business pat-dots">
+          <span class="card-cat-tag ct-business">Business</span>
+          <svg class="card-img-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg>
+        </div>
+        <div class="card-body">
+          <div class="card-title">Factory Layout</div>
+          <div class="card-desc">Production floor planning and workflow optimisation. Lean manufacturing applied to real factory spaces.</div>
+          <div class="card-foot">
+            <div class="card-tags">
+              <span class="card-tag">Operations</span>
+              <span class="card-tag">SketchUp</span>
+            </div>
+            <div class="card-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+
+  <!-- ─── 2009 ─── -->
+  <div class="year-group">
+    <div class="year-marker">
+      <span class="year-num">2009</span>
+      <div class="year-line"></div>
+    </div>
+    <div class="card-grid">
+
+      <!-- Album Art -->
+      <div class="card">
+        <div class="card-img ci-cad pat-diag">
+          <span class="card-cat-tag ct-cad">CAD</span>
+          <svg class="card-img-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>
+        </div>
+        <div class="card-body">
+          <div class="card-title">Album Art</div>
+          <div class="card-desc">Cover art for a local rock band. Digital design and print-ready artwork.</div>
+          <div class="card-foot">
+            <div class="card-tags">
+              <span class="card-tag">Photoshop</span>
+              <span class="card-tag">Print</span>
+            </div>
+            <div class="card-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+
+  <!-- ─── 2006 — The Origin ─── -->
+  <div class="year-group">
+    <div class="year-marker">
+      <span class="year-num">2006</span>
+      <div class="year-line"></div>
+    </div>
+    <div class="card-grid">
+
+      <!-- ahoythere -->
+      <div class="card">
+        <div class="card-img ci-webdev pat-cross">
+          <span class="card-cat-tag ct-webdev">Web/App</span>
+          <svg class="card-img-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+        </div>
+        <div class="card-body">
+          <div class="card-title">ahoythere</div>
+          <div class="card-desc">My very first website from 2006. Hand-coded HTML and CSS, hosted on free web hosting. Everyone starts somewhere.</div>
+          <div class="card-foot">
+            <div class="card-tags">
+              <span class="card-tag">HTML</span>
+              <span class="card-tag">CSS</span>
+              <span class="card-tag">Origins</span>
+            </div>
+            <div class="card-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+
+<script>
+  // Filter chip interaction
+  document.querySelectorAll('.filter-chip').forEach(chip => {
+    chip.addEventListener('click', () => {
+      document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+      chip.classList.add('active');
+    });
+  });
+</script>
+
+</body>
+</html>

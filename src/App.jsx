@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { ThemeProvider } from './context/ThemeContext'
 import { PortfolioProvider } from './context/PortfolioContext'
 import PublicSite from './PublicSite'
+import PortfolioPage from './components/PortfolioPage'
 
 // Admin is lazy-loaded — public visitors never download this code
 const AdminApp = lazy(() => import('./admin/AdminApp'))
@@ -30,7 +31,7 @@ function EmbedPage({ title, src, badge }) {
           </a>
         </div>
         <div className="embed-header-center">
-          <span className="embed-logo">SH<strong>MAKE</strong><span className="embed-logo-dot">.</span></span>
+          <img src="/assets/shmake-logo-light.png" alt="SHMAKE" className="embed-logo-img" />
           <span className="embed-badge">{badge || title}</span>
         </div>
         <div className="embed-header-right">
@@ -58,6 +59,16 @@ export default function App() {
                 <PublicSite />
               </PortfolioProvider>
             </ThemeProvider>
+          }
+        />
+
+        {/* Portfolio — full page */}
+        <Route
+          path="/portfolio"
+          element={
+            <PortfolioProvider>
+              <PortfolioPage />
+            </PortfolioProvider>
           }
         />
 
