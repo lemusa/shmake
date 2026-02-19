@@ -747,6 +747,10 @@ body {
   border-radius: 5px;
   flex-shrink: 0;
 }
+.pf-ongoing-label {
+  color: #22c55e;
+  background: rgba(34,197,94,0.12);
+}
 .pf-year-line {
   flex: 1; height: 1px;
   background: linear-gradient(to right, rgba(255,255,255,0.12), transparent);

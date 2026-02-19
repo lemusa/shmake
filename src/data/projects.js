@@ -25,7 +25,7 @@ const FALLBACK_ABOUT = {
   tagline: 'I get curious, build things, then move on to the next problem.',
   taglineSub: 'Expert at becoming almost an expert',
   bio: [
-    "Based in Christchurch with my wife and three daughters, I've spent the last 18 years working everywhere from the factory floor to construction sites, then into production scheduling and now operations management — looking after the day-to-day of a manufacturing company that ships product around the world. Along the way I've dabbled in freelance graphic, web, and CAD design.",
+    "Based in Christchurch with my wife and three daughters, I've spent the last 20 years working everywhere from the factory floor to construction sites, then into production scheduling and now operations management — looking after the day-to-day of a manufacturing company that ships product around the world. Along the way I've dabbled in freelance graphic, web, and CAD design.",
     "I get obsessed with problems, binge-learn whatever I need to fix them, then wander off to the next curiosity. The upside is the knowledge sticks. I'm as comfortable with code as I am with power tools, Illustrator as I am with Excel, SketchUp as I am with generating SOP's.",
     "For the last 13 years I've been the person who solves the operational headaches at Ecoglo International while building side projects that keep my brain busy. I get energised by new, odd, or tricky problems — the ones where the solution isn't obvious yet. If that's what you're working on, let's chat.",
   ],
@@ -69,6 +69,7 @@ export async function loadProjects() {
         description: p.description, longDescription: p.long_description,
         gradient: p.gradient, year: p.year, started: p.started,
         image: p.image, gallery: p.gallery || [], specs: p.specs || [],
+        featured: p.featured || false,
       })),
       categories,
       categoryDescriptions,

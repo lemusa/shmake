@@ -24,6 +24,11 @@ function catColor(category) {
 const PATTERNS = ['pat-grid', 'pat-diag', 'pat-dots', 'pat-cross']
 function patternFor(id) { return PATTERNS[id % PATTERNS.length] }
 
+/* ── Check if project is ongoing ── */
+function isOngoing(p) {
+  return typeof p.year === 'string' && /ongoing/i.test(p.year)
+}
+
 /* ── Group projects by started year ── */
 function groupByYear(projects, sortDir) {
   const groups = {}
@@ -93,20 +98,37 @@ export default function PortfolioPage() {
     })
   }, [projects, filter])
 
-  // Grouped by year
-  const yearGroups = useMemo(() => groupByYear(filtered, sortDir), [filtered, sortDir])
+  // Split into ongoing and timeline projects
+  const { ongoingProjects, timelineProjects } = useMemo(() => {
+    const ongoing = [], timeline = []
+    for (const p of filtered) {
+      if (isOngoing(p)) ongoing.push(p)
+      else timeline.push(p)
+    }
+    return { ongoingProjects: ongoing, timelineProjects: timeline }
+  }, [filtered])
 
-  // Featured project = first project from the newest year group (only when showing All)
+  // Grouped by year (timeline projects only)
+  const yearGroups = useMemo(() => groupByYear(timelineProjects, sortDir), [timelineProjects, sortDir])
+
+  // Featured project = project with featured flag, or first from newest year group
   const featuredProject = useMemo(() => {
-    if (filter !== 'All' || yearGroups.length === 0) return null
-    return yearGroups[0].projects[0] || null
-  }, [yearGroups, filter])
+    if (filter !== 'All' || filtered.length === 0) return null
+    const marked = filtered.find(p => p.featured)
+    if (marked) return marked
+    return yearGroups[0]?.projects[0] || null
+  }, [filtered, yearGroups, filter])
+
+  // Ongoing projects for the body — exclude featured
+  const bodyOngoing = useMemo(() => {
+    if (!featuredProject) return ongoingProjects
+    return ongoingProjects.filter(p => p.id !== featuredProject.id)
+  }, [ongoingProjects, featuredProject])
 
   // Year groups for the body — exclude the featured project so it's not shown twice
   const bodyGroups = useMemo(() => {
     if (!featuredProject) return yearGroups
-    return yearGroups.map((g, gi) => {
-      if (gi !== 0) return g
+    return yearGroups.map(g => {
       const remaining = g.projects.filter(p => p.id !== featuredProject.id)
       if (remaining.length === 0) return null
       return { ...g, projects: remaining }
@@ -151,7 +173,7 @@ export default function PortfolioPage() {
           <div className="pf-hero-text">
             <div className="pf-hero-eyebrow">Building things — since 2006</div>
             <h1 className="pf-hero-h1">I get curious<span className="pf-accent">,</span><br />build things<span className="pf-accent">,</span><br />move on<span className="pf-accent">.</span></h1>
-            <p className="pf-hero-sub">Operations manager, maker, developer, designer. Equally comfortable with power tools and code editors — 18 years of solving problems across every discipline I can get my hands on.</p>
+            <p className="pf-hero-sub">Operations manager, maker, developer, designer. Equally comfortable with power tools and code editors — 20 years of solving problems across every discipline I can get my hands on.</p>
           </div>
           {featuredProject && (() => {
             const cc = catColor(featuredProject.category)
@@ -215,6 +237,47 @@ export default function PortfolioPage() {
 
       {/* ── Portfolio Body ── */}
       <div className="pf-body">
+        {bodyOngoing.length > 0 && (
+          <div className="pf-year-group">
+            <div className="pf-year-marker">
+              <span className="pf-year-num pf-ongoing-label">Ongoing</span>
+              <div className="pf-year-line" />
+            </div>
+            <div className="pf-card-grid">
+              {bodyOngoing.map((project) => {
+                const cc = catColor(project.category)
+                const categoryLabel = Array.isArray(project.category) ? project.category.join(' / ') : project.category
+                return (
+                  <div
+                    key={project.id}
+                    className="pf-card"
+                    onClick={() => openDetail(project)}
+                  >
+                    <div className={`pf-card-img ci-${cc.cls} ${patternFor(project.id)}`}>
+                      {project.image && <img src={project.image} alt={project.title} className="pf-card-thumb" />}
+                      <span className={`pf-card-cat-tag ct-${cc.cls}`}>{categoryLabel}</span>
+                    </div>
+                    <div className="pf-card-body">
+                      <div className="pf-card-title">{project.title}</div>
+                      <div className="pf-card-desc">{project.description}</div>
+                      <div className="pf-card-foot">
+                        <div className="pf-card-tags">
+                          {(project.specs || []).slice(0, 4).map((tag, i) => (
+                            <span key={i} className="pf-card-tag">{tag}</span>
+                          ))}
+                        </div>
+                        <div className="pf-card-arrow">
+                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><line x1="7" y1="17" x2="17" y2="7" /><polyline points="7 7 17 7 17 17" /></svg>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )
+              })}
+            </div>
+          </div>
+        )}
+
         {bodyGroups.map((group, gi) => (
           <div key={group.year} className="pf-year-group" style={{ animationDelay: `${gi * 0.06}s` }}>
             <div className="pf-year-marker">

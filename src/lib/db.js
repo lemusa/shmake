@@ -1104,6 +1104,7 @@ export async function createPortfolioProject(d) {
       year: d.year, started: d.started ? parseInt(d.started) : null, image: d.image,
       gallery: d.gallery || [], specs: d.specs || [],
       skills: d.skills || [], sort_order: d.sortOrder || 0,
+      featured: d.featured || false,
     }).select().single()
     if (error) throw error
     return data
@@ -1125,10 +1126,20 @@ export async function updatePortfolioProject(id, d) {
     if (d.specs !== undefined) updates.specs = d.specs
     if (d.skills !== undefined) updates.skills = d.skills
     if (d.sortOrder !== undefined) updates.sort_order = d.sortOrder
+    if (d.featured !== undefined) updates.featured = d.featured
     const { data, error } = await supabase.from('portfolio_projects').update(updates).eq('id', id).select().single()
     if (error) throw error
     return data
   } catch (e) { console.error('updatePortfolioProject:', e); return null }
+}
+
+export async function setFeaturedProject(id) {
+  try {
+    await supabase.from('portfolio_projects').update({ featured: false }).eq('featured', true)
+    const { error } = await supabase.from('portfolio_projects').update({ featured: true }).eq('id', id)
+    if (error) throw error
+    return true
+  } catch (e) { console.error('setFeaturedProject:', e); return false }
 }
 
 export async function deletePortfolioProject(id) {

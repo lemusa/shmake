@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, useRef, Fragment } from "react";
-import { LayoutDashboard,Briefcase,Users,FileText,Receipt,CreditCard,PieChart,Settings,Plus,X,Clock,DollarSign,AlertTriangle,TrendingUp,CheckCircle,Circle,Home,FileCheck,RefreshCw,Upload,Hash,BookOpen,Lock,Globe,MessageSquare,Phone,Mail,Download,Printer,Copy,Car,Wifi,ArrowLeft,Route,Percent,Calculator,Send,Eye,MoreVertical,Ban,Edit3,Trash2,Link2,Unlink,FileSpreadsheet,Check,Info,Image,Target,Menu,Sun,Moon,Blocks } from "lucide-react";
+import { LayoutDashboard,Briefcase,Users,FileText,Receipt,CreditCard,PieChart,Settings,Plus,X,Clock,DollarSign,AlertTriangle,TrendingUp,CheckCircle,Circle,Home,FileCheck,RefreshCw,Upload,Hash,BookOpen,Lock,Globe,MessageSquare,Phone,Mail,Download,Printer,Copy,Car,Wifi,ArrowLeft,Route,Percent,Calculator,Send,Eye,MoreVertical,Ban,Edit3,Trash2,Link2,Unlink,FileSpreadsheet,Check,Info,Image,Target,Menu,Sun,Moon,Blocks,Star } from "lucide-react";
 import { BarChart,Bar,XAxis,YAxis,Tooltip,ResponsiveContainer,LineChart,Line,CartesianGrid,PieChart as RPie,Pie,Cell,AreaChart,Area } from "recharts";
 import { generateInvoicePdf, generateQuotePdf, generateExpenseReportPdf } from "../lib/pdf";
 import { useAuth } from "../context/AuthContext";
@@ -299,6 +299,7 @@ function PortfolioPg({toast}){
       <SearchBar value={q} onChange={sQ} placeholder="Search projects..."><B sz="sm" icon={Plus} onClick={()=>setEditing({type:"project",item:null,isNew:true})}>Add Project</B></SearchBar>
       <div className="bg-white shadow-sm border border-stone-200/60 rounded-xl overflow-hidden overflow-x-auto"><table className="w-full min-w-[640px]"><thead><tr className="border-b border-stone-200 bg-stone-50">
         <SortTh sortKey="id" sort={sort} toggle={toggle} align="center">#</SortTh>
+        <th className="w-10"></th>
         <SortTh sortKey="title" sort={sort} toggle={toggle}>Project</SortTh>
         <SortTh sortKey="category" sort={sort} toggle={toggle}>Category</SortTh>
         <SortTh sortKey="year" sort={sort} toggle={toggle}>Year</SortTh>
@@ -308,13 +309,14 @@ function PortfolioPg({toast}){
       </tr></thead>
       <tbody>{sl.length?sl.map(p=><tr key={p.id} className="border-b border-stone-100 hover:bg-stone-50 cursor-pointer" onClick={()=>setEditing({type:"project",item:p,isNew:false})}>
         <td className="px-5 py-3.5 text-center text-xs text-stone-400 fm">{p.id}</td>
+        <td className="px-2 py-3.5 text-center"><button className="p-1 rounded hover:bg-amber-50" title={p.featured?"Featured project":"Set as featured"} onClick={async e=>{e.stopPropagation();await db.setFeaturedProject(p.id);loadProjects().then(setData);toast("Featured project updated","success")}}><Star size={16} className={p.featured?"text-amber-500 fill-amber-500":"text-stone-300 hover:text-amber-400"}/></button></td>
         <td className="px-5 py-3.5"><div className="flex items-center gap-2.5"><div className="w-3 h-3 rounded-full flex-shrink-0" style={{background:grc(p.gradient)}}/><div><p className="text-sm font-medium text-stone-800">{p.title}</p><p className="text-xs text-stone-400 max-w-sm truncate">{p.description}</p></div></div></td>
         <td className="px-5 py-3.5"><span className="text-xs bg-stone-100 text-stone-500 px-2 py-0.5 rounded-full">{Array.isArray(p.category)?p.category.join(", "):p.category||"—"}</span></td>
         <td className="px-5 py-3.5 text-sm text-stone-500">{p.year}</td>
         <td className="px-5 py-3.5 text-center">{p.image?<CheckCircle size={16}className="mx-auto text-emerald-500"/>:<Circle size={16}className="mx-auto text-stone-300"/>}</td>
         <td className="px-5 py-3.5 text-center text-sm text-stone-500">{p.gallery?.length||0}</td>
         <td className="px-3"><button className="p-1 rounded hover:bg-stone-100 text-stone-400" onClick={e=>{e.stopPropagation();setEditing({type:"project",item:p,isNew:false})}}><Edit3 size={14}/></button></td>
-      </tr>):<tr><td colSpan={7} className="px-5 py-8 text-center text-sm text-stone-400">No projects found</td></tr>}</tbody></table></div>
+      </tr>):<tr><td colSpan={8} className="px-5 py-8 text-center text-sm text-stone-400">No projects found</td></tr>}</tbody></table></div>
     </div>}
 
     {tab==="Hero Cards"&&<div>
