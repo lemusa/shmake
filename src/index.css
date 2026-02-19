@@ -694,3 +694,35 @@ body {
 .fm {
   font-family: 'DM Mono', monospace;
 }
+
+/* ── Admin dark mode ─── palette swap via CSS variable overrides ── */
+.admin-dark {
+  --color-white: oklch(16% .005 50);
+  --color-stone-50: oklch(16% .005 50);
+  --color-stone-100: oklch(12% .004 50);
+  --color-stone-200: oklch(26.8% .007 34.298);
+  --color-stone-300: oklch(37.4% .01 67.558);
+  --color-stone-400: oklch(55.3% .013 58.071);
+  --color-stone-500: oklch(60% .012 58);
+  --color-stone-600: oklch(70.9% .01 56.259);
+  --color-stone-700: oklch(80% .007 56);
+  --color-stone-800: oklch(88% .004 50);
+  --color-stone-900: oklch(95% .002 100);
+  color-scheme: dark;
+}
+
+/* Status badge tinted backgrounds in dark mode */
+.admin-dark .bg-emerald-50 { background-color: oklch(25% .04 160) !important; }
+.admin-dark .bg-red-50 { background-color: oklch(25% .04 25) !important; }
+.admin-dark .bg-blue-50 { background-color: oklch(25% .04 250) !important; }
+.admin-dark .bg-amber-50 { background-color: oklch(25% .04 80) !important; }
+.admin-dark .bg-indigo-50 { background-color: oklch(25% .04 280) !important; }
+.admin-dark .bg-purple-50 { background-color: oklch(25% .04 300) !important; }
+.admin-dark .bg-orange-50 { background-color: oklch(25% .04 50) !important; }
+.admin-dark .bg-violet-50 { background-color: oklch(25% .04 290) !important; }
+.admin-dark .bg-teal-50 { background-color: oklch(25% .04 180) !important; }
+.admin-dark .bg-slate-100 { background-color: oklch(25% .01 250) !important; }
+
+/* Shadows + transitions for dark mode */
+.admin-dark .shadow-sm { box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.4) !important; }
+.admin-dark .shadow-2xl { box-shadow: 0 8px 32px 0 rgb(0 0 0 / 0.6) !important; }

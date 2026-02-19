@@ -10,7 +10,9 @@
       "Bash(ls:*)",
       "Bash(del \"c:\\\\Users\\\\samha\\\\OneDrive\\\\Documents\\\\GitHub\\\\shmake\\\\scripts\\\\verify-data.js\")",
       "Bash(npx supabase:*)",
-      "Bash(find:*)"
+      "Bash(find:*)",
+      "Bash(npm run sync-stripe-agg:*)",
+      "Bash(cat:*)"
     ]
   }
 }

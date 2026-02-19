@@ -157,13 +157,15 @@ async function handleSubscriptionUpdate(supabase: any, subscription: Stripe.Subs
   const { appName, mrr, currency } = await extractSubscriptionInfo(subscription)
   const gstRate = currency === 'NZD' ? 0.15 : 0
 
-  // Find existing aggregated source by app_name
-  const { data: existing } = await supabase
+  // Find existing aggregated source by app_name + platform
+  const { data: rows } = await supabase
     .from('subscription_sources')
     .select('*')
     .eq('app_name', appName)
+    .eq('platform', 'Stripe')
     .limit(1)
-    .single()
+
+  const existing = rows?.[0] || null
 
   if (existing) {
     const meta = existing.metadata || {}
@@ -244,13 +246,15 @@ async function handleSubscriptionDeleted(supabase: any, subscription: Stripe.Sub
   const { appName, mrr, currency } = await extractSubscriptionInfo(subscription)
   const gstRate = currency === 'NZD' ? 0.15 : 0
 
-  // Find aggregated source by app_name
-  const { data: existing } = await supabase
+  // Find aggregated source by app_name + platform
+  const { data: rows } = await supabase
     .from('subscription_sources')
     .select('*')
     .eq('app_name', appName)
+    .eq('platform', 'Stripe')
     .limit(1)
-    .single()
+
+  const existing = rows?.[0] || null
 
   if (existing) {
     const meta = existing.metadata || {}

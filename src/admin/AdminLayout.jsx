@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, useRef, Fragment } from "react";
-import { LayoutDashboard,Briefcase,Users,FileText,Receipt,CreditCard,PieChart,Settings,Plus,X,Clock,DollarSign,AlertTriangle,TrendingUp,CheckCircle,Circle,Home,FileCheck,RefreshCw,Upload,Hash,BookOpen,Lock,Globe,MessageSquare,Phone,Mail,Download,Printer,Copy,Car,Wifi,ArrowLeft,Route,Percent,Calculator,Send,Eye,MoreVertical,Ban,Edit3,Trash2,Link2,Unlink,FileSpreadsheet,Check,Info,Image,Target,Menu } from "lucide-react";
+import { LayoutDashboard,Briefcase,Users,FileText,Receipt,CreditCard,PieChart,Settings,Plus,X,Clock,DollarSign,AlertTriangle,TrendingUp,CheckCircle,Circle,Home,FileCheck,RefreshCw,Upload,Hash,BookOpen,Lock,Globe,MessageSquare,Phone,Mail,Download,Printer,Copy,Car,Wifi,ArrowLeft,Route,Percent,Calculator,Send,Eye,MoreVertical,Ban,Edit3,Trash2,Link2,Unlink,FileSpreadsheet,Check,Info,Image,Target,Menu,Sun,Moon } from "lucide-react";
 import { BarChart,Bar,XAxis,YAxis,Tooltip,ResponsiveContainer,LineChart,Line,CartesianGrid,PieChart as RPie,Pie,Cell,AreaChart,Area } from "recharts";
 import { generateInvoicePdf, generateQuotePdf, generateExpenseReportPdf } from "../lib/pdf";
 import { useAuth } from "../context/AuthContext";
@@ -408,6 +408,8 @@ export default function AdminLayout(){
   const[vw,sVw]=useState(null);
   const[sl,sSl]=useState({o:false,t:null,item:null});
   const[mobNav,setMobNav]=useState(false);
+  const[dark,setDark]=useState(()=>localStorage.getItem("admin-theme")==="dark");
+  useEffect(()=>{localStorage.setItem("admin-theme",dark?"dark":"light")},[dark]);
   const{toast,Toasts}=useToast();
   const{user,signOut}=useAuth();
   const o=(t,item)=>sSl({o:true,t,item:item||null});const c=()=>sSl({o:false,t:null,item:null});const gb=()=>sVw(null);
@@ -436,14 +438,15 @@ export default function AdminLayout(){
             <div className="w-8 h-8 bg-stone-200 rounded-full flex items-center justify-center"><span className="text-xs font-semibold text-stone-600">{(user?.email||"?")[0].toUpperCase()}</span></div>
             <div><p className="text-sm font-medium text-stone-700 truncate max-w-[120px]">{user?.email?.split("@")[0]||"Admin"}</p><p className="text-xs text-stone-400">Sole Trader</p></div>
           </div>
-          <button onClick={signOut} className="text-xs text-stone-400 hover:text-stone-600 transition-colors" title="Sign out">
-            <ArrowLeft size={16}/>
-          </button>
+          <div className="flex items-center gap-1">
+            <button onClick={()=>setDark(d=>!d)} className="p-1.5 rounded-lg text-stone-400 hover:text-stone-600 hover:bg-stone-100 transition-colors" title="Toggle theme">{dark?<Sun size={15}/>:<Moon size={15}/>}</button>
+            <button onClick={signOut} className="p-1.5 rounded-lg text-stone-400 hover:text-stone-600 hover:bg-stone-100 transition-colors" title="Sign out"><ArrowLeft size={16}/></button>
+          </div>
         </div>
       </div></>;
 
-  if(loading)return<div className="flex h-screen items-center justify-center bg-stone-100"><div className="text-center"><div className="w-9 h-9 bg-amber-500 rounded-lg flex items-center justify-center mx-auto mb-4"><span className="text-sm font-bold text-white fm">S</span></div><p className="text-sm text-stone-500">Loading...</p></div></div>;
-  return(<div className="flex h-screen bg-stone-100" style={{fontFamily:"'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif"}}>
+  if(loading)return<div className={`flex h-screen items-center justify-center bg-stone-100 ${dark?"admin-dark":""}`}><div className="text-center"><div className="w-9 h-9 bg-amber-500 rounded-lg flex items-center justify-center mx-auto mb-4"><span className="text-sm font-bold text-white fm">S</span></div><p className="text-sm text-stone-500">Loading...</p></div></div>;
+  return(<div className={`flex h-screen bg-stone-100 ${dark?"admin-dark":""}`} style={{fontFamily:"'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif"}}>
     {/* Desktop sidebar */}
     <div className="hidden md:flex w-60 bg-stone-50 flex-col flex-shrink-0 border-r border-stone-200/60">{sidebar}</div>
     {/* Mobile overlay sidebar */}
