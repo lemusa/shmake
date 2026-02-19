@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, useRef, Fragment } from "react";
-import { LayoutDashboard,Briefcase,Users,FileText,Receipt,CreditCard,PieChart,Settings,Plus,X,Clock,DollarSign,AlertTriangle,TrendingUp,CheckCircle,Circle,Home,FileCheck,RefreshCw,Upload,Hash,BookOpen,Lock,Globe,MessageSquare,Phone,Mail,Download,Printer,Copy,Car,Wifi,ArrowLeft,Route,Percent,Calculator,Send,Eye,MoreVertical,Ban,Edit3,Trash2,Link2,Unlink,FileSpreadsheet,Check,Info,Image,Target,Menu,Sun,Moon } from "lucide-react";
+import { LayoutDashboard,Briefcase,Users,FileText,Receipt,CreditCard,PieChart,Settings,Plus,X,Clock,DollarSign,AlertTriangle,TrendingUp,CheckCircle,Circle,Home,FileCheck,RefreshCw,Upload,Hash,BookOpen,Lock,Globe,MessageSquare,Phone,Mail,Download,Printer,Copy,Car,Wifi,ArrowLeft,Route,Percent,Calculator,Send,Eye,MoreVertical,Ban,Edit3,Trash2,Link2,Unlink,FileSpreadsheet,Check,Info,Image,Target,Menu,Sun,Moon,Blocks } from "lucide-react";
 import { BarChart,Bar,XAxis,YAxis,Tooltip,ResponsiveContainer,LineChart,Line,CartesianGrid,PieChart as RPie,Pie,Cell,AreaChart,Area } from "recharts";
 import { generateInvoicePdf, generateQuotePdf, generateExpenseReportPdf } from "../lib/pdf";
 import { useAuth } from "../context/AuthContext";
@@ -263,6 +263,8 @@ function HeroF({item,isNew,c,toast,onSave}){
     <div className="flex gap-3 pt-4 border-t border-stone-200 mt-6"><B icon={isNew?Plus:CheckCircle} onClick={async()=>{if(isNew)await db.createHeroCard(f);else await db.updateHeroCard(item.id,f);if(onSave)await onSave();toast(isNew?"Card added":"Card updated","success");c()}}>{isNew?"Add Card":"Save"}</B><B vr="ghost" onClick={c}>Cancel</B>{!isNew&&<B vr="danger" icon={Trash2} onClick={async()=>{await db.deleteHeroCard(item.id);if(onSave)await onSave();toast("Removed","info");c()}}>Delete</B>}</div>
   </div>}
 
+function WidgetsPg(){const doc='<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><style>body{margin:0}</style></head><body><div id="shmakecut-admin"></div><script src="https://admin-widget.shmake.nz/shmakecut-admin.iife.js"><\/script></body></html>';return<iframe srcDoc={doc} style={{width:"100%",height:"100%",border:"none"}} title="Widget Admin"/>}
+
 function PortfolioPg({toast}){
   const[tab,sTab]=useState("Projects");
   const[data,setData]=useState(null);
@@ -398,7 +400,7 @@ const NAV_SECTIONS=[
   {label:"People",items:[{id:"clients",l:"Clients",ic:Users},{id:"contacts",l:"Contacts",ic:BookOpen}]},
   {label:"Money",items:[{id:"invoices",l:"Invoices",ic:FileText},{id:"subscriptions",l:"Subscriptions",ic:CreditCard},{id:"expenses",l:"Expenses",ic:Receipt},{id:"bank",l:"Bank",ic:FileSpreadsheet},{id:"budget",l:"Budget",ic:Target}]},
   {label:"Insights",items:[{id:"reports",l:"Reports",ic:PieChart}]},
-  {items:[{id:"portfolio",l:"Portfolio",ic:Image},{id:"settings",l:"Settings",ic:Settings}]},
+  {items:[{id:"portfolio",l:"Portfolio",ic:Image},{id:"widgets",l:"Widgets",ic:Blocks},{id:"settings",l:"Settings",ic:Settings}]},
 ];
 function navBadge(id){if(id==="jobs"){const c=JOBS.filter(j=>!["Closed","Invoiced","Complete"].includes(j.st)).length;return c||null}if(id==="invoices"){const c=INV.filter(i=>i.st==="Overdue").length;return c||null}if(id==="enquiries"){const c=ENQ.filter(e=>e.status==="New").length;return c||null}if(id==="bank"){const c=BANK.filter(b=>!b.rec).length;return c||null}return null}
 const FT={job:["New Job","Edit Job"],quote:["New Quote","Edit Quote"],inv:["New Invoice","Edit Invoice"],exp:["Log Expense","Edit Expense"],contact:["New Contact","Edit Contact"],client:["New Client","Edit Client"],markPaid:["Record Payment","Record Payment"],incSrc:["Add Income Source","Add Income Source"],trip:["Log Trip","Edit Trip"],homeExp:["Home Expense","Edit Expense"],budget:["New Budget Item","Edit Budget Item"],mp:["Log Payment","Edit Payment"],enq:["View Enquiry","View Enquiry"],bankExp:["Create Expense","Create Expense"]};
@@ -425,7 +427,7 @@ export default function AdminLayout(){
     if(vw==="home")return<HomeV onBack={gb} o={o}/>;
     if(vw==="recurring")return<RecurV onBack={gb} toast={toast} reload={reload}/>;
     if(vw==="stripe")return<StripeV onBack={gb} toast={toast}/>;
-    switch(pg){case"dashboard":return<Dash o={o}/>;case"jobs":return<JobsPg o={o}/>;case"clients":return<ClientsPg o={o}/>;case"contacts":return<ContactsPg o={o}/>;case"enquiries":return<EnqPg o={o}/>;case"quotes":return<QuotesPg o={o} toast={toast}/>;case"invoices":return<InvPg o={o} toast={toast} setView={sVw}/>;case"expenses":return<ExpPg o={o} setView={sVw}/>;case"subscriptions":return<SubsPg setView={sVw} o={o}/>;case"bank":return<BankRecPg o={o} toast={toast} reload={reload}/>;case"budget":return<BudgetPg o={o} toast={toast}/>;case"reports":return<RepPg toast={toast}/>;case"portfolio":return<PortfolioPg toast={toast}/>;case"settings":return<SetPg toast={toast} setView={sVw} setPg={sPg} reload={reload}/>}
+    switch(pg){case"dashboard":return<Dash o={o}/>;case"jobs":return<JobsPg o={o}/>;case"clients":return<ClientsPg o={o}/>;case"contacts":return<ContactsPg o={o}/>;case"enquiries":return<EnqPg o={o}/>;case"quotes":return<QuotesPg o={o} toast={toast}/>;case"invoices":return<InvPg o={o} toast={toast} setView={sVw}/>;case"expenses":return<ExpPg o={o} setView={sVw}/>;case"subscriptions":return<SubsPg setView={sVw} o={o}/>;case"bank":return<BankRecPg o={o} toast={toast} reload={reload}/>;case"budget":return<BudgetPg o={o} toast={toast}/>;case"reports":return<RepPg toast={toast}/>;case"portfolio":return<PortfolioPg toast={toast}/>;case"widgets":return<WidgetsPg/>;case"settings":return<SetPg toast={toast} setView={sVw} setPg={sPg} reload={reload}/>}
   };
 
   const navClick=(id)=>{sPg(id);sVw(null);setMobNav(false)};
@@ -457,7 +459,7 @@ export default function AdminLayout(){
         <button onClick={()=>setMobNav(true)} className="p-1.5 rounded-lg hover:bg-stone-100 text-stone-600"><Menu size={22}/></button>
         <div className="flex items-center gap-2"><div className="w-7 h-7 bg-amber-500 rounded-md flex items-center justify-center"><span className="text-xs font-bold text-white fm">S</span></div><span className="text-sm font-bold text-stone-900 tracking-wide fs">SHMAKE</span></div>
       </div>
-      <div className="flex-1 overflow-y-auto"><div className="max-w-[1600px] mx-auto px-4 py-4 md:px-10 md:py-8">{page()}</div></div>
+      {pg==="widgets"?<div className="flex-1 overflow-hidden">{page()}</div>:<div className="flex-1 overflow-y-auto"><div className="max-w-[1600px] mx-auto px-4 py-4 md:px-10 md:py-8">{page()}</div></div>}
     </div>
     <Sld open={sl.o} onClose={c} title={FT[sl.t]?(FT[sl.t][sl.item?1:0]):""} wide={sl.t==="quote"||sl.t==="inv"||sl.t==="exp"}>{form()}</Sld><Toasts/>
   </div>);

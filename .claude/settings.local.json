@@ -12,7 +12,9 @@
       "Bash(npx supabase:*)",
       "Bash(find:*)",
       "Bash(npm run sync-stripe-agg:*)",
-      "Bash(cat:*)"
+      "Bash(cat:*)",
+      "WebFetch(domain:admin-widget.shmake.nz)",
+      "Bash(curl:*)"
     ]
   }
 }
