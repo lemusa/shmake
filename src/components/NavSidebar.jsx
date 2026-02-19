@@ -36,6 +36,7 @@ export default function NavSidebar({ open, onClose }) {
 
       {/* Sidebar */}
       <nav className={`nav-sidebar ${open ? 'active' : ''}`}>
+        <a href="/portal" className="nav-portal" onClick={onClose}>Client Portal →</a>
         <a href="/demo" className="nav-demo" onClick={onClose}>Client Demo →</a>
         <a href="#portfolio" onClick={(e) => handleNavClick(e, '#portfolio')}>Portfolio</a>
         <a href="#about" onClick={(e) => handleNavClick(e, '#about')}>About</a>

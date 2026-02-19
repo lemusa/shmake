@@ -18,22 +18,25 @@ function LoadingFallback() {
   )
 }
 
-function DemoEmbed() {
+const btnStyle = { background: '#1a1a1a', border: '1px solid #2a2a2a', borderRadius: 8, padding: '6px 12px', color: '#fff', textDecoration: 'none', fontSize: 13, fontWeight: 500, display: 'flex', alignItems: 'center', gap: 6, boxShadow: '0 2px 8px rgba(0,0,0,0.3)', cursor: 'pointer' }
+const headerStyle = { position: 'fixed', top: 0, left: 0, right: 0, zIndex: 100, display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '12px 16px', background: 'rgba(10,10,10,0.85)', backdropFilter: 'blur(12px)', WebkitBackdropFilter: 'blur(12px)', borderBottom: '1px solid #2a2a2a' }
+const labelStyle = { background: 'linear-gradient(135deg, #d97706, #ea580c)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', fontSize: 12, fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase' }
+
+function EmbedPage({ title, src, homeLabel }) {
   const iframeRef = useRef(null)
-  const btnStyle = { background: '#1a1a1a', border: '1px solid #2a2a2a', borderRadius: 8, padding: '6px 12px', color: '#fff', textDecoration: 'none', fontSize: 13, fontWeight: 500, display: 'flex', alignItems: 'center', gap: 6, boxShadow: '0 2px 8px rgba(0,0,0,0.3)', cursor: 'pointer' }
   return (
     <div style={{ height: '100vh', background: '#0a0a0a', position: 'relative' }}>
-      <header style={{ position: 'fixed', top: 0, left: 0, right: 0, zIndex: 100, display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '12px 16px', background: 'rgba(10,10,10,0.85)', backdropFilter: 'blur(12px)', WebkitBackdropFilter: 'blur(12px)', borderBottom: '1px solid #2a2a2a' }}>
+      <header style={headerStyle}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
           <a href="/" style={btnStyle}>← shmake</a>
           <a href="/" style={{ height: 28, display: 'flex', alignItems: 'center' }}>
             <img src="/assets/shmake-logo-light.png" alt="SHMAKE" style={{ height: '100%', width: 'auto' }} />
           </a>
         </div>
-        <span style={{ background: 'linear-gradient(135deg, #d97706, #ea580c)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', fontSize: 12, fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase' }}>Client Portal Demo</span>
-        <button onClick={() => { if (iframeRef.current) iframeRef.current.src = 'https://demo.shmake.nz' }} style={btnStyle}>Demo Home</button>
+        <span style={labelStyle}>{title}</span>
+        <button onClick={() => { if (iframeRef.current) iframeRef.current.src = src }} style={btnStyle}>{homeLabel || 'Home'}</button>
       </header>
-      <iframe ref={iframeRef} src="https://demo.shmake.nz" style={{ position: 'absolute', top: 52, left: 0, right: 0, bottom: 0, border: 'none', width: '100%', height: 'calc(100vh - 52px)' }} title="Client Demo" />
+      <iframe ref={iframeRef} src={src} style={{ position: 'absolute', top: 52, left: 0, right: 0, bottom: 0, border: 'none', width: '100%', height: 'calc(100vh - 52px)' }} title={title} />
     </div>
   )
 }
@@ -54,8 +57,11 @@ export default function App() {
           }
         />
 
+        {/* Client portal — embedded iframe */}
+        <Route path="/portal" element={<EmbedPage title="Client Portal" src="https://portal.shmake.nz" homeLabel="Portal Home" />} />
+
         {/* Client demo — embedded iframe */}
-        <Route path="/demo" element={<DemoEmbed />} />
+        <Route path="/demo" element={<EmbedPage title="Client Portal Demo" src="https://demo.shmake.nz" homeLabel="Demo Home" />} />
 
         {/* Admin — lazy-loaded, auth-guarded */}
         <Route

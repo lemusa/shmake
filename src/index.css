@@ -298,6 +298,15 @@ body {
   color: var(--color-orange-hover) !important;
 }
 
+.nav-sidebar a.nav-portal {
+  color: var(--color-accent) !important;
+  border-bottom-color: var(--color-accent);
+}
+
+.nav-sidebar a.nav-portal:hover {
+  color: var(--color-accent-hover) !important;
+}
+
 .nav-contact-details {
   margin-top: 2rem;
   display: flex;
