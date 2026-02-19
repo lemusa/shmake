@@ -682,6 +682,10 @@ body {
   from { transform: translateX(100%); }
   to { transform: translateX(0); }
 }
+@keyframes slideInLeft {
+  from { transform: translateX(-100%); }
+  to { transform: translateX(0); }
+}
 
 .fs {
   font-family: 'DM Sans', sans-serif;
