@@ -36,13 +36,15 @@ export default function Contact() {
     const formData = new FormData(formRef.current)
     formData.append('g-recaptcha-response', recaptchaResponse)
 
-    // Save to Supabase immediately (before Formspree, fire-and-forget)
-    supabase.from('enquiries').insert({
+    // Save to Supabase (before Formspree, fire-and-forget)
+    const enqPayload = {
       name: formData.get('name'),
       email: formData.get('email'),
       phone: formData.get('phone') || null,
       message: formData.get('message'),
-    }).then(({ error }) => { if (error) console.error('Enquiry save:', error) })
+    }
+    supabase.from('enquiries').insert(enqPayload)
+      .then(({ error }) => { if (error) console.error('Enquiry save failed:', error.message, error.code, error.details) })
 
     try {
       const response = await fetch(formAction, {
