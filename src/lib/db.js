@@ -237,15 +237,16 @@ export async function nextQuoteId() {
   try {
     const { data, error } = await supabase.from('site_content').select('invoicing').eq('id', 1).single()
     if (error) throw error
+    const prefix = data.invoicing.quotePrefix || 'Q'
     const counter = data.invoicing.quoteNextNumber || 1
-    // Also check max existing quote ID to prevent conflicts
     const { data: quotes } = await supabase.from('quotes').select('id')
+    const re = new RegExp(`^${prefix}-(\\d+)$`)
     const maxExisting = (quotes || []).reduce((mx, q) => {
-      const m = q.id.match(/^Q-(\d+)$/)
+      const m = q.id.match(re)
       return m ? Math.max(mx, parseInt(m[1], 10)) : mx
     }, 0)
     const n = Math.max(counter, maxExisting + 1)
-    const id = `Q-${String(n).padStart(4, '0')}`
+    const id = `${prefix}-${String(n).padStart(4, '0')}`
     await supabase.from('site_content').update({
       invoicing: { ...data.invoicing, quoteNextNumber: n + 1 },
     }).eq('id', 1)

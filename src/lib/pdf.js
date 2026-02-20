@@ -274,8 +274,8 @@ export async function generateInvoicePdf(invoice) {
 
   y += 12;
 
-  // Payment details box (non-draft)
-  if (invoice.status !== "Draft") {
+  // Payment details box
+  if (BUSINESS.bankName || BUSINESS.bankAccount) {
     const boxH = 28;
     if (y + boxH > 260) { doc.addPage(); y = 20; }
     doc.setFillColor("#f8fafc");
