@@ -13,7 +13,7 @@ CREATE TABLE IF NOT EXISTS enquiries (
 
 -- Grant table privileges (required for RLS policies to work via Supabase API)
 GRANT INSERT ON enquiries TO anon;
-GRANT SELECT, UPDATE, DELETE ON enquiries TO authenticated;
+GRANT INSERT, SELECT, UPDATE, DELETE ON enquiries TO authenticated;
 
 -- RLS
 ALTER TABLE enquiries ENABLE ROW LEVEL SECURITY;
@@ -21,6 +21,10 @@ ALTER TABLE enquiries ENABLE ROW LEVEL SECURITY;
 -- Anonymous users can insert (public contact form)
 CREATE POLICY "anon_insert_enquiries" ON enquiries
   FOR INSERT TO anon WITH CHECK (true);
+
+-- Authenticated users can insert (form works when logged in too)
+CREATE POLICY "auth_insert_enquiries" ON enquiries
+  FOR INSERT TO authenticated WITH CHECK (true);
 
 -- Authenticated users can read all
 CREATE POLICY "auth_select_enquiries" ON enquiries
