@@ -1,5 +1,5 @@
 import jsPDF from "jspdf";
-import "jspdf-autotable";
+import autoTable from "jspdf-autotable";
 
 let BUSINESS = {
   name: "SHMAKE",
@@ -14,7 +14,10 @@ let BUSINESS = {
   bankName: "ASB Bank",
 };
 
+let _logoData = null;
+
 export function setBusiness(config) {
+  if (config.logo !== BUSINESS.logo) _logoData = null;
   BUSINESS = { ...BUSINESS, ...config };
 }
 
@@ -27,6 +30,8 @@ const fmtDate = (dateStr) => {
   return d.toLocaleDateString("en-NZ", { day: "numeric", month: "long", year: "numeric" });
 };
 
+const s = (v) => (v || "").toString();
+
 const COL = {
   text: "#1c1917",
   muted: "#78716c",
@@ -38,13 +43,51 @@ const COL = {
   grey: "#a8a29e",
 };
 
-function drawLogo(doc, x, y) {
+async function loadLogo() {
+  if (_logoData) return _logoData;
+  if (!BUSINESS.logo) return null;
+  try {
+    const resp = await fetch(BUSINESS.logo);
+    const blob = await resp.blob();
+    const dataUrl = await new Promise((resolve) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = () => resolve(null);
+      reader.readAsDataURL(blob);
+    });
+    if (!dataUrl) return null;
+    const dims = await new Promise((resolve) => {
+      const img = new Image();
+      img.onload = () => resolve({ w: img.naturalWidth, h: img.naturalHeight });
+      img.onerror = () => resolve(null);
+      img.src = dataUrl;
+    });
+    if (!dims) return null;
+    _logoData = { data: dataUrl, w: dims.w, h: dims.h };
+    return _logoData;
+  } catch { return null; }
+}
+
+function drawLogo(doc, x, y, logo) {
+  if (logo) {
+    try {
+      const maxH = 44;
+      const maxW = 120;
+      const ratio = logo.w / logo.h;
+      let w = maxH * ratio;
+      let h = maxH;
+      if (w > maxW) { w = maxW; h = w / ratio; }
+      doc.addImage(logo.data, "PNG", x, y, w, h);
+      return h;
+    } catch {}
+  }
   doc.setFillColor(COL.amber);
   doc.roundedRect(x, y, 12, 12, 2, 2, "F");
   doc.setFontSize(9);
   doc.setFont("helvetica", "bold");
   doc.setTextColor("#1c1917");
   doc.text("S", x + 6, y + 8.2, { align: "center" });
+  return 12;
 }
 
 function drawFooter(doc) {
@@ -82,36 +125,35 @@ function drawWatermark(doc, text, color) {
 }
 
 // ─── Invoice PDF ──────────────────────────────────────────────────────
-export function generateInvoicePdf(invoice) {
+export async function generateInvoicePdf(invoice) {
+  const logoData = await loadLogo();
   const doc = new jsPDF({ unit: "mm", format: "a4" });
   const pw = doc.internal.pageSize.getWidth();
   let y = 20;
 
-  // Logo + header
-  drawLogo(doc, 20, y);
+  // Logo (left) + Title & business details (right)
+  const logoH = drawLogo(doc, 20, y, logoData);
   doc.setFontSize(18);
   doc.setFont("helvetica", "bold");
   doc.setTextColor(COL.text);
   doc.text("TAX INVOICE", pw - 20, y + 8, { align: "right" });
 
-  y += 16;
+  let hy = y + 14;
   doc.setFontSize(11);
   doc.setFont("helvetica", "bold");
   doc.setTextColor(COL.text);
-  doc.text(BUSINESS.name, 20, y);
-  y += 5;
+  doc.text(s(BUSINESS.name) || "SHMAKE", pw - 20, hy, { align: "right" });
+  hy += 5;
   doc.setFontSize(9);
   doc.setFont("helvetica", "normal");
   doc.setTextColor(COL.muted);
-  doc.text(BUSINESS.legalName, 20, y);
-  y += 4;
-  doc.text(BUSINESS.address, 20, y);
-  y += 4;
-  doc.text(`${BUSINESS.email}  |  ${BUSINESS.phone}`, 20, y);
-  y += 4;
-  doc.text(`GST: ${BUSINESS.gstNumber}`, 20, y);
+  if (BUSINESS.legalName) { doc.text(s(BUSINESS.legalName), pw - 20, hy, { align: "right" }); hy += 4; }
+  if (BUSINESS.address) { doc.text(s(BUSINESS.address), pw - 20, hy, { align: "right" }); hy += 4; }
+  const contact = [BUSINESS.email, BUSINESS.phone].filter(Boolean).join("  |  ");
+  if (contact) { doc.text(contact, pw - 20, hy, { align: "right" }); hy += 4; }
+  if (BUSINESS.gstNumber) { doc.text(`GST: ${BUSINESS.gstNumber}`, pw - 20, hy, { align: "right" }); hy += 4; }
 
-  y += 10;
+  y = Math.max(y + logoH, hy) + 6;
 
   // Bill-to + invoice details side by side
   const colL = 20;
@@ -127,7 +169,7 @@ export function generateInvoicePdf(invoice) {
   doc.setFontSize(10);
   doc.setFont("helvetica", "bold");
   doc.setTextColor(COL.text);
-  doc.text(invoice.client.name, colL, y);
+  doc.text(s(invoice.client.name), colL, y);
   y += 4.5;
   doc.setFont("helvetica", "normal");
   doc.setFontSize(9);
@@ -160,7 +202,7 @@ export function generateInvoicePdf(invoice) {
   y = Math.max(y, ry) + 8;
 
   // Line items table
-  doc.autoTable({
+  autoTable(doc, {
     startY: y,
     margin: { left: 20, right: 20 },
     head: [["Description", "Type", "Qty", "Rate", "Total"]],
@@ -205,11 +247,13 @@ export function generateInvoicePdf(invoice) {
   doc.text("Subtotal:", lblX, y, { align: "right" });
   doc.setTextColor(COL.text);
   doc.text(fmt(invoice.subtotal), totX, y, { align: "right" });
-  y += 5;
-  doc.setTextColor(COL.muted);
-  doc.text("GST (15%):", lblX, y, { align: "right" });
-  doc.setTextColor(COL.text);
-  doc.text(fmt(invoice.gst), totX, y, { align: "right" });
+  if (invoice.gstRate) {
+    y += 5;
+    doc.setTextColor(COL.muted);
+    doc.text(`GST (${invoice.gstRate}%):`, lblX, y, { align: "right" });
+    doc.setTextColor(COL.text);
+    doc.text(fmt(invoice.gst), totX, y, { align: "right" });
+  }
   y += 2;
   doc.setDrawColor(COL.tableBorder);
   doc.line(lblX - 5, y, totX, y);
@@ -246,11 +290,9 @@ export function generateInvoicePdf(invoice) {
     doc.setFontSize(9);
     doc.setFont("helvetica", "normal");
     doc.setTextColor(COL.text);
-    doc.text(`Bank: ${BUSINESS.bankName}`, 25, y);
-    y += 4.5;
-    doc.text(`Account: ${BUSINESS.bankAccount}`, 25, y);
-    y += 4.5;
-    doc.text(`Reference: ${invoice.id}`, 25, y);
+    if (BUSINESS.bankName) { doc.text(`Bank: ${BUSINESS.bankName}`, 25, y); y += 4.5; }
+    if (BUSINESS.bankAccount) { doc.text(`Account: ${BUSINESS.bankAccount}`, 25, y); y += 4.5; }
+    doc.text(`Reference: ${s(invoice.id)}`, 25, y);
     if (invoice.dueDate) {
       doc.text(`Due: ${fmtDate(invoice.dueDate)}`, pw / 2, y);
     }
@@ -266,7 +308,7 @@ export function generateInvoicePdf(invoice) {
     doc.text("Note:", 20, y);
     doc.setFont("helvetica", "normal");
     doc.setTextColor(COL.text);
-    doc.text(invoice.externalNote, 35, y);
+    doc.text(s(invoice.externalNote), 35, y);
     y += 8;
   }
 
@@ -287,36 +329,35 @@ export function generateInvoicePdf(invoice) {
 }
 
 // ─── Quote PDF ────────────────────────────────────────────────────────
-export function generateQuotePdf(quote) {
+export async function generateQuotePdf(quote) {
+  const logoData = await loadLogo();
   const doc = new jsPDF({ unit: "mm", format: "a4" });
   const pw = doc.internal.pageSize.getWidth();
   let y = 20;
 
-  // Logo + header
-  drawLogo(doc, 20, y);
+  // Logo (left) + Title & business details (right)
+  const logoH = drawLogo(doc, 20, y, logoData);
   doc.setFontSize(18);
   doc.setFont("helvetica", "bold");
   doc.setTextColor(COL.text);
   doc.text("QUOTATION", pw - 20, y + 8, { align: "right" });
 
-  y += 16;
+  let hy = y + 14;
   doc.setFontSize(11);
   doc.setFont("helvetica", "bold");
   doc.setTextColor(COL.text);
-  doc.text(BUSINESS.name, 20, y);
-  y += 5;
+  doc.text(s(BUSINESS.name) || "SHMAKE", pw - 20, hy, { align: "right" });
+  hy += 5;
   doc.setFontSize(9);
   doc.setFont("helvetica", "normal");
   doc.setTextColor(COL.muted);
-  doc.text(BUSINESS.legalName, 20, y);
-  y += 4;
-  doc.text(BUSINESS.address, 20, y);
-  y += 4;
-  doc.text(`${BUSINESS.email}  |  ${BUSINESS.phone}`, 20, y);
-  y += 4;
-  doc.text(`GST: ${BUSINESS.gstNumber}`, 20, y);
+  if (BUSINESS.legalName) { doc.text(s(BUSINESS.legalName), pw - 20, hy, { align: "right" }); hy += 4; }
+  if (BUSINESS.address) { doc.text(s(BUSINESS.address), pw - 20, hy, { align: "right" }); hy += 4; }
+  const qContact = [BUSINESS.email, BUSINESS.phone].filter(Boolean).join("  |  ");
+  if (qContact) { doc.text(qContact, pw - 20, hy, { align: "right" }); hy += 4; }
+  if (BUSINESS.gstNumber) { doc.text(`GST: ${BUSINESS.gstNumber}`, pw - 20, hy, { align: "right" }); hy += 4; }
 
-  y += 10;
+  y = Math.max(y + logoH, hy) + 6;
 
   // Client + quote details
   const colL = 20;
@@ -331,7 +372,7 @@ export function generateQuotePdf(quote) {
   doc.setFontSize(10);
   doc.setFont("helvetica", "bold");
   doc.setTextColor(COL.text);
-  doc.text(quote.client.name, colL, y);
+  doc.text(s(quote.client.name), colL, y);
   y += 4.5;
   doc.setFont("helvetica", "normal");
   doc.setFontSize(9);
@@ -370,7 +411,7 @@ export function generateQuotePdf(quote) {
   y = Math.max(y, ry) + 8;
 
   // Line items table
-  doc.autoTable({
+  autoTable(doc, {
     startY: y,
     margin: { left: 20, right: 20 },
     head: [["Description", "Type", "Qty", "Rate", "Total"]],
@@ -415,11 +456,13 @@ export function generateQuotePdf(quote) {
   doc.text("Subtotal:", lblX, y, { align: "right" });
   doc.setTextColor(COL.text);
   doc.text(fmt(quote.subtotal), totX, y, { align: "right" });
-  y += 5;
-  doc.setTextColor(COL.muted);
-  doc.text("GST (15%):", lblX, y, { align: "right" });
-  doc.setTextColor(COL.text);
-  doc.text(fmt(quote.gst), totX, y, { align: "right" });
+  if (quote.gstRate) {
+    y += 5;
+    doc.setTextColor(COL.muted);
+    doc.text(`GST (${quote.gstRate}%):`, lblX, y, { align: "right" });
+    doc.setTextColor(COL.text);
+    doc.text(fmt(quote.gst), totX, y, { align: "right" });
+  }
   y += 2;
   doc.setDrawColor(COL.tableBorder);
   doc.line(lblX - 5, y, totX, y);
@@ -440,7 +483,7 @@ export function generateQuotePdf(quote) {
     doc.text("Note:", 20, y);
     doc.setFont("helvetica", "normal");
     doc.setTextColor(COL.text);
-    doc.text(quote.externalNote, 35, y);
+    doc.text(s(quote.externalNote), 35, y);
     y += 8;
   }
 
@@ -480,32 +523,32 @@ export function generateQuotePdf(quote) {
 }
 
 // ─── Expense Report PDF ──────────────────────────────────────────────
-export function generateExpenseReportPdf(expenses, dateRange, summary) {
+export async function generateExpenseReportPdf(expenses, dateRange, summary) {
+  const logoData = await loadLogo();
   const doc = new jsPDF({ unit: "mm", format: "a4" });
   const pw = doc.internal.pageSize.getWidth();
   let y = 20;
 
-  // Logo + header
-  drawLogo(doc, 20, y);
+  // Logo (left) + Title & business details (right)
+  const logoH = drawLogo(doc, 20, y, logoData);
   doc.setFontSize(18);
   doc.setFont("helvetica", "bold");
   doc.setTextColor(COL.text);
   doc.text("EXPENSE REPORT", pw - 20, y + 8, { align: "right" });
 
-  y += 16;
+  let hy = y + 14;
   doc.setFontSize(10);
   doc.setFont("helvetica", "bold");
   doc.setTextColor(COL.text);
-  doc.text(`${BUSINESS.name} — ${BUSINESS.legalName}`, 20, y);
-  y += 5;
+  doc.text([s(BUSINESS.name), s(BUSINESS.legalName)].filter(Boolean).join(" — ") || "SHMAKE", pw - 20, hy, { align: "right" });
+  hy += 5;
   doc.setFontSize(9);
   doc.setFont("helvetica", "normal");
   doc.setTextColor(COL.muted);
-  doc.text(`Period: ${dateRange.label}`, 20, y);
-  y += 4;
-  doc.text(`GST: ${BUSINESS.gstNumber}`, 20, y);
+  doc.text(`Period: ${dateRange.label}`, pw - 20, hy, { align: "right" });
+  if (BUSINESS.gstNumber) { hy += 4; doc.text(`GST: ${BUSINESS.gstNumber}`, pw - 20, hy, { align: "right" }); }
 
-  y += 10;
+  y = Math.max(y + logoH, hy) + 10;
 
   // Summary box
   doc.setFillColor("#f8fafc");
@@ -543,7 +586,7 @@ export function generateExpenseReportPdf(expenses, dateRange, summary) {
   // Expenses sorted by date descending
   const sorted = [...expenses].sort((a, b) => (a.date > b.date ? -1 : 1));
 
-  doc.autoTable({
+  autoTable(doc, {
     startY: y,
     margin: { left: 20, right: 20 },
     head: [["Date", "Description", "Cat", "Job", "Amount", "GST", "Rcpt"]],

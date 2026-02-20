@@ -48,7 +48,7 @@ export async function listJobs() {
       pr: r.priority,
       v: r.value,
       due: r.due_date,
-      n: r.internal_note ? 1 : 0,
+      n: r.internal_note || "",
     }))
   } catch (e) { console.error('listJobs:', e); return [] }
 }
@@ -237,7 +237,14 @@ export async function nextQuoteId() {
   try {
     const { data, error } = await supabase.from('site_content').select('invoicing').eq('id', 1).single()
     if (error) throw error
-    const n = data.invoicing.quoteNextNumber || 1
+    const counter = data.invoicing.quoteNextNumber || 1
+    // Also check max existing quote ID to prevent conflicts
+    const { data: quotes } = await supabase.from('quotes').select('id')
+    const maxExisting = (quotes || []).reduce((mx, q) => {
+      const m = q.id.match(/^Q-(\d+)$/)
+      return m ? Math.max(mx, parseInt(m[1], 10)) : mx
+    }, 0)
+    const n = Math.max(counter, maxExisting + 1)
     const id = `Q-${String(n).padStart(4, '0')}`
     await supabase.from('site_content').update({
       invoicing: { ...data.invoicing, quoteNextNumber: n + 1 },
@@ -328,7 +335,14 @@ export async function nextInvoiceId() {
     const { data, error } = await supabase.from('site_content').select('invoicing').eq('id', 1).single()
     if (error) throw error
     const prefix = data.invoicing.invoicePrefix || 'SHMAKE'
-    const n = data.invoicing.invoiceNextNumber || 1
+    const counter = data.invoicing.invoiceNextNumber || 1
+    const { data: invoices } = await supabase.from('invoices').select('id')
+    const re = new RegExp(`^${prefix}-(\\d+)$`)
+    const maxExisting = (invoices || []).reduce((mx, inv) => {
+      const m = inv.id.match(re)
+      return m ? Math.max(mx, parseInt(m[1], 10)) : mx
+    }, 0)
+    const n = Math.max(counter, maxExisting + 1)
     const id = `${prefix}-${String(n).padStart(4, '0')}`
     await supabase.from('site_content').update({
       invoicing: { ...data.invoicing, invoiceNextNumber: n + 1 },
@@ -932,14 +946,13 @@ export async function getLineItems(type, parentId) {
       unitPrice: r.unit_price,
       total: r.total,
     }))
-  } catch (e) { console.error('getLineItems:', e); return [] }
+  } catch (e) { console.error('getLineItems ERROR:', e); return [] }
 }
 
 export async function saveLineItems(type, parentId, items) {
   try {
     const table = type === 'quote' ? 'quote_line_items' : 'invoice_line_items'
     const fk = type === 'quote' ? 'quote_id' : 'invoice_id'
-
     // Delete existing
     const { error: delErr } = await supabase.from(table).delete().eq(fk, parentId)
     if (delErr) throw delErr
@@ -958,7 +971,7 @@ export async function saveLineItems(type, parentId, items) {
     const { error: insErr } = await supabase.from(table).insert(rows)
     if (insErr) throw insErr
     return true
-  } catch (e) { console.error('saveLineItems:', e); return false }
+  } catch (e) { console.error('saveLineItems ERROR:', e); return false }
 }
 
 // ─── Compute Functions ──────────────────────────────────────────────────────

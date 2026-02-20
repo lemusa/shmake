@@ -1,11 +1,9 @@
 import { useState, useEffect, useCallback } from 'react'
 import { loadHeroCards, HERO_CARDS as FALLBACK } from '../data/projects'
-import { usePortfolio } from '../context/PortfolioContext'
 
 export default function HeroCards() {
   const [expanded, setExpanded] = useState(true)
   const [cards, setCards] = useState(FALLBACK)
-  const { openPortfolio } = usePortfolio()
 
   useEffect(() => { loadHeroCards().then(setCards) }, [])
 
@@ -16,7 +14,7 @@ export default function HeroCards() {
   const handleLinkClick = (e, card) => {
     if (card.isInternal && card.linkHref === '#portfolio') {
       e.preventDefault()
-      openPortfolio()
+      window.location.href = '/portfolio'
     }
   }
 
