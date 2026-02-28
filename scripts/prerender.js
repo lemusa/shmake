@@ -3,11 +3,10 @@
  * Automatically discovers blog post slugs from the rendered /blog page.
  * Generates sitemap.xml from all discovered routes.
  *
- * Usage:  node scripts/prerender.js
- * Or via: npm run build  (which chains vite build && this script)
+ * Gracefully skips if Puppeteer can't launch (e.g. on Vercel CI).
+ * Run locally with: npm run prerender
  */
 
-import { launch } from 'puppeteer'
 import { createServer } from 'http'
 import { readFileSync, writeFileSync, mkdirSync } from 'fs'
 import { join, dirname } from 'path'
@@ -131,10 +130,28 @@ ${entries.map(e => `  <url>
 }
 
 async function prerender() {
+  // Try to import puppeteer — skip gracefully if unavailable or can't launch
+  let launch
+  try {
+    const puppeteer = await import('puppeteer')
+    launch = puppeteer.launch || puppeteer.default?.launch
+  } catch {
+    console.log('\n⚠️  Puppeteer not available — skipping prerender (CI environment)\n')
+    return
+  }
+
+  let browser
+  try {
+    browser = await launch({ headless: true })
+  } catch (err) {
+    console.log(`\n⚠️  Puppeteer can't launch browser — skipping prerender (CI environment)`)
+    console.log(`   ${err.message.split('\n')[0]}\n`)
+    return
+  }
+
   console.log('\n🔍 Prerendering routes for SEO...\n')
 
   const server = await serve()
-  const browser = await launch({ headless: true })
 
   // 1. Render static routes (including /blog listing)
   for (const route of STATIC_ROUTES) {
