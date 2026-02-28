@@ -4,6 +4,8 @@ import { ThemeProvider } from './context/ThemeContext'
 import { PortfolioProvider } from './context/PortfolioContext'
 import PublicSite from './PublicSite'
 import PortfolioPage from './components/PortfolioPage'
+import BlogPage from './components/BlogPage'
+import BlogPostPage from './components/BlogPostPage'
 import SEO from './components/SEO'
 
 // Admin is lazy-loaded — public visitors never download this code
@@ -73,6 +75,10 @@ export default function App() {
             </PortfolioProvider>
           }
         />
+
+        {/* Blog */}
+        <Route path="/blog" element={<BlogPage />} />
+        <Route path="/blog/:slug" element={<BlogPostPage />} />
 
         {/* Client portal — embedded iframe */}
         <Route path="/portal" element={<EmbedPage title="Client Portal" src="https://portal.shmake.nz" badge="Portal" seoTitle="Client Portal — SHMAKE" seoDescription="Secure client portal for SHMAKE project access, updates, and collaboration." seoPath="/portal" />} />

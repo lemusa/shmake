@@ -7,7 +7,7 @@ import { loadProjects, HERO_CARDS, ABOUT_CONTENT, CONTACT_CONFIG, SITE_META } fr
 import * as db from "../lib/db";
 
 /* === DATA (populated from Supabase via reload()) === */
-let JOBS=[],CL=[],CT=[],QT=[],INV=[],EXP=[],TRIPS=[],HOEX=[],RECTPL=[],STRP=[],SUBS=[],BANK=[],REV=[],EC=[],PNL=[],ECATEGORIES=[],ICATEGORIES=["Invoicing","Subscriptions"],JTYPES=[],CTYPES=[],LITYPES=["Labour","Materials","Flat Fee"],BUDGET=[],MPAY=[],ENQ=[];
+let JOBS=[],CL=[],CT=[],QT=[],INV=[],EXP=[],TRIPS=[],HOEX=[],RECTPL=[],STRP=[],SUBS=[],BANK=[],REV=[],EC=[],PNL=[],ECATEGORIES=[],ICATEGORIES=["Invoicing","Subscriptions"],JTYPES=[],CTYPES=[],LITYPES=["Labour","Materials","Flat Fee"],BUDGET=[],MPAY=[],ENQ=[],BLOG=[];
 let DEDS={homeOffice:{officeSqm:12,totalSqm:120,percent:10},vehicle:{method:"IRD Km Rate",type:"Petrol",tier1:1.17,tier2:0.37},phonePercent:50,internetPercent:10};
 let BIZ={tradingName:"",legalName:"",gstNumber:"",irdNumber:"",bankAccount:"",bankName:"",email:"",phone:"",address:"",web:"",logo:""};
 let INVSET={invoicePrefix:"SHMAKE",invoiceNextNumber:1,quotePrefix:"Q",quoteNextNumber:1,terms:"20th following",gstPercent:15,defaultNote:""};
@@ -275,6 +275,68 @@ function CatF({item,isNew,c,toast,onSave}){
 
 function WidgetsPg(){const[sel,sSel]=useState(null);const widgets=[{id:"shmakecut",name:"Shmakecut",desc:"Manage tenant access and embed settings",icon:"🪵"}];if(sel){const w=widgets.find(x=>x.id===sel);const doc=sel==="shmakecut"?'<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><style>body{margin:0}</style></head><body><div id="shmakecut-admin"></div><script src="https://admin-widget.shmake.nz/shmakecut-admin.iife.js"><\/script></body></html>':null;return<div className="flex flex-col h-full"><div className="flex items-center gap-3 px-4 py-3 border-b border-stone-200/60 shrink-0"><button onClick={()=>sSel(null)} className="p-1.5 rounded-lg hover:bg-stone-100 text-stone-500"><ArrowLeft size={18}/></button><span className="text-lg font-semibold text-stone-800 fs">{w?.name}</span></div><div className="flex-1 overflow-hidden">{doc&&<iframe srcDoc={doc} style={{width:"100%",height:"100%",border:"none"}} title={w?.name}/>}</div></div>}return<div className="max-w-[1600px] mx-auto px-4 py-4 md:px-10 md:py-8"><h2 className="text-xl font-bold text-stone-900 mb-1 fs">Widgets</h2><p className="text-sm text-stone-500 mb-6">Manage your embedded widgets and tools</p><div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">{widgets.map(w=><button key={w.id} onClick={()=>sSel(w.id)} className="text-left p-5 bg-white rounded-xl border border-stone-200 hover:border-amber-300 hover:shadow-md transition-all group"><div className="flex items-center gap-3 mb-2"><span className="text-2xl">{w.icon}</span><span className="text-base font-semibold text-stone-800 fs group-hover:text-amber-600 transition-colors">{w.name}</span></div><p className="text-sm text-stone-500">{w.desc}</p></button>)}</div></div>}
 
+/* ── Blog Admin ── */
+function BlogF({c,item,toast,reload}){
+  const isNew=!item;
+  const[f,sF]=useState({slug:item?.slug||"",title:item?.title||"",excerpt:item?.excerpt||"",content:item?.content||"",category:item?.category||"Project",tags:(item?.tags||[]).join(", "),published:item?.published??false,published_at:item?.published_at||new Date().toISOString().slice(0,10),image:item?.image||"",reading_time:item?.reading_time||3});
+  const u=(k,v)=>sF(p=>({...p,[k]:v}));
+  return<div>
+    <FF l="Title" h="Main post title"><I value={f.title} onChange={e=>u("title",e.target.value)} placeholder="e.g. Building myMECA"/></FF>
+    <FF l="Slug" h="URL path — auto-generated from title if empty"><I value={f.slug} onChange={e=>u("slug",e.target.value)} placeholder="building-mymeca"/></FF>
+    <FF l="Excerpt" h="Short summary for listings and meta description"><T value={f.excerpt} onChange={e=>u("excerpt",e.target.value)} placeholder="A brief summary of the post..."/></FF>
+    <FF l="Content" h="HTML content — use <p>, <h2>, <blockquote> etc."><T value={f.content} onChange={e=>u("content",e.target.value)} placeholder="<p>Your post content...</p>" rows={12}/></FF>
+    <div className="grid grid-cols-2 gap-4">
+      <FF l="Category"><S value={f.category} onChange={e=>u("category",e.target.value)} options={["Project","Thinking"]}/></FF>
+      <FF l="Reading Time (min)"><I type="number" value={f.reading_time} onChange={e=>u("reading_time",parseInt(e.target.value)||1)} min="1"/></FF>
+    </div>
+    <FF l="Tags" h="Comma-separated"><I value={f.tags} onChange={e=>u("tags",e.target.value)} placeholder="React, Web App, Healthcare"/></FF>
+    <FF l="Featured Image URL"><I value={f.image} onChange={e=>u("image",e.target.value)} placeholder="/assets/splash-mymeca.png or full URL"/></FF>
+    <FF l="Publish Date"><I type="date" value={f.published_at} onChange={e=>u("published_at",e.target.value)}/></FF>
+    <div className="my-5 p-4 bg-stone-50 rounded-lg border border-stone-200"><label className="flex items-center gap-2 cursor-pointer"><input type="checkbox" checked={f.published} onChange={e=>u("published",e.target.checked)} className="rounded border-stone-300 text-emerald-600 focus:ring-emerald-500"/><span className="text-sm font-medium text-stone-700">Published</span><span className="text-xs text-stone-400 ml-1">— visible on the public site</span></label></div>
+    <div className="flex gap-3 pt-4 border-t border-stone-200 mt-6">
+      <B icon={isNew?Plus:CheckCircle} onClick={async()=>{
+        if(!f.title||!f.excerpt||!f.content){toast("Title, excerpt and content are required","error");return}
+        const slug=f.slug||f.title.toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"");
+        const tags=f.tags.split(",").map(t=>t.trim()).filter(Boolean);
+        const data={...f,slug,tags,reading_time:parseInt(f.reading_time)||3};
+        if(isNew)await db.createBlogPost(data);else await db.updateBlogPost(item.id,data);
+        await reload();toast(isNew?"Post created":"Post updated","success");c();
+      }}>{isNew?"Create Post":"Save"}</B>
+      <B vr="ghost" onClick={c}>Cancel</B>
+      {!isNew&&<B vr="danger" icon={Trash2} onClick={async()=>{if(!confirm("Delete this post?"))return;await db.deleteBlogPost(item.id);await reload();toast("Post deleted","info");c()}}>Delete</B>}
+    </div>
+  </div>
+}
+
+function BlogAdminPg({o,toast,reload}){
+  const[q,sQ]=useState("");
+  const{sort,toggle,sorted}=useSort("published_at","desc");
+  const fil=q?BLOG.filter(b=>(b.title+b.excerpt+b.category+(b.tags||[]).join(" ")).toLowerCase().includes(q.toLowerCase())):BLOG;
+  const l=sorted(fil,(x,k)=>({title:x.title,category:x.category,published_at:x.published_at,reading_time:x.reading_time}[k]));
+  const draftCount=BLOG.filter(b=>!b.published).length;
+  return<div>
+    <div className="flex items-center justify-between mb-6">
+      <div><h1 className="text-2xl font-bold text-stone-900 fs">Blog</h1><p className="text-sm text-stone-500 mt-1">{BLOG.length} posts · {draftCount} draft{draftCount!==1?"s":""}</p></div>
+      <div className="flex gap-2"><a href="/blog" target="_blank" rel="noopener"><B vr="secondary" sz="sm" icon={Eye}>View Blog</B></a><B sz="sm" icon={Plus} onClick={()=>o("blog")}>New Post</B></div>
+    </div>
+    <SearchBar value={q} onChange={sQ} placeholder="Search posts..."/>
+    <div className="bg-white shadow-sm border border-stone-200/60 rounded-xl overflow-hidden overflow-x-auto"><table className="w-full min-w-[640px]"><thead><tr className="border-b border-stone-200 bg-stone-50">
+      <SortTh sortKey="title" sort={sort} toggle={toggle}>Post</SortTh>
+      <SortTh sortKey="category" sort={sort} toggle={toggle}>Category</SortTh>
+      <SortTh sortKey="published_at" sort={sort} toggle={toggle}>Date</SortTh>
+      <SortTh sortKey="reading_time" sort={sort} toggle={toggle} align="center">Read</SortTh>
+      <th className="text-center text-xs font-medium text-stone-500 uppercase px-5 py-3">Status</th>
+    </tr></thead>
+    <tbody>{l.length?l.map(p=><tr key={p.id} className="border-b border-stone-100 hover:bg-stone-50 cursor-pointer" onClick={()=>o("blog",p)}>
+      <td className="px-5 py-3.5"><div><p className="text-sm font-medium text-stone-800">{p.title}</p><p className="text-xs text-stone-400 max-w-sm truncate">{p.excerpt}</p></div></td>
+      <td className="px-5 py-3.5"><span className="text-xs bg-stone-100 text-stone-500 px-2 py-0.5 rounded-full">{p.category}</span></td>
+      <td className="px-5 py-3.5 text-sm text-stone-500">{new Date(p.published_at+"T00:00:00").toLocaleDateString("en-NZ",{year:"numeric",month:"short",day:"numeric"})}</td>
+      <td className="px-5 py-3.5 text-center text-sm text-stone-500">{p.reading_time}m</td>
+      <td className="px-5 py-3.5 text-center">{p.published?<Badge s="Paid"/>:<Badge s="Draft"/>}</td>
+    </tr>):<tr><td colSpan={5} className="px-5 py-8 text-center text-sm text-stone-400">No posts found. Create your first blog post!</td></tr>}</tbody></table></div>
+  </div>
+}
+
 function PortfolioPg({toast}){
   const[tab,sTab]=useState("Projects");
   const[data,setData]=useState(null);
@@ -446,10 +508,10 @@ const NAV_SECTIONS=[
   {label:"People",items:[{id:"clients",l:"Clients",ic:Users},{id:"contacts",l:"Contacts",ic:BookOpen}]},
   {label:"Money",items:[{id:"invoices",l:"Invoices",ic:FileText},{id:"subscriptions",l:"Subscriptions",ic:CreditCard},{id:"expenses",l:"Expenses",ic:Receipt},{id:"bank",l:"Bank",ic:FileSpreadsheet},{id:"budget",l:"Budget",ic:Target}]},
   {label:"Insights",items:[{id:"reports",l:"Reports",ic:PieChart}]},
-  {items:[{id:"portfolio",l:"Portfolio",ic:Image},{id:"widgets",l:"Widgets",ic:Blocks},{id:"settings",l:"Settings",ic:Settings}]},
+  {items:[{id:"portfolio",l:"Portfolio",ic:Image},{id:"blog",l:"Blog",ic:Edit3},{id:"widgets",l:"Widgets",ic:Blocks},{id:"settings",l:"Settings",ic:Settings}]},
 ];
 function navBadge(id){if(id==="jobs"){const c=JOBS.filter(j=>!["Closed","Invoiced","Complete"].includes(j.st)).length;return c||null}if(id==="invoices"){const c=INV.filter(i=>i.st==="Overdue").length;return c||null}if(id==="enquiries"){const c=ENQ.filter(e=>e.status==="New").length;return c||null}if(id==="bank"){const c=BANK.filter(b=>!b.rec).length;return c||null}return null}
-const FT={job:["New Job","Edit Job"],quote:["New Quote","Edit Quote"],inv:["New Invoice","Edit Invoice"],exp:["Log Expense","Edit Expense"],contact:["New Contact","Edit Contact"],client:["New Client","Edit Client"],markPaid:["Record Payment","Record Payment"],incSrc:["Add Income Source","Add Income Source"],trip:["Log Trip","Edit Trip"],homeExp:["Home Expense","Edit Expense"],budget:["New Budget Item","Edit Budget Item"],mp:["Log Payment","Edit Payment"],enq:["View Enquiry","View Enquiry"],bankExp:["Create Expense","Create Expense"]};
+const FT={job:["New Job","Edit Job"],quote:["New Quote","Edit Quote"],inv:["New Invoice","Edit Invoice"],exp:["Log Expense","Edit Expense"],contact:["New Contact","Edit Contact"],client:["New Client","Edit Client"],markPaid:["Record Payment","Record Payment"],incSrc:["Add Income Source","Add Income Source"],trip:["Log Trip","Edit Trip"],homeExp:["Home Expense","Edit Expense"],budget:["New Budget Item","Edit Budget Item"],mp:["Log Payment","Edit Payment"],enq:["View Enquiry","View Enquiry"],bankExp:["Create Expense","Create Expense"],blog:["New Post","Edit Post"]};
 
 export default function AdminLayout(){
   const[pg,sPg]=useState("dashboard");
@@ -463,17 +525,17 @@ export default function AdminLayout(){
   const o=(t,item)=>sSl({o:true,t,item:item||null});const c=()=>sSl({o:false,t:null,item:null});const gb=()=>sVw(null);
   useEffect(()=>{const prev=document.title;document.title="SHMAKE Admin";return()=>{document.title=prev}},[]);
   const[loading,setLoading]=useState(true);const[,sv]=useState(0);
-  const reload=useCallback(async()=>{const[j,cl,ct,qt,inv,exp,tr,ho,rec,str,sub,bk,sc,budg,mp,enq]=await Promise.all([db.listJobs(),db.listClients(),db.listContacts(),db.listQuotes(),db.listInvoices(),db.listExpenses(),db.listTrips(),db.listHomeOfficeExpenses(),db.listRecurringTemplates(),db.listStripeTransactions(),db.listSubscriptionSources(),db.listBankTransactions(),db.getSiteContent(),db.listBudgetItems(),db.listManualPayments(),db.listEnquiries()]);CL=cl;CT=ct;const cn=id=>cl.find(c=>c.id===id)?.n||"";const jn=id=>j.find(x=>x.id===id)?.t||"";JOBS=j.map(x=>({...x,cl:cn(x.clId)}));QT=qt.map(q=>({...q,cl:cn(q.clId),job:jn(q.jobId)}));INV=inv.map(i=>({...i,cl:cn(i.clId)}));const today=new Date().toISOString().slice(0,10);const od=INV.filter(i=>i.st==="Sent"&&i.due&&i.due<today);if(od.length){await db.markInvoicesOverdue(od.map(i=>i.id));od.forEach(i=>{i.st="Overdue"})}EXP=exp.map(e=>({...e,job:jn(e.jobId)}));RECTPL=rec.map(r=>({...r,cl:cn(r.clId)}));TRIPS=tr;HOEX=ho;STRP=str;SUBS=sub;BANK=bk;BUDGET=budg;MPAY=mp;ENQ=enq;REV=db.computeRevenue(INV,SUBS);EC=db.computeExpenseCategories(EXP);PNL=db.computePnl(INV,EXP,SUBS);DEDS=sc?.deductions||DEDS;BIZ=sc?.business||BIZ;INVSET=sc?.invoicing||INVSET;ECATEGORIES=sc?.categories?.expense||["Materials","Tools","Software","Vehicle","Home Office","Marketing","Processing","Other"];ICATEGORIES=sc?.categories?.income||["Invoicing","Subscriptions"];JTYPES=sc?.categories?.jobTypes||["Fabrication","Design","Consulting","Other"];CTYPES=sc?.categories?.contactTypes||["Supplier","Contractor","Trade","Professional","Other"];LITYPES=sc?.categories?.lineItemTypes||["Labour","Materials","Flat Fee"];setBusiness({name:BIZ.tradingName||"SHMAKE",legalName:BIZ.legalName,address:BIZ.address,phone:BIZ.phone,email:BIZ.email,web:BIZ.web,gstNumber:BIZ.gstNumber,irdNumber:BIZ.irdNumber,bankAccount:BIZ.bankAccount,bankName:BIZ.bankName,logo:BIZ.logo});setLoading(false);sv(x=>x+1)},[]);
+  const reload=useCallback(async()=>{const[j,cl,ct,qt,inv,exp,tr,ho,rec,str,sub,bk,sc,budg,mp,enq,blog]=await Promise.all([db.listJobs(),db.listClients(),db.listContacts(),db.listQuotes(),db.listInvoices(),db.listExpenses(),db.listTrips(),db.listHomeOfficeExpenses(),db.listRecurringTemplates(),db.listStripeTransactions(),db.listSubscriptionSources(),db.listBankTransactions(),db.getSiteContent(),db.listBudgetItems(),db.listManualPayments(),db.listEnquiries(),db.listBlogPosts()]);CL=cl;CT=ct;const cn=id=>cl.find(c=>c.id===id)?.n||"";const jn=id=>j.find(x=>x.id===id)?.t||"";JOBS=j.map(x=>({...x,cl:cn(x.clId)}));QT=qt.map(q=>({...q,cl:cn(q.clId),job:jn(q.jobId)}));INV=inv.map(i=>({...i,cl:cn(i.clId)}));const today=new Date().toISOString().slice(0,10);const od=INV.filter(i=>i.st==="Sent"&&i.due&&i.due<today);if(od.length){await db.markInvoicesOverdue(od.map(i=>i.id));od.forEach(i=>{i.st="Overdue"})}EXP=exp.map(e=>({...e,job:jn(e.jobId)}));RECTPL=rec.map(r=>({...r,cl:cn(r.clId)}));TRIPS=tr;HOEX=ho;STRP=str;SUBS=sub;BANK=bk;BUDGET=budg;MPAY=mp;ENQ=enq;BLOG=blog;REV=db.computeRevenue(INV,SUBS);EC=db.computeExpenseCategories(EXP);PNL=db.computePnl(INV,EXP,SUBS);DEDS=sc?.deductions||DEDS;BIZ=sc?.business||BIZ;INVSET=sc?.invoicing||INVSET;ECATEGORIES=sc?.categories?.expense||["Materials","Tools","Software","Vehicle","Home Office","Marketing","Processing","Other"];ICATEGORIES=sc?.categories?.income||["Invoicing","Subscriptions"];JTYPES=sc?.categories?.jobTypes||["Fabrication","Design","Consulting","Other"];CTYPES=sc?.categories?.contactTypes||["Supplier","Contractor","Trade","Professional","Other"];LITYPES=sc?.categories?.lineItemTypes||["Labour","Materials","Flat Fee"];setBusiness({name:BIZ.tradingName||"SHMAKE",legalName:BIZ.legalName,address:BIZ.address,phone:BIZ.phone,email:BIZ.email,web:BIZ.web,gstNumber:BIZ.gstNumber,irdNumber:BIZ.irdNumber,bankAccount:BIZ.bankAccount,bankName:BIZ.bankName,logo:BIZ.logo});setLoading(false);sv(x=>x+1)},[]);
   useEffect(()=>{reload()},[reload]);
 
-  const form=()=>{const it=sl.item;switch(sl.t){case"job":return<JobF c={c} item={it} toast={toast} reload={reload}/>;case"quote":return<QuoteF c={c} item={it} toast={toast} reload={reload}/>;case"inv":return<InvF c={c} item={it} toast={toast} reload={reload}/>;case"exp":return<ExpF c={c} item={it} toast={toast} reload={reload}/>;case"contact":return<ContactF c={c} item={it} toast={toast} reload={reload}/>;case"client":return<ClientF c={c} item={it} toast={toast} reload={reload}/>;case"markPaid":return<MarkPaidF c={c} toast={toast} item={it} reload={reload}/>;case"incSrc":return<IncSrcF c={c} toast={toast} reload={reload}/>;case"trip":return<TripF c={c} toast={toast} reload={reload}/>;case"homeExp":return<HomeExpF c={c} toast={toast} reload={reload}/>;case"budget":return<BudgetF c={c} item={it} toast={toast} reload={reload}/>;case"mp":return<MPF c={c} item={it} toast={toast} reload={reload}/>;case"enq":return<EnqF c={c} item={it} toast={toast} reload={reload}/>;case"bankExp":return<ExpF c={c} item={it} toast={toast} reload={reload}/>;default:return null}};
+  const form=()=>{const it=sl.item;switch(sl.t){case"job":return<JobF c={c} item={it} toast={toast} reload={reload}/>;case"quote":return<QuoteF c={c} item={it} toast={toast} reload={reload}/>;case"inv":return<InvF c={c} item={it} toast={toast} reload={reload}/>;case"exp":return<ExpF c={c} item={it} toast={toast} reload={reload}/>;case"contact":return<ContactF c={c} item={it} toast={toast} reload={reload}/>;case"client":return<ClientF c={c} item={it} toast={toast} reload={reload}/>;case"markPaid":return<MarkPaidF c={c} toast={toast} item={it} reload={reload}/>;case"incSrc":return<IncSrcF c={c} toast={toast} reload={reload}/>;case"trip":return<TripF c={c} toast={toast} reload={reload}/>;case"homeExp":return<HomeExpF c={c} toast={toast} reload={reload}/>;case"budget":return<BudgetF c={c} item={it} toast={toast} reload={reload}/>;case"mp":return<MPF c={c} item={it} toast={toast} reload={reload}/>;case"enq":return<EnqF c={c} item={it} toast={toast} reload={reload}/>;case"bankExp":return<ExpF c={c} item={it} toast={toast} reload={reload}/>;case"blog":return<BlogF c={c} item={it} toast={toast} reload={reload}/>;default:return null}};
 
   const page=()=>{
     if(vw==="vehicle")return<VehicleV onBack={gb} o={o}/>;
     if(vw==="home")return<HomeV onBack={gb} o={o}/>;
     if(vw==="recurring")return<RecurV onBack={gb} toast={toast} reload={reload}/>;
     if(vw==="stripe")return<StripeV onBack={gb} toast={toast}/>;
-    switch(pg){case"dashboard":return<Dash o={o}/>;case"jobs":return<JobsPg o={o}/>;case"clients":return<ClientsPg o={o}/>;case"contacts":return<ContactsPg o={o}/>;case"enquiries":return<EnqPg o={o}/>;case"quotes":return<QuotesPg o={o} toast={toast}/>;case"invoices":return<InvPg o={o} toast={toast} setView={sVw}/>;case"expenses":return<ExpPg o={o} setView={sVw}/>;case"subscriptions":return<SubsPg setView={sVw} o={o}/>;case"bank":return<BankRecPg o={o} toast={toast} reload={reload}/>;case"budget":return<BudgetPg o={o} toast={toast}/>;case"reports":return<RepPg toast={toast}/>;case"portfolio":return<PortfolioPg toast={toast}/>;case"widgets":return<WidgetsPg/>;case"settings":return<SetPg toast={toast} setView={sVw} setPg={sPg} reload={reload}/>}
+    switch(pg){case"dashboard":return<Dash o={o}/>;case"jobs":return<JobsPg o={o}/>;case"clients":return<ClientsPg o={o}/>;case"contacts":return<ContactsPg o={o}/>;case"enquiries":return<EnqPg o={o}/>;case"quotes":return<QuotesPg o={o} toast={toast}/>;case"invoices":return<InvPg o={o} toast={toast} setView={sVw}/>;case"expenses":return<ExpPg o={o} setView={sVw}/>;case"subscriptions":return<SubsPg setView={sVw} o={o}/>;case"bank":return<BankRecPg o={o} toast={toast} reload={reload}/>;case"budget":return<BudgetPg o={o} toast={toast}/>;case"reports":return<RepPg toast={toast}/>;case"portfolio":return<PortfolioPg toast={toast}/>;case"blog":return<BlogAdminPg o={o} toast={toast} reload={reload}/>;case"widgets":return<WidgetsPg/>;case"settings":return<SetPg toast={toast} setView={sVw} setPg={sPg} reload={reload}/>}
   };
 
   const navClick=(id)=>{sPg(id);sVw(null);setMobNav(false)};

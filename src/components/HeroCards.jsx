@@ -20,6 +20,7 @@ export default function HeroCards() {
 
   return (
     <section className="hero-cards scroll-section" id="projects">
+      <h1 className="sr-only">SHMAKE — Software & Product Development by Sam Haughey</h1>
       <div className="card-container">
         {cards.map((card, i) => (
           <div

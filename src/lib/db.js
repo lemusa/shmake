@@ -1404,3 +1404,58 @@ export function computeBudgetActuals(invoices, expenses, subscriptions, trips, h
 
   return actuals
 }
+
+// ─── Blog Posts ──────────────────────────────────────────────────────────────
+
+export async function listBlogPosts() {
+  try {
+    const { data, error } = await supabase.from('blog_posts').select('*').order('published_at', { ascending: false })
+    if (error) throw error
+    return (data || []).map(r => ({
+      id: r.id, slug: r.slug, title: r.title, excerpt: r.excerpt,
+      content: r.content, category: r.category, tags: r.tags || [],
+      published: r.published, published_at: r.published_at,
+      image: r.image, reading_time: r.reading_time,
+    }))
+  } catch (e) { console.error('listBlogPosts:', e); return [] }
+}
+
+export async function createBlogPost(d) {
+  try {
+    const { data, error } = await supabase.from('blog_posts').insert({
+      slug: d.slug, title: d.title, excerpt: d.excerpt, content: d.content,
+      category: d.category, tags: d.tags || [], published: d.published ?? false,
+      published_at: d.published_at, image: d.image || null,
+      reading_time: d.reading_time || 3,
+    }).select().single()
+    if (error) throw error
+    return data
+  } catch (e) { console.error('createBlogPost:', e); return null }
+}
+
+export async function updateBlogPost(id, d) {
+  try {
+    const updates = {}
+    if (d.slug !== undefined) updates.slug = d.slug
+    if (d.title !== undefined) updates.title = d.title
+    if (d.excerpt !== undefined) updates.excerpt = d.excerpt
+    if (d.content !== undefined) updates.content = d.content
+    if (d.category !== undefined) updates.category = d.category
+    if (d.tags !== undefined) updates.tags = d.tags
+    if (d.published !== undefined) updates.published = d.published
+    if (d.published_at !== undefined) updates.published_at = d.published_at
+    if (d.image !== undefined) updates.image = d.image
+    if (d.reading_time !== undefined) updates.reading_time = d.reading_time
+    const { data, error } = await supabase.from('blog_posts').update(updates).eq('id', id).select().single()
+    if (error) throw error
+    return data
+  } catch (e) { console.error('updateBlogPost:', e); return null }
+}
+
+export async function deleteBlogPost(id) {
+  try {
+    const { error } = await supabase.from('blog_posts').delete().eq('id', id)
+    if (error) throw error
+    return true
+  } catch (e) { console.error('deleteBlogPost:', e); return false }
+}

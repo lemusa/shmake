@@ -17,7 +17,12 @@
       "Bash(curl:*)",
       "Bash(grep:*)",
       "Bash(npm ls:*)",
-      "WebFetch(domain:shmake.nz)"
+      "WebFetch(domain:shmake.nz)",
+      "WebFetch(domain:github.com)",
+      "Bash(npm i vite-plugin-prerender -D)",
+      "Bash(npm uninstall vite-plugin-prerender)",
+      "Bash(npm i puppeteer -D)",
+      "Bash(npm i dompurify)"
     ]
   }
 }

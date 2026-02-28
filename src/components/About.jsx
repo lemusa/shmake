@@ -13,9 +13,9 @@ export default function About() {
       id="about"
     >
       <div className="max-w-[1100px] mx-auto w-full">
-        <h1 className="text-3xl md:text-5xl font-bold mb-8 tracking-tight text-center">
+        <h2 className="text-3xl md:text-5xl font-bold mb-8 tracking-tight text-center">
           {name}
-        </h1>
+        </h2>
 
         <div className="grid grid-cols-1 md:grid-cols-[1fr_280px] gap-10 items-start">
           {/* Main content */}
