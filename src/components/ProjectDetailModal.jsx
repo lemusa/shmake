@@ -1,8 +1,16 @@
+import { useNavigate, useLocation } from 'react-router-dom'
 import { usePortfolio } from '../context/PortfolioContext'
 import ImageIcon from './ImageIcon'
 
 export default function ProjectDetailModal() {
   const { detailProject, closeDetail } = usePortfolio()
+  const navigate = useNavigate()
+  const location = useLocation()
+
+  const handleExplore = () => {
+    closeDetail()
+    if (location.pathname !== '/portfolio') navigate('/portfolio')
+  }
 
   if (!detailProject) return null
 
@@ -90,17 +98,24 @@ export default function ProjectDetailModal() {
             </div>
           )}
 
-          {/* Link */}
-          {project.link && (
-            <a
-              href={project.link}
-              target="_blank"
-              rel="noopener"
-              className="inline-block mt-5 px-6 py-3 bg-orange text-white rounded-lg font-medium text-sm hover:bg-orange-hover transition-colors no-underline"
-            >
-              Visit Project →
-            </a>
-          )}
+          {/* Actions */}
+          <div className="detail-actions">
+            {project.link && (
+              <a
+                href={project.link}
+                target="_blank"
+                rel="noopener"
+                className="detail-cta-primary"
+              >
+                Visit Project →
+              </a>
+            )}
+            {location.pathname !== '/portfolio' && (
+              <button type="button" onClick={handleExplore} className="detail-cta-ghost">
+                See more projects →
+              </button>
+            )}
+          </div>
         </div>
       </div>
     </div>

@@ -1,5 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { TOOLS } from '../data/tools'
+import { usePortfolio } from '../context/PortfolioContext'
 
 const FLAGSHIP_SLIDES = [
   {
@@ -55,6 +57,19 @@ const FLAGSHIP_SLIDES = [
 function FlagshipCarousel() {
   const [index, setIndex] = useState(0)
   const timerRef = useRef(null)
+  const navigate = useNavigate()
+  const { projects, openDetail } = usePortfolio()
+
+  const handleLearnMore = (slide) => (e) => {
+    const match = projects.find(p => p.title?.toLowerCase() === slide.name.toLowerCase())
+    if (match) {
+      e.preventDefault()
+      openDetail(match)
+    } else if (slide.learnHref?.startsWith('/')) {
+      e.preventDefault()
+      navigate(slide.learnHref)
+    }
+  }
 
   const scheduleNext = useCallback(() => {
     if (timerRef.current) clearInterval(timerRef.current)
@@ -116,7 +131,7 @@ function FlagshipCarousel() {
                   {slide.primaryLabel}
                 </a>
               )}
-              <a className="flagship-cta-ghost" href={slide.learnHref}>
+              <a className="flagship-cta-ghost" href={slide.learnHref} onClick={handleLearnMore(slide)}>
                 Learn more
               </a>
             </div>

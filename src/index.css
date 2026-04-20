@@ -3092,6 +3092,47 @@ body {
 [data-theme="dark"] .detail-close:hover { background: rgba(0, 0, 0, 0.7); }
 :root:not([data-theme="dark"]) .detail-close:hover { background: rgba(0, 0, 0, 0.5); }
 
+.detail-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.9rem;
+  margin-top: 1.25rem;
+}
+
+.detail-cta-primary {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.75rem 1.5rem;
+  background: var(--color-orange);
+  color: #fff;
+  border-radius: 8px;
+  font-weight: 500;
+  font-size: 0.88rem;
+  text-decoration: none;
+  transition: background 0.2s ease;
+}
+.detail-cta-primary:hover {
+  background: var(--color-orange-hover);
+}
+
+.detail-cta-ghost {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.55rem 0;
+  background: none;
+  border: none;
+  color: var(--color-orange);
+  font-weight: 600;
+  font-size: 0.88rem;
+  cursor: pointer;
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.2s ease;
+}
+.detail-cta-ghost:hover {
+  border-bottom-color: var(--color-orange);
+}
+
 /* ── Social icons ─────────────────────────────────────────── */
 .social-icon {
   width: 48px;
