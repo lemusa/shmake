@@ -13,7 +13,27 @@ const ICONS = {
   ),
 }
 
-export default function SocialLinks() {
+export default function SocialLinks({ variant = 'icon' }) {
+  if (variant === 'pill') {
+    return (
+      <div className="social-pill-row">
+        {CONTACT_CONFIG.socials.map(social => (
+          <a
+            key={social.type}
+            href={social.url}
+            className="social-pill"
+            target="_blank"
+            rel="noopener"
+            aria-label={social.label}
+          >
+            <span className="social-pill-icon" aria-hidden="true">{ICONS[social.type]}</span>
+            <span className="social-pill-label">{social.label}</span>
+          </a>
+        ))}
+      </div>
+    )
+  }
+
   return (
     <div className="flex gap-4 justify-center items-center mt-8">
       {CONTACT_CONFIG.socials.map(social => (

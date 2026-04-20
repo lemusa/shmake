@@ -14,6 +14,7 @@ const CAT_COLORS = {
   'Business': { color: '#E8751A', dim: 'rgba(232,117,26,0.15)', cls: 'business' },
   'DIY': { color: '#c4956a', dim: 'rgba(196,149,106,0.15)', cls: 'diy' },
   'Technology': { color: '#8db600', dim: 'rgba(141,182,0,0.15)', cls: 'tech' },
+  'Knowledge': { color: '#5b7a8a', dim: 'rgba(91,122,138,0.15)', cls: 'knowledge' },
 }
 
 function catColor(category) {
@@ -28,6 +29,12 @@ function patternFor(id) { return PATTERNS[id % PATTERNS.length] }
 /* ── Check if project is ongoing ── */
 function isOngoing(p) {
   return typeof p.year === 'string' && /ongoing/i.test(p.year)
+}
+
+/* ── Check if entry is a Knowledge/skill (not a project) ── */
+function isKnowledge(p) {
+  const cats = Array.isArray(p.category) ? p.category : [p.category]
+  return cats.includes('Knowledge')
 }
 
 /* ── Group projects by started year ── */
@@ -106,23 +113,24 @@ export default function PortfolioPage() {
     })
   }, [projects, filter])
 
-  // Split into ongoing and timeline projects
-  const { ongoingProjects, timelineProjects } = useMemo(() => {
-    const ongoing = [], timeline = []
+  // Split into knowledge, ongoing, and timeline buckets
+  const { knowledgeProjects, ongoingProjects, timelineProjects } = useMemo(() => {
+    const knowledge = [], ongoing = [], timeline = []
     for (const p of filtered) {
-      if (isOngoing(p)) ongoing.push(p)
+      if (isKnowledge(p)) knowledge.push(p)
+      else if (isOngoing(p)) ongoing.push(p)
       else timeline.push(p)
     }
-    return { ongoingProjects: ongoing, timelineProjects: timeline }
+    return { knowledgeProjects: knowledge, ongoingProjects: ongoing, timelineProjects: timeline }
   }, [filtered])
 
   // Grouped by year (timeline projects only)
   const yearGroups = useMemo(() => groupByYear(timelineProjects, sortDir), [timelineProjects, sortDir])
 
-  // Featured project = project with featured flag, or first from newest year group
+  // Featured project = project with featured flag, or first from newest year group (never a Knowledge entry)
   const featuredProject = useMemo(() => {
     if (filter !== 'All' || filtered.length === 0) return null
-    const marked = filtered.find(p => p.featured)
+    const marked = filtered.find(p => p.featured && !isKnowledge(p))
     if (marked) return marked
     return yearGroups[0]?.projects[0] || null
   }, [filtered, yearGroups, filter])
@@ -250,6 +258,47 @@ export default function PortfolioPage() {
 
       {/* ── Portfolio Body ── */}
       <div className="pf-body">
+        {knowledgeProjects.length > 0 && (
+          <div className="pf-year-group">
+            <div className="pf-year-marker">
+              <span className="pf-year-num pf-knowledge-label">Knowledge</span>
+              <div className="pf-year-line" />
+            </div>
+            <div className="pf-card-grid">
+              {knowledgeProjects.map((project) => {
+                const cc = catColor(project.category)
+                const categoryLabel = Array.isArray(project.category) ? project.category.join(' / ') : project.category
+                return (
+                  <div
+                    key={project.id}
+                    className="pf-card"
+                    onClick={() => openDetail(project)}
+                  >
+                    <div className={`pf-card-img ci-${cc.cls} ${patternFor(project.id)}`}>
+                      {project.image && <img src={project.image} alt={project.title} className="pf-card-thumb" />}
+                      <span className={`pf-card-cat-tag ct-${cc.cls}`}>{categoryLabel}</span>
+                    </div>
+                    <div className="pf-card-body">
+                      <div className="pf-card-title">{project.title}</div>
+                      <div className="pf-card-desc">{project.description}</div>
+                      <div className="pf-card-foot">
+                        <div className="pf-card-tags">
+                          {(project.specs || []).slice(0, 4).map((tag, i) => (
+                            <span key={i} className="pf-card-tag">{tag}</span>
+                          ))}
+                        </div>
+                        <div className="pf-card-arrow">
+                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><line x1="7" y1="17" x2="17" y2="7" /><polyline points="7 7 17 7 17 17" /></svg>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )
+              })}
+            </div>
+          </div>
+        )}
+
         {bodyOngoing.length > 0 && (
           <div className="pf-year-group">
             <div className="pf-year-marker">

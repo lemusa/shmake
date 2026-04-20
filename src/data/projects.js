@@ -3,7 +3,7 @@ import { supabase } from '../lib/supabase'
 /* === FALLBACK DATA (used when Supabase is unreachable) === */
 
 const FALLBACK_PROJECTS = {
-  categories: ['All', 'Web/App Dev', 'Graphic Design', 'CAD', 'Business', 'DIY', 'Technology'],
+  categories: ['All', 'Web/App Dev', 'Graphic Design', 'CAD', 'Business', 'DIY', 'Technology', 'Knowledge'],
   categoryDescriptions: {},
   projects: [
     { id: 1, title: 'myMECA', category: 'Web/App Dev', description: 'Healthcare payroll calculator app used by 250+ nurses daily.', gradient: 'gradient-cyan', year: '2023' },
@@ -16,7 +16,7 @@ const FALLBACK_HERO_CARDS = [
   { key: 'shmake', title: 'Sam Haughey', logo: 'assets/shmake-logo-dark.png', screenshot: 'assets/profile.png', description: '<strong>Operations Manager</strong> with 13+ years in manufacturing. I build systems that work — ERP, quality, compliance, costing — and apps that solve real problems.', linkText: 'View Portfolio →', linkHref: '#portfolio', isInternal: true, initiallyExpanded: true, bgStyle: "linear-gradient(rgba(253, 135, 1, 0.85), rgba(253, 135, 1, 0.75)), url('https://images.unsplash.com/photo-1581291518857-4e27b48ff24e?w=800&q=80')" },
   { key: 'mymeca', title: 'myMECA', logo: 'assets/logo-mymeca.png', screenshot: 'assets/splash-mymeca.png', description: 'Got curious about healthcare payroll. Built an app. 250+ nurses use it daily to calculate their pay under the NZNO-HNZ collective agreement.', linkText: 'Visit myMECA →', linkHref: 'https://mymeca.nz', isInternal: false, bgStyle: "linear-gradient(rgba(36, 172, 221, 0.85), rgba(36, 172, 221, 0.75)), url('https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=800&q=80')" },
   { key: 'teabreak', title: 'TeaBreak', logo: 'assets/logo-teabreak.png', screenshot: 'assets/splash-teabreak.png', description: 'Business operations app in development. A simple solution for the pesky admin tasks that small business owners don\'t have time to think about.', linkText: 'Coming Soon', linkHref: '#', isInternal: true, bgStyle: "linear-gradient(rgba(300, 300, 300, 0.85), rgba(100, 100, 100, 0.75)), url('https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=800&q=80')" },
-  { key: 'kiwislice', title: 'KiwiSlice', logo: 'assets/kiwislice-logo.svg', screenshot: 'assets/splash-kiwislice.png', description: 'Personal budget app for Kiwis. Track income, expenses, assets and liabilities in one place. Run planning scenarios to see where you\'re headed.', linkText: 'Try the App →', linkHref: 'https://kiwislice-app.vercel.app', isInternal: false, bgStyle: "linear-gradient(rgba(165, 196, 77, 0.9), rgba(141, 182, 0, 0.85)), url('https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=800&q=80')" },
+  { key: 'kiwislice', title: 'KiwiSlice', logo: 'assets/kiwislice-logo.svg', screenshot: 'assets/splash-kiwislice.png', description: 'Personal budget app for Kiwis. Track income, expenses, assets and liabilities in one place. Run planning scenarios to see where you\'re headed.', linkText: 'Open app →', linkHref: 'https://kiwislice.shmake.nz', isInternal: false, bgStyle: "linear-gradient(rgba(165, 196, 77, 0.9), rgba(141, 182, 0, 0.85)), url('https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=800&q=80')" },
 ]
 
 const FALLBACK_ABOUT = {
@@ -25,30 +25,61 @@ const FALLBACK_ABOUT = {
   tagline: 'I get curious, build things, then move on to the next problem.',
   taglineSub: 'Expert at becoming almost an expert',
   bio: [
-    "Based in Christchurch with my wife and three daughters, I've spent the last 20 years working everywhere from the factory floor to construction sites, then into production scheduling and now operations management — looking after the day-to-day of a manufacturing company that ships product around the world. Along the way I've dabbled in freelance graphic, web, and CAD design.",
-    "I get obsessed with problems, binge-learn whatever I need to fix them, then wander off to the next curiosity. The upside is the knowledge sticks. I'm as comfortable with code as I am with power tools, Illustrator as I am with Excel, SketchUp as I am with generating SOP's.",
-    "For the last 13 years I've been the person who solves the operational headaches at Ecoglo International while building side projects that keep my brain busy. I get energised by new, odd, or tricky problems — the ones where the solution isn't obvious yet. If that's what you're working on, let's chat.",
+    "I run operations at a manufacturing company in Christchurch — scheduling, costing, compliance, all of it. I've been doing some version of that for 20 years across factories, trades, and construction.",
+    "I get obsessed with problems, binge-learn whatever I need to fix them, then wander off to the next curiosity. The upside is the knowledge sticks. Somewhere along the way I started building software to fix the problems I couldn't find good tools for. That side project habit turned into something bigger.",
+    "Now I build custom systems for manufacturers — the kind of businesses where the real work happens on a shop floor, not in a boardroom. I'm not an agency. You talk to me. I build around how your operation actually runs, not how a software vendor thinks it should. If your problem is already solved well by something off the shelf, I'll tell you that too.",
   ],
+  youIf: [
+    "Your quoting lives in a 47-tab spreadsheet one person understands",
+    "You've trialled three platforms and nothing fits how you work",
+    "Your tools were built for a business half your size, three years ago",
+    "Production scheduling lives on a whiteboard — or in someone's head",
+    "Admin is eating time that should go into making things",
+    "You know what's broken. You just don't have time to fix it.",
+  ],
+  services: [
+    { icon: 'Calculator', title: 'Quoting & costing tools', outcome: "Your team quotes from memory and hopes for the best. I'll build something they actually open." },
+    { icon: 'Activity', title: 'Production tracking', outcome: 'Stop walking the floor to find out where a job is. Put it on a screen.' },
+    { icon: 'CalendarDays', title: 'Scheduling systems', outcome: "If it lives on a whiteboard or in one person's head, it's a single point of failure." },
+    { icon: 'BarChart3', title: 'Dashboards & reporting', outcome: "The numbers exist. They just shouldn't require three people and a Monday morning to surface them." },
+    { icon: 'Link2', title: 'Integrations', outcome: "Your tools don't talk to each other. That's fixable." },
+    { icon: 'Wrench', title: 'One-off fixes', outcome: "That workaround you've lived with for three years? Probably an afternoon of work." },
+  ],
+  comparison: [
+    { heading: 'Not an agency', headline: 'You talk to me.', body: 'No account manager, no "let me check with the devs." I build it, I know it, I fix it.' },
+    { heading: 'Not a freelancer', headline: 'Shop floor first.', body: "Most freelancers have never been on a shop floor. I've spent 20 years on them. I get what you're actually trying to do." },
+    { heading: 'Not an ERP vendor', headline: 'Fit your operation.', body: "They sell you a system, then bill to make it fit. I build around how you actually work. If off-the-shelf would work, I'll say so." },
+  ],
+  wontDo: [
+    'Pretend I understand your business after a 30-minute demo',
+    'Sell you a "platform" and bill you forever to make it work',
+    'Disappear after go-live',
+    'Tell you AI is the answer when the answer is a better spreadsheet',
+  ],
+  ctaHeading: 'Sounds like you?',
+  ctaBody: "Tell me what's broken. If I can help, I will. If I can't, I'll say so — and point you at someone who can.",
+  ctaLabel: "Let's talk →",
   skills: [
-    { title: 'Digital', items: ['Web development', 'React & Supabase', 'Adobe Creative Suite', 'Home automation'] },
-    { title: 'Physical', items: ['SketchUp & CAD', '3D printing & CNC', 'Welding & fabrication', 'Construction & DIY'] },
-    { title: 'Business', items: ['Operations management', 'Process optimisation', 'Costing & forecasting', 'Quality systems'] },
-    { title: 'Creative', items: ['Video editing', 'Branding & layout', 'Product mock-ups', 'Workshop builds'] },
+    { title: 'What I build', items: ['Quoting & costing tools', 'Production tracking', 'Scheduling systems', 'Internal dashboards'] },
+    { title: 'How I build it', items: ['React & Supabase', 'Web apps & PWAs', 'Database design', 'API integrations'] },
+    { title: 'What I know', items: ['Operations management', 'Process optimisation', 'Quality & compliance', 'Costing & forecasting'] },
+    { title: 'Other skills', items: ['CAD & 3D printing', 'Graphic design', 'Fabrication & trades', 'Product development'] },
   ],
 }
 
 const FALLBACK_CONTACT = {
   formAction: 'https://formspree.io/f/xldvwqal',
   recaptchaSiteKey: '6Ld4SBUsAAAAAA7SFAgUI5fFQ_IDMD16EcAkDOKe',
-  heading: 'Building something interesting?',
-  subheading: 'Always keen to hear about novel problems and interesting challenges.',
+  eyebrow: 'Get in touch',
+  heading: 'Tell me what\'s broken.',
+  subheading: 'If I can help, I\'ll say so. If I can\'t, I\'ll tell you that too — and point you somewhere better.',
   socials: [
     { type: 'linkedin', url: 'https://www.linkedin.com/in/samhaughey/', label: 'LinkedIn' },
     { type: 'whatsapp', url: 'https://wa.me/64274766268', label: 'WhatsApp' },
   ],
 }
 
-const FALLBACK_META = { title: 'SHMAKE - Build Things', gaId: 'G-SQ07S188GB' }
+const FALLBACK_META = { title: 'SHMAKE — Custom Software for Manufacturers', gaId: 'G-SQ07S188GB' }
 
 /* === LOADERS (Supabase → fallback) === */
 

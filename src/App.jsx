@@ -6,6 +6,7 @@ import PublicSite from './PublicSite'
 import PortfolioPage from './components/PortfolioPage'
 import BlogPage from './components/BlogPage'
 import BlogPostPage from './components/BlogPostPage'
+import ToolsPage from './components/ToolsPage'
 import SEO from './components/SEO'
 
 // Admin is lazy-loaded — public visitors never download this code
@@ -75,6 +76,9 @@ export default function App() {
             </PortfolioProvider>
           }
         />
+
+        {/* Tools — standalone index */}
+        <Route path="/tools" element={<ToolsPage />} />
 
         {/* Blog */}
         <Route path="/blog" element={<BlogPage />} />

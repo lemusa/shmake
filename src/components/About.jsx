@@ -1,70 +1,96 @@
 import { useState, useEffect } from 'react'
+import {
+  Calculator,
+  Activity,
+  CalendarDays,
+  BarChart3,
+  Link2,
+  Wrench,
+  MonitorSmartphone,
+} from 'lucide-react'
 import { loadSiteContent, ABOUT_CONTENT as FALLBACK } from '../data/projects'
+
+const SERVICE_ICONS = {
+  Calculator,
+  Activity,
+  CalendarDays,
+  BarChart3,
+  Link2,
+  Wrench,
+}
 
 export default function About() {
   const [about, setAbout] = useState(FALLBACK)
-  useEffect(() => { loadSiteContent().then(sc => setAbout(sc.about)) }, [])
-  const { name, photo, tagline, taglineSub, bio, skills } = about
+  useEffect(() => {
+    loadSiteContent().then(sc => {
+      setAbout({ ...FALLBACK, ...(sc.about || {}) })
+    })
+  }, [])
+
+  const { youIf = [], services = [] } = about
 
   return (
-    <section
-      className="min-h-screen px-6 md:px-8 py-16 flex flex-col justify-center scroll-section"
-      style={{ background: 'var(--bg)' }}
-      id="about"
-    >
-      <div className="max-w-[1100px] mx-auto w-full">
-        <h2 className="text-3xl md:text-5xl font-bold mb-8 tracking-tight text-center">
-          {name}
-        </h2>
-
-        <div className="grid grid-cols-1 md:grid-cols-[1fr_280px] gap-10 items-start">
-          {/* Main content */}
-          <div className="flex flex-col gap-8">
-            <div className="about-story">
-              {bio.map((p, i) => (
-                <p key={i}>{p}</p>
+    <section id="about" className="scroll-section about-split">
+      {/* Top — problem recognition + device mockup */}
+      <div className="about-split-top">
+        <div className="about-split-inner youif-layout">
+          <div className="youif-col">
+            <div className="split-eyebrow">
+              <span className="split-eyebrow-line" />
+              <span className="split-eyebrow-text">This is you if…</span>
+            </div>
+            <ul className="problems-list">
+              {youIf.slice(0, 6).map((text, i) => (
+                <li key={i} className="problem-item">
+                  <span className="problem-number" aria-hidden="true">
+                    {String(i + 1).padStart(2, '0')}
+                  </span>
+                  <span className="problem-text">{text}</span>
+                </li>
               ))}
-              <a
-                href="/portfolio"
-                className="inline-block font-semibold text-accent hover:underline transition-all"
-              >
-                View my portfolio →
-              </a>
-            </div>
+            </ul>
           </div>
-
-          {/* Sidebar */}
-          <div className="flex flex-col md:sticky md:top-20 gap-4 md:flex-col max-md:flex-row max-md:order-first">
-            <div className="aspect-square rounded-2xl overflow-hidden border border-[var(--border)] max-md:w-[120px] max-md:h-[120px] max-md:shrink-0" style={{ background: 'var(--card-bg)' }}>
-              <img src={photo} alt={name} className="w-full h-full object-cover" />
-            </div>
-            <div className="about-tagline-card max-md:flex-1 max-md:flex max-md:flex-col max-md:justify-center">
-              <p className="text-[1.05rem] font-semibold leading-snug mb-2 relative" style={{ color: 'var(--text)' }}>
-                {tagline}
-              </p>
-              <p className="text-sm italic m-0" style={{ color: 'var(--text-secondary)' }}>
-                {taglineSub}
-              </p>
-            </div>
+          <div className="">
+                <img src="assets/demo-splash.png" alt="" />
           </div>
         </div>
+      </div>
 
-        {/* Skills grid */}
-        <div className="mt-10 pt-8 border-t border-[var(--border)] max-w-[1100px] mx-auto">
-          <h3 className="text-center text-lg font-semibold mb-5" style={{ color: 'var(--text)' }}>
-            Things I've gotten curious about
-          </h3>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">
-            {skills.map(cat => (
-              <div key={cat.title} className="text-left">
-                <h4 className="text-sm font-semibold mb-2 text-accent">{cat.title}</h4>
-                <ul className="list-none">
-                  {cat.items.map(item => (
-                    <li key={item} className="skill-cat-item">{item}</li>
-                  ))}
-                </ul>
-              </div>
-            ))}
+      {/* Bottom — concrete things (dark full-bleed panel) */}
+      <div className="about-split-bottom">
+        <div className="about-split-inner">
+          <div className="split-eyebrow split-eyebrow-dark">
+            <span className="split-eyebrow-line" />
+            <span className="split-eyebrow-text">What I'll build for you</span>
+          </div>
+          <h2 className="concrete-headline">
+            Concrete things.{' '}
+            <span className="concrete-headline-accent">Shipped and used.</span>
+          </h2>
+          <div className="services-grid-dark">
+            {services.slice(0, 6).map(s => {
+              const Icon = SERVICE_ICONS[s.icon] || Wrench
+              return (
+                <div key={s.title} className="service-card-dark">
+                  <div className="service-card-dark-icon" aria-hidden="true">
+                    <Icon size={22} strokeWidth={1.75} />
+                  </div>
+                  <h4 className="service-card-dark-title">{s.title}</h4>
+                  <p className="service-card-dark-body">{s.outcome}</p>
+                </div>
+              )
+            })}
+          </div>
+          <div className="platform-note">
+            <div className="platform-note-icon" aria-hidden="true">
+              <MonitorSmartphone size={22} strokeWidth={1.75} />
+            </div>
+            <div className="platform-note-body">
+              <span className="platform-note-title">Built as Progressive Web Apps.</span>
+              <span className="platform-note-text">
+                Runs on phone, tablet, laptop, shop-floor terminal — anything with a browser. No hardware upgrades, no app-store approvals, no per-seat licences. Just a link.
+              </span>
+            </div>
           </div>
         </div>
       </div>

@@ -17,7 +17,7 @@ const DIST = join(__dirname, '..', 'dist')
 const PORT = 4173
 
 // Static routes to always prerender
-const STATIC_ROUTES = ['/', '/portfolio', '/blog']
+const STATIC_ROUTES = ['/', '/portfolio', '/blog', '/tools']
 
 /** Minimal static file server for the dist folder */
 function serve() {
@@ -99,6 +99,7 @@ function generateSitemap(blogPosts) {
     { loc: '/', lastmod: today, priority: '1.0', freq: 'monthly' },
     { loc: '/portfolio', lastmod: today, priority: '0.8', freq: 'monthly' },
     { loc: '/blog', lastmod: today, priority: '0.9', freq: 'weekly' },
+    { loc: '/tools', lastmod: today, priority: '0.8', freq: 'monthly' },
   ]
 
   for (const { href, date } of blogPosts) {

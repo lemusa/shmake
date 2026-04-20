@@ -22,7 +22,14 @@
       "Bash(npm i vite-plugin-prerender -D)",
       "Bash(npm uninstall vite-plugin-prerender)",
       "Bash(npm i puppeteer -D)",
-      "Bash(npm i dompurify)"
+      "Bash(npm i dompurify)",
+      "Bash(npm run:*)",
+      "Bash(ls dist *)",
+      "Bash(ls .vite)",
+      "Bash(ls public/*.css)",
+      "Bash(tasklist)",
+      "WebFetch(domain:unsplash.com)",
+      "WebSearch"
     ]
   }
 }

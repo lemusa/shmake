@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react'
 import Header from './components/Header'
 import NavSidebar from './components/NavSidebar'
-import HeroCards from './components/HeroCards'
+import Home from './components/Home'
 import About from './components/About'
+import WhyMe from './components/WhyMe'
 import Contact from './components/Contact'
-import Footer from './components/Footer'
 import PortfolioOverlay from './components/PortfolioOverlay'
 import ProjectDetailModal from './components/ProjectDetailModal'
 import SEO from './components/SEO'
@@ -23,8 +23,8 @@ export default function App() {
   return (
     <>
       <SEO
-        title="SHMAKE — Software & Product Development, Christchurch NZ"
-        description="Custom software and product development by Sam Haughey. Building tools like myMECA, TeaBreak, and shmakeCut from Christchurch, New Zealand."
+        title="SHMAKE — Custom Software for Manufacturers | Christchurch NZ"
+        description="Custom software for manufacturers by Sam Haughey. I build the tools your factory actually needs — quoting, scheduling, production tracking, and more. Christchurch, NZ."
         path="/"
       />
       <Header navOpen={navOpen} setNavOpen={setNavOpen} />
@@ -32,10 +32,10 @@ export default function App() {
 
       <div className="scroll-container">
         <main>
-          <HeroCards />
+          <Home />
           <About />
+          <WhyMe />
           <Contact />
-          <Footer />
         </main>
       </div>
 
