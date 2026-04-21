@@ -14,7 +14,7 @@ export default function Contact() {
       setWontDo(about.wontDo || [])
     })
   }, [])
-  const { formAction, recaptchaSiteKey, eyebrow = 'Get in touch', heading, subheading } = config
+  const { formAction, recaptchaSiteKey, eyebrow = 'Get in touch', heading } = config
   const [status, setStatus] = useState(null) // 'success' | 'error' | null
   const [statusMsg, setStatusMsg] = useState('')
   const formRef = useRef(null)
@@ -86,7 +86,6 @@ export default function Contact() {
             <span className="split-eyebrow-text">{eyebrow}</span>
           </div>
           <h2 className="contact-page-headline">{heading}</h2>
-          <p className="contact-page-sub">{subheading}</p>
         </div>
 
         <div className="contact-page-grid">

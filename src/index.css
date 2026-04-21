@@ -31,6 +31,19 @@
 }
 
 /* ── Base ─────────────────────────────────────────────────── */
+/* Fluid root font-size: scales rem-based layout with viewport height.
+   Baseline: ~14px at 900px eff viewport (1080p), ~17px at 1100px+ (taller monitors).
+   Mobile floor is enforced below in a min-width media query so mobile keeps 16px. */
+html {
+  font-size: clamp(14px, 1.55vh, 17px);
+}
+
+@media (max-width: 1024px) {
+  html {
+    font-size: 16px;
+  }
+}
+
 body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
   background: var(--bg);
@@ -3260,6 +3273,117 @@ body {
 /* ── Scrollbar hiding ────────────────────────────────────── */
 .hide-scrollbar::-webkit-scrollbar { display: none; }
 .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* ── Admin login page — dark, unbranded, utilitarian ─────── */
+.admin-login-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2.5rem 1.5rem;
+  background: #0a0a0a;
+  color: #f4f4f5;
+}
+
+.admin-login-card {
+  width: 100%;
+  max-width: 380px;
+  display: flex;
+  flex-direction: column;
+}
+
+.admin-login-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  margin-bottom: 1rem;
+}
+.admin-login-eyebrow-line {
+  width: 28px;
+  height: 1px;
+  background: #f97316;
+}
+.admin-login-eyebrow-text {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #f97316;
+}
+
+.admin-login-headline {
+  font-size: clamp(1.75rem, 3vw, 2.4rem);
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  line-height: 1.08;
+  margin: 0 0 0.4rem;
+  color: #f4f4f5;
+}
+
+.admin-login-sub {
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: #71717a;
+  margin: 0 0 1.75rem;
+}
+
+.admin-login-form {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Override the shared .contact-label / .form-input look for the dark card */
+.admin-login-page .contact-label {
+  color: #d4d4d8;
+}
+.admin-login-page .form-input {
+  background: #18181b;
+  border: 1px solid #27272a;
+  color: #fafafa;
+}
+.admin-login-page .form-input::placeholder {
+  color: #52525b;
+}
+.admin-login-page .form-input:focus {
+  border-color: #f97316;
+}
+
+.admin-login-submit {
+  margin-top: 0.5rem;
+}
+
+.admin-login-error {
+  margin-bottom: 1rem;
+  padding: 0.7rem 0.9rem;
+  border-radius: 8px;
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  background: rgba(239, 68, 68, 0.08);
+}
+.admin-login-error p {
+  margin: 0;
+  font-size: 0.88rem;
+  color: #fca5a5;
+}
+
+.admin-login-spinner-row {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+}
+
+.admin-login-spinner {
+  width: 14px;
+  height: 14px;
+  border: 2px solid rgba(255, 255, 255, 0.35);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: admin-login-spin 0.8s linear infinite;
+}
+
+@keyframes admin-login-spin {
+  to { transform: rotate(360deg); }
+}
 
 /* ── Admin styles ────────────────────────────────────────── */
 @keyframes slideIn {
